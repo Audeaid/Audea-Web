@@ -1,12 +1,21 @@
 {
   "name": "audea-web",
+  "author": "PT. Aplikasi Audea Indonesia",
+  "description": "Audea Web-App",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://app.audea.id",
+  "engines": {
+    "node": ">=16.8.0",
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@types/node": "20.1.4",
