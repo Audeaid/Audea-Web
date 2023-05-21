@@ -1,0 +1,11 @@
+.input {
+  @apply bg-onPrimary focus:outline-none w-full;
+}
+
+.section1 {
+  @apply flex flex-col gap-1 select-none;
+}
+
+.section2 {
+  @apply flex justify-between items-center w-full h-fit bg-onPrimary shadow appearance-none border-2 rounded py-2 px-3 text-onPrimaryContainer leading-tight focus-within:outline-none focus-within:shadow-primaryDark focus-within:border-primaryDark gap-2;
+}
