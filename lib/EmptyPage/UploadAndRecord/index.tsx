@@ -107,8 +107,10 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
     setRemainingTime(900); // 15 minutes in seconds
 
     if (streamRef.current) {
+      const supportWebM = MediaRecorder.isTypeSupported('audio/webm');
+
       const media = new MediaRecorder(streamRef.current, {
-        mimeType: 'audio/webm',
+        mimeType: supportWebM ? 'audio/webm' : 'audio/mp4',
       });
 
       mediaRecorder.current = media;
@@ -120,11 +122,17 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
       };
 
       mediaRecorder.current.onstop = () => {
-        const file = new File(localAudioChunks, 'audio.webm', {
-          type: 'audio/webm',
-        });
+        const file = new File(
+          localAudioChunks,
+          `audio.${supportWebM ? 'webm' : 'mp4'}`,
+          {
+            type: supportWebM ? 'audio/webm' : 'audio/mp4',
+          }
+        );
         onFileUpload(file);
-        const audioBlob = new Blob(localAudioChunks, { type: 'audio/webm' });
+        const audioBlob = new Blob(localAudioChunks, {
+          type: supportWebM ? 'audio/webm' : 'audio/mp4',
+        });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudio(audioUrl);
         // setAudioChunks([]);
