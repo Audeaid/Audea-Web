@@ -13,7 +13,7 @@ import WebSocket from 'isomorphic-ws';
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === 'production'
-      ? 'https://api.kudoku.id/graphql'
+      ? 'https://audea-server.herokuapp.com/graphql'
       : 'http://localhost:8080/graphql',
 });
 
