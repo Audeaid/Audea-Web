@@ -13,7 +13,10 @@ export const RecordingInProgress = ({
     <section className="flex flex-col gap-4">
       <p>Recording in progress...</p>
       <p className="text-primaryDark font-bold text-6xl">
-        {Math.floor(remainingTime / 60)}:{remainingTime % 60}
+        {Math.floor(remainingTime / 60)}:
+        {remainingTime % 60 < 10
+          ? `0${remainingTime % 60}`
+          : remainingTime % 60}
         {remainingTime % 60 === 0 ? '0' : ''}
       </p>
       <button

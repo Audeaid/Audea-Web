@@ -18,7 +18,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
   const [countdown, setCountdown] = useState(3);
   const [recordingStatus, setRecordingStatus] = useState('inactive');
   const [audio, setAudio] = useState('');
-  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  // const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [remainingTime, setRemainingTime] = useState(0);
   const streamRef = useRef<MediaStream | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -127,7 +127,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
         const audioBlob = new Blob(localAudioChunks, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudio(audioUrl);
-        setAudioChunks([]);
+        // setAudioChunks([]);
         setRecordingStatus('inactive');
         setRemainingTime(0);
       };
@@ -160,7 +160,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
     setCountdown(0);
     setRemainingTime(0);
     setAudio('');
-    setAudioChunks([]);
+    // setAudioChunks([]);
   };
 
   useEffect(() => {
