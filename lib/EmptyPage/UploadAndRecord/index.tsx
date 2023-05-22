@@ -17,7 +17,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
   const [currentlyDragging, setCurrentlyDragging] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [recordingStatus, setRecordingStatus] = useState('inactive');
-  const [audio, setAudio] = useState('');
+  // const [audio, setAudio] = useState('');
   // const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [remainingTime, setRemainingTime] = useState(0);
   const streamRef = useRef<MediaStream | null>(null);
@@ -65,10 +65,14 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
           );
           return;
         }
+
+        if (!MediaRecorder.isTypeSupported('audio/webm')) {
+          reject();
+          toast.error('Currently, recording on Safari in unavailable');
+        }
         try {
           const mediaStream = await navigator.mediaDevices.getUserMedia({
             audio: true,
-            video: false,
           });
           resolve(mediaStream);
         } catch (err) {
@@ -122,19 +126,54 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
       };
 
       mediaRecorder.current.onstop = () => {
-        const file = new File(
-          localAudioChunks,
-          `audio.${supportWebM ? 'webm' : 'mp4'}`,
-          {
-            type: supportWebM ? 'audio/webm' : 'audio/mp4',
-          }
-        );
-        onFileUpload(file);
-        const audioBlob = new Blob(localAudioChunks, {
-          type: supportWebM ? 'audio/webm' : 'audio/mp4',
-        });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudio(audioUrl);
+        if (supportWebM) {
+          const file = new File(localAudioChunks, 'audio.webm', {
+            type: 'audio/webm',
+          });
+
+          onFileUpload(file);
+        } else {
+          // setDisabledRecording(true);
+          // const audioBlob = new Blob(localAudioChunks, {
+          //   type: 'audio/mp4',
+          // });
+          // const audioUrl = URL.createObjectURL(audioBlob);
+          // setAudio(audioUrl);
+          // const file = new File([audioBlob], 'audio.mp4', {
+          //   type: 'audio/mp4',
+          // });
+          // onFileUpload(file);
+          // const sampleRate = 44100; // Set the desired sample rate
+          // const numChannels = 2; // Set the desired number of channels (stereo)
+          // const reader = new FileReader();
+          // reader.onload = function () {
+          //   const arrayBuffer = reader.result as ArrayBuffer;
+          //   // Calculate the correct length based on the ArrayBuffer byte length
+          //   const length = arrayBuffer.byteLength / 2; // 2 bytes per Int16Array element
+          //   // Convert the ArrayBuffer to PCM
+          //   // Create the Int16Array with the correct length and byteOffset set to 0
+          //   const samples = new Int16Array(arrayBuffer, 0, length);
+          //   const mp3encoder = new Mp3Encoder(numChannels, sampleRate, 128);
+          //   const mp3Data = mp3encoder.encodeBuffer(samples);
+          //   const mp3Blob = new Blob([mp3Data], { type: 'audio/mp3' });
+          //   const file = new File([mp3Blob], 'audio.mp3', {
+          //     type: 'audio/mp3',
+          //   });
+          //   onFileUpload(file);
+          //   // Get the encoded MP3 as a Blob
+          //   // const mp3Blob = new Blob([mp3Data], { type: 'audio/mp3' });
+          //   // Do something with the MP3 Blob, e.g., save it or send it to the server
+          //   // For example, you can create a download link for the MP3 file
+          //   // const downloadLink = document.createElement('a');
+          //   // downloadLink.href = URL.createObjectURL(mp3Blob);
+          //   // downloadLink.download = 'recorded_audio.mp3';
+          //   // downloadLink.click();
+          // };
+          // reader.readAsArrayBuffer(audioBlob);
+        }
+
+        // const audioUrl = URL.createObjectURL(audioBlob);
+        // setAudio(audioUrl);
         // setAudioChunks([]);
         setRecordingStatus('inactive');
         setRemainingTime(0);
@@ -167,7 +206,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
     setRecordingStatus('inactive');
     setCountdown(0);
     setRemainingTime(0);
-    setAudio('');
+    // setAudio('');
     // setAudioChunks([]);
   };
 
@@ -178,16 +217,16 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
     };
   }, []);
 
-  const renderAudioPlayer = () => {
-    return (
-      <div className="audio-player">
-        <audio src={audio} controls></audio>
-        <a download href={audio}>
-          Download Recording
-        </a>
-      </div>
-    );
-  };
+  // const renderAudioPlayer = () => {
+  //   return (
+  //     <div className="audio-player">
+  //       <audio src={audio} controls></audio>
+  //       <a download href={audio}>
+  //         Download Recording
+  //       </a>
+  //     </div>
+  //   );
+  // };
 
   return (
     <section className="mt-10 flex flex-col items-center justify-center gap-10">
@@ -238,7 +277,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
           );
       })()}
 
-      {audio && renderAudioPlayer()}
+      {/* {audio && renderAudioPlayer()} */}
     </section>
   );
 };

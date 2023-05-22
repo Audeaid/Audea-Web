@@ -51,6 +51,7 @@ export const EmptyPage = ({
                 (async () => {
                   setIsUploading(true);
                   setStillUploading(true);
+
                   // First, create new content
                   setCondition('Creating new database...');
                   const content = await createNewContent(token);
@@ -82,7 +83,7 @@ export const EmptyPage = ({
                   const systemPrompt = typeOfPrompt.systemPrompt;
                   const userPrompt = `Audio transcription:
                   ${transcript.text}
-                  
+
                   Outcome language: Original`;
 
                   const gptResponse = await publicGetGptResponse(
