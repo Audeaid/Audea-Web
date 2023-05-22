@@ -32,6 +32,7 @@ export const loginWithPassword = ({
             email,
             password,
           },
+          fetchPolicy: 'network-only',
         });
 
         resolve(loginWithPassword);

@@ -14,22 +14,22 @@ export const publicGetGptResponse = (
   return new Promise((resolve, reject) => {
     (async () => {
       try {
-        const completion = await openai.createChatCompletion({
+        const { data } = await openai.createChatCompletion({
           model: 'gpt-3.5-turbo',
           max_tokens: 2048,
           messages: [
             {
               role: 'system',
-              content: systemPrompt.toString(),
+              content: systemPrompt,
             },
             {
               role: 'user',
-              content: userPrompt.toString(),
+              content: userPrompt,
             },
           ],
         });
 
-        resolve(completion as unknown as IGPTResponse);
+        resolve(data as unknown as IGPTResponse);
       } catch (error) {
         console.error(error);
         reject(error);

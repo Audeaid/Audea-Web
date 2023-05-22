@@ -32,6 +32,7 @@ export const verifyEmailOtp = ({
             email,
             otp,
           },
+          fetchPolicy: 'network-only',
         });
 
         resolve(verifyEmailOtp);

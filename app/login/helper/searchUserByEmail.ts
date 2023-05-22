@@ -31,6 +31,7 @@ export const searchUserByEmail = ({
           variables: {
             email,
           },
+          fetchPolicy: 'network-only',
         });
 
         resolve(searchUserByEmail);

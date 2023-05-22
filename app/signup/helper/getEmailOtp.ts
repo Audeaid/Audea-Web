@@ -29,6 +29,7 @@ export const getEmailOtp = ({
           variables: {
             email,
           },
+          fetchPolicy: 'network-only',
         });
 
         resolve(getEmailOtp);

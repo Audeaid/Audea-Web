@@ -32,6 +32,7 @@ export const sendNewUserEmail = ({
             email,
             name,
           },
+          fetchPolicy: 'network-only',
         });
 
         resolve(sendNewUserEmail);

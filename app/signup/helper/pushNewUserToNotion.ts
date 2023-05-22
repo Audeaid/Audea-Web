@@ -32,6 +32,7 @@ export const pushNewUserToNotion = ({
             email,
             name,
           },
+          fetchPolicy: 'network-only',
         });
 
         resolve(pushNewUserToNotion);
