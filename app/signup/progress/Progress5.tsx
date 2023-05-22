@@ -46,7 +46,7 @@ export const Progress5 = ({
         await createNewUserSubscriptionTrial(response.token);
 
         // Run sendNewUserEmail query
-        await sendNewUserEmail({ email });
+        await sendNewUserEmail({ email, name });
 
         // Run pushNewUserToNotion query
         await pushNewUserToNotion({ email, name });

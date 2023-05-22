@@ -8,12 +8,14 @@ interface ISendNewUserEmail {
 
 export const sendNewUserEmail = ({
   email,
+  name,
 }: {
   email: string;
+  name: string;
 }): Promise<ISendNewUserEmail> => {
   const query = gql`
-    query SendNewUserEmail($email: String!) {
-      sendNewUserEmail(email: $email) {
+    query SendNewUserEmail($email: String!, $name: String!) {
+      sendNewUserEmail(email: $email, name: $name) {
         response
       }
     }
@@ -28,6 +30,7 @@ export const sendNewUserEmail = ({
           query,
           variables: {
             email,
+            name,
           },
         });
 
