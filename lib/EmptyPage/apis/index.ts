@@ -4,3 +4,5 @@ export * from './functions/getTranscriptFromWhisper';
 export * from './functions/getTypeOfPrompt';
 export * from './functions/uploadVoiceNoteToS3';
 export * from './functions/updateContent';
+export * from './functions/publicGetGptResponse';
+export * from './functions/publicGetTranscriptFromWhisper';

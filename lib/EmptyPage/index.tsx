@@ -1,12 +1,14 @@
 'use client';
 
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import UploadAndRecord from './UploadAndRecord';
 import {
   createNewContent,
   getGptResponse,
   getTranscriptFromWhisper,
   getTypeOfPrompt,
+  publicGetGptResponse,
+  publicGetTranscriptFromWhisper,
   updateContent,
   uploadVoiceNoteToS3,
 } from './apis';
@@ -64,59 +66,191 @@ export const EmptyPage = ({
 
                   // Get the transcript from whisper
                   setCondition('Getting the transcript...');
-                  const transcript = await getTranscriptFromWhisper(file);
 
-                  // Get typeOfPrompt
-                  setCondition('Getting prompt from our database...');
-                  const typeOfPromptId = '646a2fc687e737835670b7b3'; // Our first typeOfPrompt
-                  const typeOfPrompt = await getTypeOfPrompt(
-                    token,
-                    typeOfPromptId
-                  );
+                  getTranscriptFromWhisper(file)
+                    .then(async (transcript) => {
+                      // Get typeOfPrompt
+                      setCondition('Getting prompt from our database...');
+                      const typeOfPromptId = '646a2fc687e737835670b7b3'; // Our first typeOfPrompt
+                      const typeOfPrompt = await getTypeOfPrompt(
+                        token,
+                        typeOfPromptId
+                      );
 
-                  // Get chatGPT response
-                  setCondition('Transcript is being analyzed by AI...');
-                  if (typeOfPrompt === null)
-                    throw new Error('typeOfPrompt is null');
+                      // Get chatGPT response
+                      setCondition('Transcript is being analyzed by AI...');
+                      if (typeOfPrompt === null)
+                        throw new Error('typeOfPrompt is null');
 
-                  const systemPrompt = typeOfPrompt.systemPrompt;
-                  const userPrompt = `Audio transcription:
-                  ${transcript.text}
+                      const systemPrompt = typeOfPrompt.systemPrompt;
+                      const userPrompt = `Audio transcription:
+                      ${transcript.text}
+                      
+                      Outcome language: Original`;
 
-                  Outcome language: Original`;
+                      getGptResponse(systemPrompt, userPrompt)
+                        .then((gptResponse) => {
+                          // Parsing the response
+                          setCondition('Parsing AI response...');
+                          const actualGptResponse =
+                            gptResponse.choices[0].message.content;
+                          const jsonGptResponse = JSON.parse(actualGptResponse);
 
-                  const gptResponse = await getGptResponse(
-                    systemPrompt,
-                    userPrompt
-                  );
+                          let title = '';
+                          for (const obj of jsonGptResponse) {
+                            if (obj.type === 'title') {
+                              title = obj.content;
+                              break;
+                            }
+                          }
 
-                  // Parsing the response
-                  setCondition('Parsing AI response...');
-                  const actualGptResponse =
-                    gptResponse.choices[0].message.content;
-                  const jsonGptResponse = JSON.parse(actualGptResponse);
+                          // Update all of it to database
+                          setCondition('Update database connection...');
+                          updateContent({
+                            token,
+                            contentId: content.id,
+                            title,
+                            voiceNoteUrl: uploadedVoiceNote.Location,
+                            transcript: transcript.text,
+                            gptGenerated: actualGptResponse,
+                            typeOfPromptId,
+                          }).then((content) => {
+                            router.push(`/app/content/${content.id}`);
+                          });
+                        })
+                        .catch(() => {
+                          publicGetGptResponse(systemPrompt, userPrompt)
+                            .then((gptResponse) => {
+                              // Parsing the response
+                              setCondition('Parsing AI response...');
+                              const actualGptResponse =
+                                gptResponse.choices[0].message.content;
+                              const jsonGptResponse =
+                                JSON.parse(actualGptResponse);
 
-                  let title = '';
-                  for (const obj of jsonGptResponse) {
-                    if (obj.type === 'title') {
-                      title = obj.content;
-                      break;
-                    }
-                  }
+                              let title = '';
+                              for (const obj of jsonGptResponse) {
+                                if (obj.type === 'title') {
+                                  title = obj.content;
+                                  break;
+                                }
+                              }
 
-                  // Update all of it to database
-                  setCondition('Update database connection...');
-                  await updateContent({
-                    token,
-                    contentId: content.id,
-                    title,
-                    voiceNoteUrl: uploadedVoiceNote.Location,
-                    transcript: transcript.text,
-                    gptGenerated: actualGptResponse,
-                    typeOfPromptId,
-                  });
+                              // Update all of it to database
+                              setCondition('Update database connection...');
+                              updateContent({
+                                token,
+                                contentId: content.id,
+                                title,
+                                voiceNoteUrl: uploadedVoiceNote.Location,
+                                transcript: transcript.text,
+                                gptGenerated: actualGptResponse,
+                                typeOfPromptId,
+                              }).then((content) => {
+                                router.push(`/app/content/${content.id}`);
+                              });
+                            })
+                            .catch(() => {
+                              toast.error('Error getting the AI to response!');
+                            });
+                        });
+                    })
+                    .catch(() => {
+                      publicGetTranscriptFromWhisper(file)
+                        .then(async (transcript) => {
+                          // Get typeOfPrompt
+                          setCondition('Getting prompt from our database...');
+                          const typeOfPromptId = '646a2fc687e737835670b7b3'; // Our first typeOfPrompt
+                          const typeOfPrompt = await getTypeOfPrompt(
+                            token,
+                            typeOfPromptId
+                          );
 
-                  router.push(`/app/content/${content.id}`);
+                          // Get chatGPT response
+                          setCondition('Transcript is being analyzed by AI...');
+                          if (typeOfPrompt === null)
+                            throw new Error('typeOfPrompt is null');
+
+                          const systemPrompt = typeOfPrompt.systemPrompt;
+                          const userPrompt = `Audio transcription:
+                          ${transcript.text}
+                          
+                          Outcome language: Original`;
+
+                          getGptResponse(systemPrompt, userPrompt)
+                            .then((gptResponse) => {
+                              // Parsing the response
+                              setCondition('Parsing AI response...');
+                              const actualGptResponse =
+                                gptResponse.choices[0].message.content;
+                              const jsonGptResponse =
+                                JSON.parse(actualGptResponse);
+
+                              let title = '';
+                              for (const obj of jsonGptResponse) {
+                                if (obj.type === 'title') {
+                                  title = obj.content;
+                                  break;
+                                }
+                              }
+
+                              // Update all of it to database
+                              setCondition('Update database connection...');
+                              updateContent({
+                                token,
+                                contentId: content.id,
+                                title,
+                                voiceNoteUrl: uploadedVoiceNote.Location,
+                                transcript: transcript.text,
+                                gptGenerated: actualGptResponse,
+                                typeOfPromptId,
+                              }).then((content) => {
+                                router.push(`/app/content/${content.id}`);
+                              });
+                            })
+                            .catch(() => {
+                              publicGetGptResponse(systemPrompt, userPrompt)
+                                .then((gptResponse) => {
+                                  // Parsing the response
+                                  setCondition('Parsing AI response...');
+                                  const actualGptResponse =
+                                    gptResponse.choices[0].message.content;
+                                  const jsonGptResponse =
+                                    JSON.parse(actualGptResponse);
+
+                                  let title = '';
+                                  for (const obj of jsonGptResponse) {
+                                    if (obj.type === 'title') {
+                                      title = obj.content;
+                                      break;
+                                    }
+                                  }
+
+                                  // Update all of it to database
+                                  setCondition('Update database connection...');
+                                  updateContent({
+                                    token,
+                                    contentId: content.id,
+                                    title,
+                                    voiceNoteUrl: uploadedVoiceNote.Location,
+                                    transcript: transcript.text,
+                                    gptGenerated: actualGptResponse,
+                                    typeOfPromptId,
+                                  }).then((content) => {
+                                    router.push(`/app/content/${content.id}`);
+                                  });
+                                })
+                                .catch(() => {
+                                  toast.error(
+                                    'Error getting the AI to response!'
+                                  );
+                                });
+                            });
+                        })
+                        .catch(() => {
+                          toast.error('Error getting the transcript!');
+                        });
+                    });
                 })();
               }}
             />
