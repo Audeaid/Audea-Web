@@ -139,7 +139,7 @@ export default function SignupClient() {
           <section className="font-medium flex items-center justify-center w-fit h-fit gap-2">
             <p>Already have an account? </p>
 
-            <a href="/signup">
+            <a href="/login">
               <button className="text-primaryDark flex items-center justify-center text-base gap-1">
                 Login
                 <FontAwesomeIcon icon={faArrowRight} />
