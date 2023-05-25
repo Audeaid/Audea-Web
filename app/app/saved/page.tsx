@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
-
-import Client from './client';
+import { getAllContent } from './graphql';
+import { redirect } from 'next/navigation';
+import { ContentList } from '$lib/ContentList';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -10,5 +11,11 @@ export default async function Page() {
   if (!token || !signInProvider)
     throw new Error('Token and signInProvider is null');
 
-  return <Client token={token} />;
+  const content = await getAllContent(token);
+
+  if (content !== null) {
+    return <ContentList content={content} />;
+  } else {
+    redirect('/');
+  }
 }

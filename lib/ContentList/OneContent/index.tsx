@@ -20,7 +20,7 @@ export const OneContent = ({
     <button
       className="flex items-center justify-between cursor-pointer w-full"
       onClick={() => {
-        router.push(`/app/content/${contentId}`);
+        router.push(`/app/saved/${contentId}`);
       }}
       type="button"
     >

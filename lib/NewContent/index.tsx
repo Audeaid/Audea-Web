@@ -2,6 +2,9 @@
 
 import { Toaster } from 'react-hot-toast';
 import UploadAndRecord from './UploadAndRecord';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import {
   createNewContent,
   getTypeOfPrompt,
@@ -10,17 +13,14 @@ import {
   updateContent,
   uploadVoiceNoteToS3,
 } from './apis';
-import { Dispatch, SetStateAction, useState } from 'react';
-import AddLottieAnimation from '$components/AddLottieAnimation';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import LoadingContent from '$components/LoadingContent';
 
-export const EmptyPage = ({
+const NewContent = ({
   token,
-  setStillUploading,
+  hasContent,
 }: {
   token: string;
-  setStillUploading: Dispatch<SetStateAction<boolean>>;
+  hasContent: boolean;
 }) => {
   const router = useRouter();
   const [condition, setCondition] = useState('inactive');
@@ -42,6 +42,17 @@ export const EmptyPage = ({
           <h4 className="sm:text-lg text-base font-light text-center">
             Upload your voice record or record it. Audea will do its magic.
           </h4>
+          {hasContent ? (
+            <a href="/app/saved" className="mx-auto">
+              <button className="sm:text-lg text-base font-light text-center w-fit h-fit underline">
+                See your saved notes
+              </button>
+            </a>
+          ) : (
+            <h5 className="sm:text-lg text-base font-light text-center">
+              See how Audea works
+            </h5>
+          )}
         </section>
 
         <section>
@@ -50,7 +61,6 @@ export const EmptyPage = ({
               onFileUpload={(file) => {
                 (async () => {
                   setIsUploading(true);
-                  setStillUploading(true);
 
                   // First, create new content
                   setCondition('Creating new database...');
@@ -63,9 +73,28 @@ export const EmptyPage = ({
                     content.id
                   );
 
+                  await updateContent({
+                    token,
+                    contentId: content.id,
+                    title: null,
+                    voiceNoteUrl: uploadedVoiceNote.Location,
+                    transcript: null,
+                    gptGenerated: null,
+                    typeOfPromptId: null,
+                  });
+
                   // Get the transcript from whisper
                   setCondition('Getting the transcript...');
                   const transcript = await publicGetTranscriptFromWhisper(file);
+                  await updateContent({
+                    token,
+                    contentId: content.id,
+                    title: null,
+                    voiceNoteUrl: null,
+                    transcript: transcript.text,
+                    gptGenerated: null,
+                    typeOfPromptId: null,
+                  });
 
                   // Get typeOfPrompt
                   setCondition('Getting prompt from our database...');
@@ -74,12 +103,21 @@ export const EmptyPage = ({
                     token,
                     typeOfPromptId
                   );
-
-                  // Get chatGPT response
-                  setCondition('Transcript is being analyzed by AI...');
                   if (typeOfPrompt === null)
                     throw new Error('typeOfPrompt is null');
 
+                  await updateContent({
+                    token,
+                    contentId: content.id,
+                    title: null,
+                    voiceNoteUrl: null,
+                    transcript: null,
+                    gptGenerated: null,
+                    typeOfPromptId: typeOfPromptId,
+                  });
+
+                  // Get chatGPT response
+                  setCondition('Transcript is being analyzed by AI...');
                   const systemPrompt = typeOfPrompt.systemPrompt;
                   const userPrompt = `Audio transcription:
                   ${transcript.text}
@@ -105,16 +143,14 @@ export const EmptyPage = ({
                     }
                   }
 
-                  // Update all of it to database
-                  setCondition('Update database connection...');
                   const response = await updateContent({
                     token,
                     contentId: content.id,
-                    title,
-                    voiceNoteUrl: uploadedVoiceNote.Location,
-                    transcript: transcript.text,
+                    title: title,
+                    voiceNoteUrl: null,
+                    transcript: null,
                     gptGenerated: actualGptResponse,
-                    typeOfPromptId,
+                    typeOfPromptId: null,
                   });
 
                   router.push(`/app/content/${response.id}`);
@@ -122,17 +158,7 @@ export const EmptyPage = ({
               }}
             />
           ) : (
-            <section className="w-full h-fit border-dashed border-2 border-primaryDark rounded-xl py-20 max-w-[800px] mx-auto relative sm:px-0 px-4 bg-gray-900 flex flex-col items-center justify-center mt-10">
-              <div className="max-w-[500px]">
-                <AddLottieAnimation
-                  path="/lottie/9844-loading-40-paperplane.json"
-                  loop={true}
-                />
-              </div>
-              <p className="font-bold sm:text-2xl text-lg text-center">
-                {condition}
-              </p>
-            </section>
+            <LoadingContent condition={condition} />
           )}
         </section>
 
@@ -141,3 +167,5 @@ export const EmptyPage = ({
     </motion.section>
   );
 };
+
+export default NewContent;

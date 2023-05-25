@@ -15,7 +15,7 @@ export const publicGetGptResponse = (
     (async () => {
       try {
         const { data } = await openai.createChatCompletion({
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-3.5-turbo-0301',
           max_tokens: 2048,
           messages: [
             {

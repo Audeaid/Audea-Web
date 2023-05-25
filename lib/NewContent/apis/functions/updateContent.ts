@@ -17,11 +17,11 @@ export const updateContent = ({
 }: {
   token: string;
   contentId: string;
-  title: string;
-  voiceNoteUrl: string;
-  transcript: string;
-  gptGenerated: string;
-  typeOfPromptId: string;
+  title: string | null;
+  voiceNoteUrl: string | null;
+  transcript: string | null;
+  gptGenerated: string | null;
+  typeOfPromptId: string | null;
 }): Promise<IUpdateContent> => {
   const mutation = gql`
     mutation UpdateContent(

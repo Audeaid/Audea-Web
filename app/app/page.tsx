@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { getAllContent } from './graphql';
-import Client from './client';
+import NewContent from '@/lib/NewContent';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -11,6 +11,8 @@ export default async function Page() {
     throw new Error('Token and signInProvider is null');
 
   const content = await getAllContent(token);
+  let hasContent: boolean = false;
+  if (content !== null) hasContent = true;
 
-  return <Client token={token} content={content} />;
+  return <NewContent token={token} hasContent={hasContent} />;
 }
