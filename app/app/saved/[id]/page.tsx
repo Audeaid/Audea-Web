@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers';
 import { getOneContent } from './graphql';
-import { BulletPointsWithSummary } from '@/lib/BulletPointsWithSummary';
-import { GenerateContent } from '@/lib/GenerateContent';
+import { BulletPointsWithSummary } from '$lib/BulletPointsWithSummary';
+import { GenerateContent } from '$lib/GenerateContent';
+import BackButton from '$lib/BackButton';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -17,6 +18,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <section className="max-w-[1300px] pb-20 mt-10 sm:px-10 px-4 w-full mx-auto">
+      <BackButton href="/app/saved" />
       {(() => {
         if (
           (content.transcript === null || content.gptGenerated === null) &&

@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { AudeaImage, Workspace, Resources, Accounts } from './sidebar-content';
 import { useRouter } from 'next/navigation';
 import { getUserInfo, getUserSubscription } from './api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 
 const HamburgerSidebar = ({ token }: { token: string }) => {
   const router = useRouter();
@@ -64,7 +66,15 @@ const HamburgerSidebar = ({ token }: { token: string }) => {
         transition={{ duration: 0.3 }}
       >
         {/* Sidebar content goes here */}
-        <AudeaImage />
+        <section className="flex justify-between">
+          <AudeaImage />
+          <a href="/app">
+            <button className="bg-tertiary text-onPrimary font-medium text-sm px-4 py-1 rounded-lg shadow-xl flex items-center gap-2">
+              <FontAwesomeIcon icon={faMicrophone} />
+              Record
+            </button>
+          </a>
+        </section>
         <section className="flex flex-col gap-8">
           <Workspace
             startDate={startDate}

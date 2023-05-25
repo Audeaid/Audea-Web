@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { getAllContent } from './graphql';
 import { redirect } from 'next/navigation';
 import { ContentList } from '$lib/ContentList';
+import BackButton from '$lib/BackButton';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -14,7 +15,12 @@ export default async function Page() {
   const content = await getAllContent(token);
 
   if (content !== null) {
-    return <ContentList content={content} />;
+    return (
+      <>
+        <BackButton href="/app" />
+        <ContentList content={content} />
+      </>
+    );
   } else {
     redirect('/');
   }

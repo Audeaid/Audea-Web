@@ -49,7 +49,7 @@ export const RenderFileUploader = ({
             aria-describedby="file_input_help"
             id="file_input"
             type="file"
-            accept="audio/*"
+            // accept="audio/*"
             onChange={handleFileChange}
           />
           <p
