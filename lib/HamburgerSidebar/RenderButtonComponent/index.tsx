@@ -25,6 +25,7 @@ const RenderButtonComponent = ({
         <button
           className={`text-base flex items-center gap-2 ${xtraClassName}`}
           type="button"
+          tabIndex={-1}
         >
           <span className="w-[24px] h-[24px] flex items-center justify-center">
             <FontAwesomeIcon icon={icon} />

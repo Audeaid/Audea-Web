@@ -44,7 +44,10 @@ const NewContent = ({
           </h4>
           {hasContent ? (
             <a href="/app/saved" className="mx-auto">
-              <button className="sm:text-lg text-base font-light text-center w-fit h-fit underline">
+              <button
+                className="sm:text-lg text-base font-light text-center w-fit h-fit underline"
+                tabIndex={-1}
+              >
                 See your saved notes
               </button>
             </a>

@@ -66,10 +66,13 @@ const HamburgerSidebar = ({ token }: { token: string }) => {
         transition={{ duration: 0.3 }}
       >
         {/* Sidebar content goes here */}
-        <section className="flex justify-between">
+        <section className="flex justify-between items-center">
           <AudeaImage />
-          <a href="/app">
-            <button className="bg-tertiary text-onPrimary font-medium text-sm px-4 py-1 rounded-lg shadow-xl flex items-center gap-2">
+          <a href="/app" className="w-fit h-fit">
+            <button
+              className="bg-tertiary text-onPrimary font-medium text-sm px-4 py-1 rounded-lg shadow-xl flex items-center gap-2"
+              tabIndex={-1}
+            >
               <FontAwesomeIcon icon={faMicrophone} />
               Record
             </button>
