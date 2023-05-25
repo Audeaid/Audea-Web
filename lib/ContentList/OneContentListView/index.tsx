@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
-export const OneContent = ({
+const OneContentListView = ({
   contentId,
   title,
   date,
@@ -41,3 +41,5 @@ export const OneContent = ({
     </button>
   );
 };
+
+export default OneContentListView;

@@ -81,7 +81,7 @@ export const GenerateContent = ({
           typeOfPromptId: null,
         });
 
-        router.push(`/app/content/${response.id}`);
+        router.push(`/app/saved/${response.id}`);
       } catch (error) {
         console.error(error);
         setIsUploading(false);
@@ -128,7 +128,7 @@ export const GenerateContent = ({
           typeOfPromptId: null,
         });
 
-        router.push(`/app/content/${response.id}`);
+        router.push(`/app/saved/${response.id}`);
       } catch (error) {
         console.error(error);
         setIsUploading(false);

@@ -6,6 +6,7 @@ export interface IGetAllContent {
   id: string;
   createdAt: string;
   title: string | null;
+  gptGenerated: string | null;
 }
 
 export const getAllContent = (
@@ -14,9 +15,10 @@ export const getAllContent = (
   const query = gql`
     query GetAllContent {
       getAllContent {
-        id
         createdAt
+        gptGenerated
         title
+        id
       }
     }
   `;
