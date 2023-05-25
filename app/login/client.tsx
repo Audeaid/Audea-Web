@@ -220,6 +220,7 @@ export default function LoginClient() {
             <a
               href="https://audeaid.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f"
               className="text-primaryDark hover:text-errorDark"
+              target="_blank"
             >
               Terms of Service
             </a>{' '}
@@ -227,6 +228,7 @@ export default function LoginClient() {
             <a
               href="https://audeaid.notion.site/Privacy-Policy-f865747ed0e142fa92680408d91fe136"
               className="text-primaryDark hover:text-errorDark"
+              target="_blank"
             >
               Privacy Policy
             </a>
