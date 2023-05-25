@@ -217,12 +217,15 @@ export default function LoginClient() {
             By clicking &quot;Continue with Apple / Google / Microsoft /
             Email&quot; above, you acknowledge that you have read and
             understood, and agree to Audea&apos;s{' '}
-            <a href="/terms" className="text-primaryDark hover:text-errorDark">
+            <a
+              href="https://audeaid.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f"
+              className="text-primaryDark hover:text-errorDark"
+            >
               Terms of Service
             </a>{' '}
             and{' '}
             <a
-              href="/privacy"
+              href="https://audeaid.notion.site/Privacy-Policy-f865747ed0e142fa92680408d91fe136"
               className="text-primaryDark hover:text-errorDark"
             >
               Privacy Policy

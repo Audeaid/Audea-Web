@@ -20,7 +20,7 @@ export const Resources = () => {
         <RenderButtonComponent
           icon={faCircleQuestion}
           text="Help Center"
-          href="#"
+          href="https://audeaid.notion.site/Help-Center-de94a1a7e3374417881e921f350d4ea4"
           type="anchor"
         />
       </section>
