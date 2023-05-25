@@ -12,7 +12,7 @@ import BackButton from '../BackButton';
 
 export const ContentList = ({ content }: { content: IGetAllContent[] }) => {
   const router = useRouter();
-  const [listView, setListView] = useState(false);
+  const [listView, setListView] = useState(true);
 
   return (
     <motion.section

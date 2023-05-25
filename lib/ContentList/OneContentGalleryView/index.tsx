@@ -18,7 +18,7 @@ const OneContentGalleryView = ({
 }) => {
   return (
     <button
-      className="flex flex-col items-center justify-between cursor-pointer w-fit min-h-full max-h-[336px] sm:max-w-[300px] max-w-[200px] min-w-full overflow-hidden border border-white rounded-lg"
+      className="flex flex-col items-center justify-between cursor-pointer w-fit min-h-fit max-h-[336px] sm:max-w-[300px] max-w-[200px] min-w-full overflow-hidden border border-white rounded-lg"
       onClick={() => {
         router.push(`/app/saved/${contentId}`);
       }}
