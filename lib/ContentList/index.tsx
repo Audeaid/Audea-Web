@@ -4,7 +4,6 @@ import { IGetAllContent } from '@/app/app/saved/graphql';
 import { faList, faTableCellsLarge } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OneContentListView from './OneContentListView';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import OneContentGalleryView from './OneContentGalleryView';
@@ -18,7 +17,7 @@ export const ContentList = ({
   incomingContent: IGetAllContent[];
   userId: string;
 }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const [listView, setListView] = useState(true);
   const [contentData, setContentData] = useState(incomingContent);
 
@@ -43,25 +42,26 @@ export const ContentList = ({
   useEffect(() => {
     if (data) {
       const { mutationType, content } = data.contentSubscription;
+
       if (mutationType === 'ADD') {
-        const newContent = [...contentData, content];
-        setContentData(newContent);
+        setContentData((prevContentData) => [content, ...prevContentData]);
       } else if (mutationType === 'EDIT') {
-        const newContent = [...contentData];
-        const index = newContent.findIndex((obj) => obj.id === content.id);
+        setContentData((prevContentData) => {
+          const newContent = [...prevContentData];
+          const index = newContent.findIndex((obj) => obj.id === content.id);
 
-        if (index !== -1) {
-          newContent[index] = content;
-        }
+          if (index !== -1) {
+            newContent[index] = content;
+          }
 
-        setContentData(newContent);
+          return newContent;
+        });
       } else if (mutationType === 'DELETE') {
-        const newContent = contentData.filter((obj) => obj.id !== content.id);
-        setContentData(newContent);
+        setContentData((prevContentData) =>
+          prevContentData.filter((obj) => obj.id !== content.id)
+        );
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
@@ -106,29 +106,27 @@ export const ContentList = ({
 
       {listView ? (
         <section className="flex flex-col gap-4">
-          {contentData.map((value, index) => {
+          {contentData.map((value) => {
             return (
               <OneContentListView
-                key={index}
+                key={`${value.id}-list`}
                 contentId={value.id}
                 title={value.title}
                 date={value.createdAt}
-                router={router}
               />
             );
           })}
         </section>
       ) : (
         <section className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
-          {contentData.map((value, index) => {
+          {contentData.map((value) => {
             return (
               <OneContentGalleryView
                 contentId={value.id}
                 title={value.title}
                 gptGenerated={value.gptGenerated}
                 date={value.createdAt}
-                router={router}
-                key={index}
+                key={`${value.id}-gallery`}
               />
             );
           })}
