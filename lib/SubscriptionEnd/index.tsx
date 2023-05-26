@@ -3,7 +3,7 @@
 import { ICheckSubscription } from '@/app/notallowed/graphql';
 import cookieCutter from 'cookie-cutter';
 import { useRouter } from 'next/navigation';
-import { deleteAccount, getAllContent } from './graphql';
+import { deleteAccount, extendTrial, getAllContent } from './graphql';
 import { useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { convertArrayToCSV } from './helper';
@@ -56,7 +56,13 @@ const SubscriptionEnd = ({
 
         {subscriptionType === 'TRIAL' && !extended && (
           <section className="flex flex-col gap-2">
-            <button className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium">
+            <button
+              className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium"
+              onClick={async () => {
+                await extendTrial(token);
+                router.push('/app');
+              }}
+            >
               Restart your trial
             </button>
 
