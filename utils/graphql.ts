@@ -22,7 +22,7 @@ const wsLink = () => {
     createClient({
       url:
         process.env.NODE_ENV === 'production'
-          ? 'wss://api.kudoku.id/graphql'
+          ? 'wss://audea-server.herokuapp.com/graphql'
           : 'ws://localhost:8080/graphql',
       webSocketImpl: WebSocket,
     })
