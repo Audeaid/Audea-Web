@@ -2,7 +2,7 @@
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { MouseEventHandler } from 'react';
+import { HTMLAttributeAnchorTarget, MouseEventHandler } from 'react';
 
 const RenderButtonComponent = ({
   type,
@@ -11,6 +11,7 @@ const RenderButtonComponent = ({
   href,
   handleClick,
   xtraClassName,
+  target,
 }: {
   type: 'button' | 'anchor';
   icon: IconProp;
@@ -18,10 +19,11 @@ const RenderButtonComponent = ({
   href?: string;
   handleClick?: MouseEventHandler<HTMLButtonElement>;
   xtraClassName?: string;
+  target?: HTMLAttributeAnchorTarget;
 }) => {
   if (type === 'anchor') {
     return (
-      <a href={href}>
+      <a href={href} target={target}>
         <button
           className={`text-base flex items-center gap-2 ${xtraClassName}`}
           type="button"

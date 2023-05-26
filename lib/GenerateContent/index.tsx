@@ -9,6 +9,9 @@ import {
 import LoadingContent from '@/components/LoadingContent';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import AddLottieAnimation from '@/components/AddLottieAnimation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
 
 export const GenerateContent = ({
   token,
@@ -141,16 +144,32 @@ export const GenerateContent = ({
       {isUploading ? (
         <LoadingContent condition={condition} />
       ) : (
-        <section className="flex flex-col gap-4">
-          <p>It seems like there is an error generating your content.</p>
-          <p>Please click the button below to generate content.</p>
-          <button
-            onClick={handleClick}
-            className="px-4 py-1 rounded-md shadow-xl text-lg bg-primaryDark text-onPrimaryDark w-fit"
-            type="button"
-          >
-            Generate content
-          </button>
+        <section className="flex flex-col gap-4 w-fit mx-auto items-center justify-center">
+          <div className="max-w-[500px]">
+            <AddLottieAnimation
+              path={'/lottie/46864-lovely-cats.json'}
+              loop={true}
+            />
+          </div>
+          <section className="mt-[-6rem] flex flex-col gap-8 items-center justify-center">
+            <section className="flex flex-col gap-2">
+              <p className="font-bold text-xl max-w-[600px] text-center text-primaryDark">
+                Sorry, it seems like there is an error while generating your
+                transcript and or content.
+              </p>
+              <p className="text-center font-light">
+                Please click the button below to retry.
+              </p>
+            </section>
+            <button
+              onClick={handleClick}
+              className="px-4 py-1 rounded-md shadow-xl text-lg bg-primaryDark text-onPrimaryDark w-fit flex items-center justify-center gap-2"
+              type="button"
+            >
+              <FontAwesomeIcon icon={faArrowRotateRight} />
+              Retry generating content
+            </button>
+          </section>
         </section>
       )}
     </>

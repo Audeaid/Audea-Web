@@ -69,6 +69,26 @@ const NewContent = ({
                   setCondition('Creating new database...');
                   const content = await createNewContent(token);
 
+                  // Get typeOfPrompt
+                  setCondition('Getting prompt from our database...');
+                  const typeOfPromptId = '646a2fc687e737835670b7b3'; // Our first typeOfPrompt
+                  const typeOfPrompt = await getTypeOfPrompt(
+                    token,
+                    typeOfPromptId
+                  );
+                  if (typeOfPrompt === null)
+                    throw new Error('typeOfPrompt is null');
+
+                  await updateContent({
+                    token,
+                    contentId: content.id,
+                    title: null,
+                    voiceNoteUrl: null,
+                    transcript: null,
+                    gptGenerated: null,
+                    typeOfPromptId: typeOfPromptId,
+                  });
+
                   // Upload the voice note to s3 using contentId
                   setCondition('Uploading the audio file...');
                   const uploadedVoiceNote = await uploadVoiceNoteToS3(
@@ -97,26 +117,6 @@ const NewContent = ({
                     transcript: transcript.text,
                     gptGenerated: null,
                     typeOfPromptId: null,
-                  });
-
-                  // Get typeOfPrompt
-                  setCondition('Getting prompt from our database...');
-                  const typeOfPromptId = '646a2fc687e737835670b7b3'; // Our first typeOfPrompt
-                  const typeOfPrompt = await getTypeOfPrompt(
-                    token,
-                    typeOfPromptId
-                  );
-                  if (typeOfPrompt === null)
-                    throw new Error('typeOfPrompt is null');
-
-                  await updateContent({
-                    token,
-                    contentId: content.id,
-                    title: null,
-                    voiceNoteUrl: null,
-                    transcript: null,
-                    gptGenerated: null,
-                    typeOfPromptId: typeOfPromptId,
                   });
 
                   // Get chatGPT response

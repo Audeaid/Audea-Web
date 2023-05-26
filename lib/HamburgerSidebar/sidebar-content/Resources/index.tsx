@@ -22,6 +22,7 @@ export const Resources = () => {
           text="Help Center"
           href="https://audeaid.notion.site/Help-Center-de94a1a7e3374417881e921f350d4ea4"
           type="anchor"
+          target="_blank"
         />
       </section>
     </section>
