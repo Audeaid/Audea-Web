@@ -7,6 +7,7 @@ import { deleteAccount, getAllContent } from './graphql';
 import { useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { convertArrayToCSV } from './helper';
+import { motion } from 'framer-motion';
 
 const SubscriptionEnd = ({
   email,
@@ -27,7 +28,11 @@ const SubscriptionEnd = ({
 
   return (
     <main className="min-h-screen min-w-screen">
-      <section className="w-full h-full mx-auto py-20 max-w-[600px] flex flex-col gap-20 sm:px-0 px-4">
+      <motion.section
+        className="w-full h-full mx-auto py-20 max-w-[600px] flex flex-col gap-20 sm:px-0 px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
         <section className="flex flex-col gap-8">
           <section className="flex flex-col gap-2">
             <h1 className="font-bold text-4xl">
@@ -95,7 +100,7 @@ const SubscriptionEnd = ({
             </p>
           </section>
 
-          <section className="flex sm:flex-row flex-col sm:items-center sm:justify-start justify-center gap-1">
+          <section className="flex sm:flex-row flex-col sm:items-center sm:justify-start justify-center items-start gap-1">
             <p>Not upgrading?</p>
             {(() => {
               if (loading) {
@@ -143,7 +148,7 @@ const SubscriptionEnd = ({
             })()}
           </section>
         </section>
-      </section>
+      </motion.section>
     </main>
   );
 };
