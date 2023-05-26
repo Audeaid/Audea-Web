@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import client from '$utils/graphql';
+import client from '$utils/middlewareGraphql';
 import { gql } from '@apollo/client';
 
 export async function middleware(request: NextRequest) {
