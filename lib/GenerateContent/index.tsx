@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import AddLottieAnimation from '@/components/AddLottieAnimation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
 
 export const GenerateContent = ({
   token,
@@ -144,14 +145,18 @@ export const GenerateContent = ({
       {isUploading ? (
         <LoadingContent condition={condition} />
       ) : (
-        <section className="flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none">
-          <div className="max-w-[500px]">
+        <motion.section
+          className="flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <div className="max-w-[500px] w-fit">
             <AddLottieAnimation
               path={'/lottie/46864-lovely-cats.json'}
               loop={true}
             />
           </div>
-          <section className="mt-[-6rem] flex flex-col gap-8 items-center justify-center">
+          <section className="mt-[-5rem] flex flex-col gap-8 items-center justify-center">
             <section className="flex flex-col gap-2">
               <p className="font-bold text-xl max-w-[600px] text-center text-primaryDark">
                 Sorry, it seems like there is an error while generating your
@@ -170,7 +175,7 @@ export const GenerateContent = ({
               Retry generating content
             </button>
           </section>
-        </section>
+        </motion.section>
       )}
     </>
   );
