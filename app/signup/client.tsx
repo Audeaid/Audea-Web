@@ -15,7 +15,12 @@ import {
 } from './progress';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { getEmailOtp, searchUserByEmail, verifyEmailOtp } from './helper';
+import {
+  getDeletedUser,
+  getEmailOtp,
+  searchUserByEmail,
+  verifyEmailOtp,
+} from './helper';
 import { capitalizeEveryWord } from '@/helper';
 
 const copyWriting = [
@@ -167,11 +172,22 @@ export default function SignupClient() {
                           email: emailForm.toString(),
                         });
 
+                        const isAccountDeletedResponse = await getDeletedUser({
+                          email: emailForm.toString(),
+                        });
+
                         const isEmailExist = isEmailExistResponse !== null;
+                        const isAccountDeleted =
+                          isAccountDeletedResponse !== null;
 
                         if (isEmailExist) {
                           setErrorMsg(
                             'Email is already registered, please login!'
+                          );
+                          setLoading(false);
+                        } else if (isAccountDeleted) {
+                          setErrorMsg(
+                            'Email is already been associated to a deleted account!'
                           );
                           setLoading(false);
                         } else {
