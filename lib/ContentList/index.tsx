@@ -6,13 +6,63 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OneContentListView from './OneContentListView';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OneContentGalleryView from './OneContentGalleryView';
 import BackButton from '../BackButton';
+import { gql, useSubscription } from '@apollo/client';
 
-export const ContentList = ({ content }: { content: IGetAllContent[] }) => {
+export const ContentList = ({
+  incomingContent,
+  userId,
+}: {
+  incomingContent: IGetAllContent[];
+  userId: string;
+}) => {
   const router = useRouter();
   const [listView, setListView] = useState(true);
+  const [contentData, setContentData] = useState(incomingContent);
+
+  const contentLive = gql`
+    subscription ContentSubscription($userId: String!) {
+      contentSubscription(userId: $userId) {
+        content {
+          id
+          createdAt
+          title
+          gptGenerated
+        }
+        mutationType
+      }
+    }
+  `;
+
+  const { data } = useSubscription(contentLive, {
+    variables: { userId },
+  });
+
+  useEffect(() => {
+    if (data) {
+      const { mutationType, content } = data.contentSubscription;
+      if (mutationType === 'ADD') {
+        const newContent = [...contentData, content];
+        setContentData(newContent);
+      } else if (mutationType === 'EDIT') {
+        const newContent = [...contentData];
+        const index = newContent.findIndex((obj) => obj.id === content.id);
+
+        if (index !== -1) {
+          newContent[index] = content;
+        }
+
+        setContentData(newContent);
+      } else if (mutationType === 'DELETE') {
+        const newContent = contentData.filter((obj) => obj.id !== content.id);
+        setContentData(newContent);
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <motion.section
@@ -56,7 +106,7 @@ export const ContentList = ({ content }: { content: IGetAllContent[] }) => {
 
       {listView ? (
         <section className="flex flex-col gap-4">
-          {content.map((value, index) => {
+          {contentData.map((value, index) => {
             return (
               <OneContentListView
                 key={index}
@@ -70,7 +120,7 @@ export const ContentList = ({ content }: { content: IGetAllContent[] }) => {
         </section>
       ) : (
         <section className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
-          {content.map((value, index) => {
+          {contentData.map((value, index) => {
             return (
               <OneContentGalleryView
                 contentId={value.id}

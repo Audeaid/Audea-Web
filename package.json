@@ -40,6 +40,7 @@
     "graphql-ws": "^5.13.1",
     "install": "^0.13.0",
     "isomorphic-ws": "^5.0.0",
+    "jsonwebtoken": "^9.0.0",
     "lottie-web": "^5.11.0",
     "moment": "^2.29.4",
     "next": "13.4.2",
@@ -56,6 +57,7 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.2"
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.2"
   }
 }

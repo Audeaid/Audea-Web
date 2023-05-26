@@ -2,6 +2,11 @@ import { cookies } from 'next/headers';
 import { getAllContent } from './graphql';
 import { redirect } from 'next/navigation';
 import { ContentList } from '$lib/ContentList';
+import * as jwt from 'jsonwebtoken';
+
+export interface AuthTokenPayload {
+  userId: string;
+}
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -13,8 +18,13 @@ export default async function Page() {
 
   const content = await getAllContent(token);
 
+  const { userId } = jwt.verify(
+    token,
+    process.env.APP_SECRET as string
+  ) as unknown as AuthTokenPayload;
+
   if (content !== null) {
-    return <ContentList content={content} />;
+    return <ContentList incomingContent={content} userId={userId} />;
   } else {
     redirect('/');
   }
