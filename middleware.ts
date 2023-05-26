@@ -4,23 +4,27 @@ import client from '$utils/graphql';
 import { gql } from '@apollo/client';
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('audea_token')?.value;
-  const signInProvider = request.cookies.get('audea_signInProvider')?.value;
+  try {
+    const token = request.cookies.get('audea_token')?.value;
+    const signInProvider = request.cookies.get('audea_signInProvider')?.value;
 
-  const loginUrl = new URL('/login', request.url);
+    const loginUrl = new URL('/login', request.url);
 
-  if (!token || !signInProvider) {
-    return NextResponse.redirect(loginUrl);
-  } else {
-    const subscription = await checkSubscription(token);
-    const endDate = subscription.endDate;
-    const notSubscribed = new Date() >= new Date(endDate);
+    if (!token || !signInProvider) {
+      return NextResponse.redirect(loginUrl);
+    } else {
+      const subscription = await checkSubscription(token);
+      const endDate = subscription.endDate;
+      const notSubscribed = new Date() >= new Date(endDate);
 
-    const notAllowedUrl = new URL('/notallowed', request.url);
+      const notAllowedUrl = new URL('/notallowed', request.url);
 
-    if (notSubscribed) {
-      return NextResponse.redirect(notAllowedUrl);
+      if (notSubscribed) {
+        return NextResponse.redirect(notAllowedUrl);
+      }
     }
+  } catch (error) {
+    console.error(error);
   }
 }
 
