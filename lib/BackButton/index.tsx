@@ -7,12 +7,15 @@ import { motion } from 'framer-motion';
 const BackButton = ({ href }: { href: string }) => {
   return (
     <motion.section
-      className="w-full h-fit flex items-center justify-start max-w-[1300px] mx-auto py-4"
+      className="w-full h-fit flex items-center justify-start max-w-[1300px] mx-auto py-4 select-none"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
       <a href={href}>
-        <button className="flex items-center gap-2 font-bold text-lg bg-white text-onPrimaryContainer shadow-xl px-4 py-1 rounded-lg">
+        <button
+          className="flex items-center gap-2 font-bold text-lg bg-white text-onPrimaryContainer shadow-xl px-4 py-1 rounded-lg"
+          tabIndex={-1}
+        >
           <FontAwesomeIcon icon={faArrowLeft} />
           Back
         </button>

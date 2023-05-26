@@ -144,7 +144,7 @@ export const GenerateContent = ({
       {isUploading ? (
         <LoadingContent condition={condition} />
       ) : (
-        <section className="flex flex-col gap-4 w-fit mx-auto items-center justify-center">
+        <section className="flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none">
           <div className="max-w-[500px]">
             <AddLottieAnimation
               path={'/lottie/46864-lovely-cats.json'}
