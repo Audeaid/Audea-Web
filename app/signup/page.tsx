@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import SignupClient from './client';
+import Client from './lib';
 
 export default function Page() {
   const cookieStore = cookies();
@@ -10,6 +10,6 @@ export default function Page() {
   if (token && signInProvider) {
     redirect('/app');
   } else {
-    return <SignupClient />;
+    return <Client />;
   }
 }

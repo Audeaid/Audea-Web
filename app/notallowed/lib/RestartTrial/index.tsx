@@ -1,0 +1,34 @@
+'use client';
+
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { extendTrial } from './script';
+
+const RestartTrial = ({
+  router,
+  token,
+}: {
+  router: AppRouterInstance;
+  token: string;
+}) => {
+  return (
+    <section className="flex flex-col gap-2">
+      <button
+        className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium"
+        onClick={async () => {
+          await extendTrial(token);
+          router.push('/app');
+        }}
+      >
+        Restart your trial
+      </button>
+
+      <p className="font-light text-base text-gray-400 text-center">
+        <span className="font-bold">One time offer</span>: Since you didn&apos;t
+        end up using Audea much during your initial trial, you can restart your
+        trial and get a fresh 7 days.
+      </p>
+    </section>
+  );
+};
+
+export default RestartTrial;

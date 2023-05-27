@@ -3,6 +3,7 @@ import { getOneContent } from './graphql';
 import { BulletPointsWithSummary } from '$lib/BulletPointsWithSummary';
 import { GenerateContent } from '$lib/GenerateContent';
 import BackButton from '$lib/BackButton';
+import ErrorShouldDelete from '@/lib/ErrorShouldDelete';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -20,10 +21,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     <section className="max-w-[1300px] pb-20 mt-10 sm:px-10 px-4 w-full mx-auto">
       <BackButton href="/app/saved" />
       {(() => {
-        if (
-          (content.transcript === null || content.gptGenerated === null) &&
-          content.voiceNoteUrl !== null &&
-          content.typeOfPromptId !== null
+        if (content.typeOfPromptId === null || content.voiceNoteUrl === null) {
+          return <ErrorShouldDelete token={token} contentId={id} />;
+        } else if (
+          content.transcript === null ||
+          content.gptGenerated === null
         ) {
           return (
             <GenerateContent
@@ -36,22 +38,18 @@ export default async function Page({ params }: { params: { id: string } }) {
             />
           );
         } else {
-          if (content.gptGenerated === null) {
-            return <></>;
-          } else {
-            const parseContent: any[] = JSON.parse(content.gptGenerated);
+          const parseContent: any[] = JSON.parse(content.gptGenerated);
 
-            if (content.typeOfPromptId === '646a2fc687e737835670b7b3') {
-              return (
-                <BulletPointsWithSummary
-                  content={parseContent}
-                  title={content.title ?? 'No title'}
-                  createdAt={content.createdAt}
-                />
-              );
-            } else {
-              return <></>;
-            }
+          if (content.typeOfPromptId === '646a2fc687e737835670b7b3') {
+            return (
+              <BulletPointsWithSummary
+                content={parseContent}
+                title={content.title ?? 'No title'}
+                createdAt={content.createdAt}
+              />
+            );
+          } else {
+            return <></>;
           }
         }
       })()}

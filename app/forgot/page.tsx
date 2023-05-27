@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import ForgotClient from './client';
+import Client from './lib';
 
 export default function Page({
   searchParams,
@@ -17,7 +17,7 @@ export default function Page({
     if (token && signInProvider) {
       redirect('/app');
     } else {
-      return <ForgotClient token={forgotToken} />;
+      return <Client token={forgotToken} />;
     }
   } else {
     redirect('/');

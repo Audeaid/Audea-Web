@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { checkSubscription } from './graphql';
 import { redirect } from 'next/navigation';
-import SubscriptionEnd from '@/lib/SubscriptionEnd';
+import Client from './lib';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -17,11 +17,11 @@ export default async function Page() {
 
   if (subscriptionEnd) {
     return (
-      <SubscriptionEnd
-        email={user.email}
+      <Client
         subscriptionType={type}
-        extended={extended}
+        hasExtendedTrial={extended}
         token={token}
+        email={user.email}
       />
     );
   } else {
