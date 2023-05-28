@@ -1,4 +1,4 @@
-import HamburgerSidebar from '$lib/HamburgerSidebar';
+import HamburgerSidebar from '@/lib/HamburgerSidebar';
 import { cookies } from 'next/headers';
 
 export default function Layout({ children }: { children: React.ReactNode }) {

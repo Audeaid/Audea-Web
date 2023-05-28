@@ -3,7 +3,7 @@
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import moment from 'moment';
-import RenderButtonComponent from '../../../RenderButtonComponent';
+import RenderButtonComponent from '../../RenderButtonComponent';
 
 export const RenderSubscription = ({
   endDate,

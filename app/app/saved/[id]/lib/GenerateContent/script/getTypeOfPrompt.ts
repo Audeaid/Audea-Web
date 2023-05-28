@@ -1,18 +1,19 @@
 import client from '$utils/graphql';
 import { gql } from '@apollo/client';
 
-export interface IGetAllContent {
-  __typename: 'Content';
-  id: string;
+export interface IGetTypeOfPrompt {
+  __typename: 'TypeOfPrompt';
+  systemPrompt: string;
 }
 
-export const getAllContent = (
-  token: string
-): Promise<IGetAllContent[] | null> => {
+export const getTypeOfPrompt = (
+  token: string,
+  typeOfPromptId: string
+): Promise<IGetTypeOfPrompt | null> => {
   const query = gql`
-    query GetAllContent {
-      getAllContent {
-        id
+    query GetTypeOfPromptFromId($typeOfPromptId: String!) {
+      getTypeOfPromptFromId(typeOfPromptId: $typeOfPromptId) {
+        systemPrompt
       }
     }
   `;
@@ -21,9 +22,12 @@ export const getAllContent = (
     (async () => {
       try {
         const {
-          data: { getAllContent },
+          data: { getTypeOfPromptFromId },
         } = await client.query({
           query,
+          variables: {
+            typeOfPromptId,
+          },
           context: {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +36,7 @@ export const getAllContent = (
           fetchPolicy: 'network-only',
         });
 
-        resolve(getAllContent);
+        resolve(getTypeOfPromptFromId);
       } catch (e) {
         reject(e);
       }

@@ -6,9 +6,9 @@ import {
   faRecycle,
 } from '@fortawesome/free-solid-svg-icons';
 import { RenderSubscription } from './components/RenderSubscription';
-import RenderButtonComponent from '../../RenderButtonComponent';
+import RenderButtonComponent from '../RenderButtonComponent';
 
-export const Workspace = ({
+const Workspace = ({
   endDate,
   startDate,
   subscriptionType,
@@ -58,3 +58,5 @@ export const Workspace = ({
     </section>
   );
 };
+
+export default Workspace;

@@ -7,7 +7,7 @@ import {
   RecordingButton,
   RecordingInProgress,
   RenderFileUploader,
-} from './atomic';
+} from './components';
 
 interface IUploadAndRecord {
   onFileUpload: (_file: File) => void;

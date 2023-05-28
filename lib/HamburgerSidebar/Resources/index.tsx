@@ -1,9 +1,9 @@
 'use client';
 
 import { faCircleQuestion, faVideo } from '@fortawesome/free-solid-svg-icons';
-import RenderButtonComponent from '../../RenderButtonComponent';
+import RenderButtonComponent from '../RenderButtonComponent';
 
-export const Resources = () => {
+const Resources = () => {
   return (
     <section className="flex flex-col gap-2">
       <h6 className="flex gap-2 items-center text-gray-600 text-xs font-medium">
@@ -28,3 +28,5 @@ export const Resources = () => {
     </section>
   );
 };
+
+export default Resources;

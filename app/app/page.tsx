@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { getAllContent } from './graphql';
-import NewContent from '@/lib/NewContent';
+import Client from './lib';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -14,5 +14,5 @@ export default async function Page() {
   let hasContent: boolean = false;
   if (content !== null) hasContent = true;
 
-  return <NewContent token={token} hasContent={hasContent} />;
+  return <Client token={token} hasContent={hasContent} />;
 }

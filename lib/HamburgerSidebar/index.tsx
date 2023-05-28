@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { AudeaImage, Workspace, Resources, Accounts } from './sidebar-content';
 import { useRouter } from 'next/navigation';
-import { getUserInfo, getUserSubscription } from './api';
+import { getUserInfo, getUserSubscription } from './script';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import AudeaImage from './AudeaImage';
+import Workspace from './Workspace';
+import Resources from './Resources';
+import Accounts from './Accounts';
 
 const HamburgerSidebar = ({ token }: { token: string }) => {
   const router = useRouter();

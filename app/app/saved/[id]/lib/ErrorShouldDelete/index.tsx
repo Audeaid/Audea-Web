@@ -4,18 +4,18 @@ import AddLottieAnimation from '@/components/AddLottieAnimation';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
-import { deleteContent } from './graphql';
-import { useRouter } from 'next/navigation';
+import { deleteContent } from './script';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
 const ErrorShouldDelete = ({
   token,
   contentId,
+  router,
 }: {
   token: string;
   contentId: string;
+  router: AppRouterInstance;
 }) => {
-  const router = useRouter();
-
   return (
     <motion.section
       className="flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none"

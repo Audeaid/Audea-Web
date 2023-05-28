@@ -1,11 +1,11 @@
 'use client';
 
 import { faDoorClosed, faUser } from '@fortawesome/free-solid-svg-icons';
-import RenderButtonComponent from '../../RenderButtonComponent';
+import RenderButtonComponent from '../RenderButtonComponent';
 import cookieCutter from 'cookie-cutter';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
-export const Accounts = ({
+const Accounts = ({
   email,
   router,
 }: {
@@ -45,3 +45,5 @@ export const Accounts = ({
     </section>
   );
 };
+
+export default Accounts;

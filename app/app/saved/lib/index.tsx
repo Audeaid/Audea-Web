@@ -7,16 +7,16 @@ import OneContentListView from './OneContentListView';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import OneContentGalleryView from './OneContentGalleryView';
-import BackButton from '../BackButton';
 import { gql, useSubscription } from '@apollo/client';
+import BackButton from '@/lib/BackButton';
 
-export const ContentList = ({
+export default function Client({
   incomingContent,
   userId,
 }: {
   incomingContent: IGetAllContent[];
   userId: string;
-}) => {
+}) {
   // const router = useRouter();
   const [listView, setListView] = useState(true);
   const [contentData, setContentData] = useState(incomingContent);
@@ -134,4 +134,4 @@ export const ContentList = ({
       )}
     </motion.section>
   );
-};
+}

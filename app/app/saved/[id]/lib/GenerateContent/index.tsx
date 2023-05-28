@@ -1,11 +1,11 @@
 'use client';
 
-import { getTranscriptViaWhisperFromUrl } from './api';
 import {
+  getTranscriptViaWhisperFromUrl,
   getTypeOfPrompt,
   publicGetGptResponse,
   updateContent,
-} from '../NewContent/apis';
+} from './script';
 import LoadingContent from '@/components/LoadingContent';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 
-export const GenerateContent = ({
+const GenerateContent = ({
   token,
   contentId,
   voiceNoteUrl,
@@ -180,3 +180,5 @@ export const GenerateContent = ({
     </>
   );
 };
+
+export default GenerateContent;

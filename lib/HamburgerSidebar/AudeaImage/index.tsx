@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import LogoPrimary from '$public/logo/primary.svg';
 
-export const AudeaImage = () => {
+const AudeaImage = () => {
   return (
     <a href="/app" className="w-fit h-fit">
       <Image
@@ -16,3 +16,5 @@ export const AudeaImage = () => {
     </a>
   );
 };
+
+export default AudeaImage;
