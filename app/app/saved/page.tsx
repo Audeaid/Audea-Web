@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers';
 import { getAllContent } from './graphql';
-import { redirect } from 'next/navigation';
 import * as jwt from 'jsonwebtoken';
 import Client from './lib';
 
@@ -23,9 +22,5 @@ export default async function Page() {
     process.env.APP_SECRET as string
   ) as unknown as AuthTokenPayload;
 
-  if (content !== null) {
-    return <Client incomingContent={content} userId={userId} />;
-  } else {
-    redirect('/');
-  }
+  return <Client incomingContent={content} userId={userId} />;
 }

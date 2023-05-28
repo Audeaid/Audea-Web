@@ -13,6 +13,7 @@ const LoadingContent: React.FC<ILoadingContent> = ({ condition }) => {
         />
       </div>
       <p className="font-bold sm:text-2xl text-lg text-center">{condition}</p>
+      <p className="text-sm text-center">Please do not close this window!</p>
     </section>
   );
 };

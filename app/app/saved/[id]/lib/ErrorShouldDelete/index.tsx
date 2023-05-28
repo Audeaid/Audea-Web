@@ -25,7 +25,7 @@ const ErrorShouldDelete = ({
       <div className="max-w-[500px] w-fit">
         <AddLottieAnimation path={'/lottie/53034-lost.json'} loop={true} />
       </div>
-      <section className="mt-[-5rem] flex flex-col gap-8 items-center justify-center">
+      <section className="mt-[-5rem] flex flex-col gap-12 items-center justify-center">
         <section className="flex flex-col gap-2 max-w-[600px]">
           <p className="font-bold text-xl text-center text-primaryDark">
             Sorry, it seems like there is a uncoverable error on our end that
@@ -35,7 +35,7 @@ const ErrorShouldDelete = ({
             It is very rare that we have an error like this and we are deeply
             sorry that this error happen to you.
           </p>
-          <p className="text-center font-light text-sm">
+          <p className="text-left font-light text-xs">
             <span className="font-medium">Side note</span>: Please make sure
             that when we are processing your audio file, do not close the
             browser at any time, since it will interrupt the process.
