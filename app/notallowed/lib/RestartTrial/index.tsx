@@ -17,7 +17,7 @@ const RestartTrial = ({
   return (
     <section className="flex flex-col gap-2">
       <button
-        className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium flex items-center gap-4"
+        className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium flex items-center justify-center gap-4"
         onClick={async () => {
           setLoading(true);
 
