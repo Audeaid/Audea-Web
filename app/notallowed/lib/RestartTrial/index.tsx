@@ -2,6 +2,8 @@
 
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { extendTrial } from './script';
+import { useState } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const RestartTrial = ({
   router,
@@ -10,15 +12,23 @@ const RestartTrial = ({
   router: AppRouterInstance;
   token: string;
 }) => {
+  const [loading, setLoading] = useState(false);
+
   return (
     <section className="flex flex-col gap-2">
       <button
-        className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium"
+        className="w-full h-fit py-3 rounded-md shadow-xl bg-blue-500 text-blue-50 text-xl font-medium flex items-center gap-4"
         onClick={async () => {
+          setLoading(true);
+
           await extendTrial(token);
+
           router.push('/app');
+
+          setLoading(false);
         }}
       >
+        {loading && <LoadingSpinner size={4} />}
         Restart your trial
       </button>
 

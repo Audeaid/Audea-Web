@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { deleteContent } from './script';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { useState } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const ErrorShouldDelete = ({
   token,
@@ -16,6 +18,8 @@ const ErrorShouldDelete = ({
   contentId: string;
   router: AppRouterInstance;
 }) => {
+  const [loading, setLoading] = useState(false);
+
   return (
     <motion.section
       className="flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none"
@@ -43,13 +47,22 @@ const ErrorShouldDelete = ({
         </section>
         <button
           onClick={async () => {
+            setLoading(true);
+
             await deleteContent(token, contentId);
+
             router.push('/app/saved');
+
+            setLoading(false);
           }}
           className="px-4 py-1 rounded-md shadow-xl text-lg bg-errorDark text-onErrorDark w-fit flex items-center justify-center gap-4 text-left"
           type="button"
         >
-          <FontAwesomeIcon icon={faArrowLeft} />
+          {loading ? (
+            <LoadingSpinner size={4} />
+          ) : (
+            <FontAwesomeIcon icon={faArrowLeft} />
+          )}
           Delete this content and go back
         </button>
       </section>

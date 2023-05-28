@@ -19,7 +19,7 @@ const EmptyContent = ({ router }: { router: AppRouterInstance }) => {
           loop={true}
         />
       </div>
-      <section className="mt-[-5rem] flex flex-col gap-12 items-center justify-center">
+      <section className="flex flex-col gap-12 items-center justify-center">
         <p className="font-bold text-xl text-center text-primaryDark max-w-[600px]">
           There is no content.
         </p>
