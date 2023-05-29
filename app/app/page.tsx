@@ -1,5 +1,10 @@
 import { cookies } from 'next/headers';
-import { getAllContent } from './graphql';
+import {
+  IGetContentSettings,
+  createNewContentSettings,
+  getAllContent,
+  getContentSettings,
+} from './graphql';
 import Client from './lib';
 
 export default async function Page() {
@@ -14,5 +19,23 @@ export default async function Page() {
   let hasContent: boolean = false;
   if (content !== null) hasContent = true;
 
-  return <Client token={token} hasContent={hasContent} />;
+  const response = await getContentSettings(token);
+
+  let contentSettings: IGetContentSettings;
+
+  if (!response) {
+    contentSettings = await createNewContentSettings(token);
+  } else {
+    contentSettings = response;
+  }
+
+  console.table(contentSettings);
+
+  return (
+    <Client
+      token={token}
+      hasContent={hasContent}
+      contentSettings={contentSettings}
+    />
+  );
 }

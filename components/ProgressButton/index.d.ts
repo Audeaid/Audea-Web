@@ -1,8 +1,10 @@
-export interface IProgressButton
-  extends React.ComponentPropsWithoutRef<'button'> {
+import { HTMLMotionProps } from 'framer-motion';
+
+export interface IProgressButton extends HTMLMotionProps<'button'> {
   disabled: boolean;
   from: IPercentage;
   to: IPercentage;
+  children?: React.ReactNode;
 }
 
 export type IPercentage =

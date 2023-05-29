@@ -10,6 +10,8 @@ export interface IGetOneContent {
   transcript: string | null;
   typeOfPromptId: string | null;
   voiceNoteUrl: string | null;
+  writingStyle: string | null;
+  outputLanguage: string | null;
 }
 
 export const getOneContent = (
@@ -19,13 +21,16 @@ export const getOneContent = (
   const query = gql`
     query GetOneContent($contentId: String!) {
       getOneContent(contentId: $contentId) {
+        createdAt
+        gptGenerated
         id
+        outputLanguage
         title
         transcript
         typeOfPromptId
+        userId
         voiceNoteUrl
-        gptGenerated
-        createdAt
+        writingStyle
       }
     }
   `;

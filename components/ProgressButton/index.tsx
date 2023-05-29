@@ -10,6 +10,7 @@ const ProgressButton: React.FC<IProgressButton> = ({
   from = '10%',
   to = '100%',
   children,
+  ...props
 }) => {
   return (
     <div className="w-full h-fit flex flex-col gap-10">
@@ -27,6 +28,7 @@ const ProgressButton: React.FC<IProgressButton> = ({
               ? 'bg-gray-600 dark:bg-gray-300 cursor-not-allowed'
               : 'bg-primary dark:bg-primaryDark cursor-pointer'
           } text-onPrimary dark:text-onPrimaryDark`}
+          {...props}
         >
           {children}
           <FontAwesomeIcon icon={faArrowRight} />

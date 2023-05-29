@@ -19,7 +19,12 @@ export default function Client({
   const router = useRouter();
 
   const renderContent = () => {
-    if (content.typeOfPromptId === null || content.voiceNoteUrl === null) {
+    if (
+      content.typeOfPromptId === null ||
+      content.voiceNoteUrl === null ||
+      content.outputLanguage === null ||
+      content.writingStyle === null
+    ) {
       return <ErrorShouldDelete token={token} contentId={id} router={router} />;
     } else if (content.transcript === null || content.gptGenerated === null) {
       return (
@@ -30,6 +35,8 @@ export default function Client({
           typeOfPromptId={content.typeOfPromptId}
           transcript={content.transcript}
           gptGenerated={content.gptGenerated}
+          writingStyle={content.writingStyle}
+          outputLanguage={content.outputLanguage}
         />
       );
     } else {
@@ -41,6 +48,7 @@ export default function Client({
             content={parseContent}
             title={content.title ?? 'No title'}
             createdAt={content.createdAt}
+            dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
           />
         );
       } else {

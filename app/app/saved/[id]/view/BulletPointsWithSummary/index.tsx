@@ -6,10 +6,12 @@ export const BulletPointsWithSummary = ({
   content,
   title,
   createdAt,
+  dir,
 }: {
   content: any[];
   title: string;
   createdAt: string;
+  dir: 'rtl' | 'ltr';
 }) => {
   let summary: any[] = [];
 
@@ -54,7 +56,7 @@ export const BulletPointsWithSummary = ({
     }
   }
   return (
-    <section className="flex flex-col gap-14">
+    <section className="flex flex-col gap-14" dir={dir}>
       <header className="flex flex-col gap-2">
         <h1 className="sm:text-4xl text-3xl font-bold text-primaryDark">
           {title}

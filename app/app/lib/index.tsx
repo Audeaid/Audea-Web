@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import LoadingContent from '$components/LoadingContent';
-import UploadAndRecord from './UploadAndRecord';
+import UploadAndRecordNew from './UploadAndRecordNew';
 import {
   createNewContent,
   getTypeOfPrompt,
@@ -14,17 +14,27 @@ import {
   updateContent,
   uploadVoiceNoteToS3,
 } from './script';
+import { IGetContentSettings } from '../graphql';
 
 export default function Client({
   hasContent,
   token,
+  contentSettings,
 }: {
   hasContent: boolean;
   token: string;
+  contentSettings: IGetContentSettings;
 }) {
   const router = useRouter();
   const [condition, setCondition] = useState('inactive');
   const [isUploading, setIsUploading] = useState(false);
+
+  // eslint-disable-next-line no-unused-vars
+  const [userContentSettings, _setUserContentSettings] =
+    useState(contentSettings);
+
+  // eslint-disable-next-line no-unused-vars
+  const [bearerToken, _setBearerToken] = useState(token);
 
   return (
     <motion.section
@@ -60,10 +70,25 @@ export default function Client({
 
         <section>
           {isUploading === false ? (
-            <UploadAndRecord
-              onFileUpload={(file) => {
+            <UploadAndRecordNew
+              onFileUpload={(
+                file,
+                outputLanguage,
+                writingStyle,
+                typeOfPromptId
+              ) => {
                 (async () => {
                   setIsUploading(true);
+
+                  if (
+                    outputLanguage === 'ASK' ||
+                    writingStyle === 'ASK' ||
+                    typeOfPromptId === '647391c118e8a4e1170d3ec9'
+                  ) {
+                    throw new Error(
+                      'Somewhere, there is an error because the data is invalid'
+                    );
+                  }
 
                   // First, create new content
                   setCondition('Creating new database...');
@@ -72,7 +97,6 @@ export default function Client({
                   try {
                     // Get typeOfPrompt
                     setCondition('Getting prompt from our database...');
-                    const typeOfPromptId = '646a2fc687e737835670b7b3'; // Our first typeOfPrompt
                     const typeOfPrompt = await getTypeOfPrompt(
                       token,
                       typeOfPromptId
@@ -88,6 +112,8 @@ export default function Client({
                       transcript: null,
                       gptGenerated: null,
                       typeOfPromptId: typeOfPromptId,
+                      writingStyle: writingStyle,
+                      outputLanguage: outputLanguage,
                     });
 
                     // Upload the voice note to s3 using contentId
@@ -105,6 +131,8 @@ export default function Client({
                       transcript: null,
                       gptGenerated: null,
                       typeOfPromptId: null,
+                      writingStyle: null,
+                      outputLanguage: null,
                     });
 
                     // Get the transcript from whisper
@@ -120,6 +148,8 @@ export default function Client({
                       transcript: transcript.text,
                       gptGenerated: null,
                       typeOfPromptId: null,
+                      writingStyle: null,
+                      outputLanguage: null,
                     });
 
                     // Get chatGPT response
@@ -127,8 +157,14 @@ export default function Client({
                     const systemPrompt = typeOfPrompt.systemPrompt;
                     const userPrompt = `Audio transcription:
                     ${transcript.text}
-  
-                    Outcome language: Original`;
+                    Output language: ${
+                      outputLanguage === 'TRANSCRIPT'
+                        ? 'Same as transcript'
+                        : outputLanguage
+                    }
+                    Writing style: ${writingStyle}`;
+
+                    console.log(userPrompt);
 
                     const gptResponse = await publicGetGptResponse(
                       systemPrompt,
@@ -157,6 +193,8 @@ export default function Client({
                       transcript: null,
                       gptGenerated: actualGptResponse,
                       typeOfPromptId: null,
+                      writingStyle: null,
+                      outputLanguage: null,
                     });
 
                     router.push(`/app/saved/${response.id}`);
@@ -167,13 +205,15 @@ export default function Client({
                   }
                 })();
               }}
+              contentSettings={userContentSettings}
+              token={bearerToken}
             />
           ) : (
             <LoadingContent condition={condition} />
           )}
         </section>
 
-        <Toaster position="bottom-right" />
+        <Toaster position="bottom-right" containerClassName="z-[999999]" />
       </section>
     </motion.section>
   );

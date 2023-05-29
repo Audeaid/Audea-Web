@@ -21,6 +21,8 @@ const GenerateContent = ({
   typeOfPromptId,
   transcript,
   gptGenerated,
+  writingStyle,
+  outputLanguage,
 }: {
   token: string;
   contentId: string;
@@ -28,6 +30,8 @@ const GenerateContent = ({
   typeOfPromptId: string;
   transcript: string | null;
   gptGenerated: string | null;
+  writingStyle: string;
+  outputLanguage: string;
 }) => {
   const router = useRouter();
   const [condition, setCondition] = useState('');
@@ -50,14 +54,20 @@ const GenerateContent = ({
           transcript: whisperData.text,
           gptGenerated: null,
           typeOfPromptId: null,
+          outputLanguage: null,
+          writingStyle: null,
         });
 
         setCondition('Transcript is being analyzed by AI...');
         const systemPrompt = typeOfPrompt.systemPrompt;
         const userPrompt = `Audio transcription:
         ${whisperData.text}
-        
-        Outcome language: Original`;
+        Output language: ${
+          outputLanguage === 'TRANSCRIPT'
+            ? 'Same as transcript'
+            : outputLanguage
+        }
+        Writing style: ${writingStyle}`;
 
         const gptResponse = await publicGetGptResponse(
           systemPrompt,
@@ -83,6 +93,8 @@ const GenerateContent = ({
           transcript: null,
           gptGenerated: actualGptResponse,
           typeOfPromptId: null,
+          outputLanguage: null,
+          writingStyle: null,
         });
 
         router.push(`/app/saved/${response.id}`);
@@ -102,9 +114,13 @@ const GenerateContent = ({
 
         const systemPrompt = typeOfPrompt.systemPrompt;
         const userPrompt = `Audio transcription:
-      ${transcript}
-      
-      Outcome language: Original`;
+        ${transcript}
+        Output language: ${
+          outputLanguage === 'TRANSCRIPT'
+            ? 'Same as transcript'
+            : outputLanguage
+        }
+        Writing style: ${writingStyle}`;
 
         const gptResponse = await publicGetGptResponse(
           systemPrompt,
@@ -130,6 +146,8 @@ const GenerateContent = ({
           transcript: null,
           gptGenerated: actualGptResponse,
           typeOfPromptId: null,
+          outputLanguage: null,
+          writingStyle: null,
         });
 
         router.push(`/app/saved/${response.id}`);

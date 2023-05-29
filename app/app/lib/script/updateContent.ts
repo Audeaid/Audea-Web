@@ -14,6 +14,8 @@ export const updateContent = ({
   transcript,
   gptGenerated,
   typeOfPromptId,
+  writingStyle,
+  outputLanguage,
 }: {
   token: string;
   contentId: string;
@@ -22,6 +24,8 @@ export const updateContent = ({
   transcript: string | null;
   gptGenerated: string | null;
   typeOfPromptId: string | null;
+  writingStyle: string | null;
+  outputLanguage: string | null;
 }): Promise<IUpdateContent> => {
   const mutation = gql`
     mutation UpdateContent(
@@ -31,6 +35,8 @@ export const updateContent = ({
       $transcript: String
       $gptGenerated: String
       $typeOfPromptId: String
+      $writingStyle: String
+      $outputLanguage: OutputLanguageEnum
     ) {
       updateContent(
         contentId: $contentId
@@ -39,6 +45,8 @@ export const updateContent = ({
         transcript: $transcript
         gptGenerated: $gptGenerated
         typeOfPromptId: $typeOfPromptId
+        writingStyle: $writingStyle
+        outputLanguage: $outputLanguage
       ) {
         id
       }
@@ -59,6 +67,8 @@ export const updateContent = ({
             transcript,
             gptGenerated,
             typeOfPromptId,
+            writingStyle,
+            outputLanguage,
           },
           context: {
             headers: {

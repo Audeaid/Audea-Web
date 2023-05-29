@@ -6,6 +6,7 @@ import AddLottieAnimation from '$components/AddLottieAnimation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import cookieCutter from 'cookie-cutter';
 import {
+  createNewContentSettings,
   createNewUserSubscriptionTrial,
   pushNewUserToNotion,
   sendNewUserEmail,
@@ -44,6 +45,7 @@ const FifthSequence = ({
         cookieCutter.set('audea_signInProvider', 'PASSWORD');
 
         await createNewUserSubscriptionTrial(response.token);
+        await createNewContentSettings(response.token);
 
         // Run sendNewUserEmail query
         await sendNewUserEmail({ email, name });

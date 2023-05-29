@@ -8,51 +8,90 @@ import {
   RecordingInProgress,
   RenderFileUploader,
 } from './components';
+import DialogContentSettings from '../DialogContentSettings';
+import { IGetContentSettings } from '../../graphql';
 
 interface IUploadAndRecord {
-  onFileUpload: (_file: File) => void;
+  onFileUpload: (
+    _file: File,
+    _outputLanguage: string,
+    _writingStyle: string,
+    _typeOfPromptId: string
+  ) => void;
+  contentSettings: IGetContentSettings;
+  token: string;
 }
 
-const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
+const UploadAndRecordNew: React.FC<IUploadAndRecord> = ({
+  onFileUpload,
+  contentSettings,
+  token,
+}) => {
   const [currentlyDragging, setCurrentlyDragging] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [recordingStatus, setRecordingStatus] = useState('inactive');
-  // const [audio, setAudio] = useState('');
-  // const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [remainingTime, setRemainingTime] = useState(0);
   const streamRef = useRef<MediaStream | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const countdownTimer = useRef<number | null>(null);
   const recordingTimer = useRef<number | null>(null);
 
+  const [file, setFile] = useState<File | null>(null);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [userChooseRecording, setUserChooseRecording] = useState(false);
+
+  const [writingStyle, setWritingStyle] = useState(
+    contentSettings.writingStyle
+  );
+  const [outputLanguage, setOutputLanguage] = useState(
+    contentSettings.outputLanguage
+  );
+  const [typeOfPromptId, setTypeOfPromptId] = useState(
+    contentSettings.typeOfPromptId
+  );
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserChooseRecording(false);
+
     const file = event.target.files?.[0];
-    if (file) validateAndUpload(file);
+    if (file) validateFile(file);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
+    setUserChooseRecording(false);
+
     setCurrentlyDragging(false);
+
+    event.preventDefault();
+
     const file = event.dataTransfer.files?.[0];
-    validateAndUpload(file);
+    validateFile(file);
   };
 
-  const validateAndUpload = (file: File | undefined) => {
+  const validateFile = (file: File | undefined) => {
     if (!file) {
       toast.error('Please upload an audio file.');
-      return;
-    }
-    if (!file.type.startsWith('audio/')) {
+    } else if (!file.type.startsWith('audio/')) {
       toast.error('Please upload an audio file.');
-      return;
-    }
-    if (file.size > 25 * 1024 * 1024) {
+    } else if (file.size > 25 * 1024 * 1024) {
       toast.error(
         'File size exceeds the limit. Please upload a file up to 25MB.'
       );
-      return;
+    } else {
+      setFile(file);
+
+      if (
+        contentSettings.outputLanguage === 'ASK' ||
+        contentSettings.typeOfPromptId === '647391c118e8a4e1170d3ec9' ||
+        contentSettings.writingStyle === 'ASK'
+      ) {
+        setIsDialogOpen(true);
+      } else {
+        onFileUpload(file, writingStyle, outputLanguage, typeOfPromptId);
+      }
     }
-    onFileUpload(file);
   };
 
   const getMicrophonePermission = (): Promise<MediaStream> => {
@@ -81,6 +120,20 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
         }
       })();
     });
+  };
+
+  const checkRecording = async () => {
+    setUserChooseRecording(true);
+
+    if (
+      contentSettings.outputLanguage === 'ASK' ||
+      contentSettings.typeOfPromptId === '647391c118e8a4e1170d3ec9' ||
+      contentSettings.writingStyle === 'ASK'
+    ) {
+      setIsDialogOpen(true);
+    } else {
+      await startRecording();
+    }
   };
 
   const startRecording = async () => {
@@ -130,51 +183,9 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
           const file = new File(localAudioChunks, 'audio.webm', {
             type: 'audio/webm',
           });
-
-          onFileUpload(file);
-        } else {
-          // setDisabledRecording(true);
-          // const audioBlob = new Blob(localAudioChunks, {
-          //   type: 'audio/mp4',
-          // });
-          // const audioUrl = URL.createObjectURL(audioBlob);
-          // setAudio(audioUrl);
-          // const file = new File([audioBlob], 'audio.mp4', {
-          //   type: 'audio/mp4',
-          // });
-          // onFileUpload(file);
-          // const sampleRate = 44100; // Set the desired sample rate
-          // const numChannels = 2; // Set the desired number of channels (stereo)
-          // const reader = new FileReader();
-          // reader.onload = function () {
-          //   const arrayBuffer = reader.result as ArrayBuffer;
-          //   // Calculate the correct length based on the ArrayBuffer byte length
-          //   const length = arrayBuffer.byteLength / 2; // 2 bytes per Int16Array element
-          //   // Convert the ArrayBuffer to PCM
-          //   // Create the Int16Array with the correct length and byteOffset set to 0
-          //   const samples = new Int16Array(arrayBuffer, 0, length);
-          //   const mp3encoder = new Mp3Encoder(numChannels, sampleRate, 128);
-          //   const mp3Data = mp3encoder.encodeBuffer(samples);
-          //   const mp3Blob = new Blob([mp3Data], { type: 'audio/mp3' });
-          //   const file = new File([mp3Blob], 'audio.mp3', {
-          //     type: 'audio/mp3',
-          //   });
-          //   onFileUpload(file);
-          //   // Get the encoded MP3 as a Blob
-          //   // const mp3Blob = new Blob([mp3Data], { type: 'audio/mp3' });
-          //   // Do something with the MP3 Blob, e.g., save it or send it to the server
-          //   // For example, you can create a download link for the MP3 file
-          //   // const downloadLink = document.createElement('a');
-          //   // downloadLink.href = URL.createObjectURL(mp3Blob);
-          //   // downloadLink.download = 'recorded_audio.mp3';
-          //   // downloadLink.click();
-          // };
-          // reader.readAsArrayBuffer(audioBlob);
+          onFileUpload(file, writingStyle, outputLanguage, typeOfPromptId);
         }
 
-        // const audioUrl = URL.createObjectURL(audioBlob);
-        // setAudio(audioUrl);
-        // setAudioChunks([]);
         setRecordingStatus('inactive');
         setRemainingTime(0);
       };
@@ -206,8 +217,6 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
     setRecordingStatus('inactive');
     setCountdown(0);
     setRemainingTime(0);
-    // setAudio('');
-    // setAudioChunks([]);
   };
 
   useEffect(() => {
@@ -217,19 +226,54 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
     };
   }, []);
 
-  // const renderAudioPlayer = () => {
-  //   return (
-  //     <div className="audio-player">
-  //       <audio src={audio} controls></audio>
-  //       <a download href={audio}>
-  //         Download Recording
-  //       </a>
-  //     </div>
-  //   );
-  // };
-
   return (
     <section className="mt-10 flex flex-col items-center justify-center gap-10">
+      {isDialogOpen && (
+        <DialogContentSettings
+          isOpen={isDialogOpen}
+          contentSettings={contentSettings}
+          setIsOpen={setIsDialogOpen}
+          onFinish={async (outputLanguage, writingStyle, typeOfPromptId) => {
+            if (writingStyle === '') {
+              setWritingStyle('Default');
+            } else {
+              setWritingStyle(writingStyle);
+            }
+
+            setOutputLanguage(
+              outputLanguage as
+                | 'TRANSCRIPT'
+                | 'ENGLISH'
+                | 'BAHASAINDONESIA'
+                | 'CHINESE'
+                | 'HINDI'
+                | 'JAPANESE'
+                | 'SPANISH'
+                | 'FRENCH'
+                | 'RUSSIAN'
+                | 'URDU'
+                | 'ARABIC'
+                | 'ASK'
+            );
+
+            setTypeOfPromptId(typeOfPromptId);
+
+            if (userChooseRecording) {
+              await startRecording();
+            } else {
+              if (file)
+                onFileUpload(
+                  file,
+                  outputLanguage,
+                  writingStyle === '' ? 'Default' : writingStyle,
+                  typeOfPromptId
+                );
+            }
+          }}
+          token={token}
+        />
+      )}
+
       {(() => {
         if (recordingStatus === 'inactive') {
           return (
@@ -266,7 +310,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
 
       {(() => {
         if (recordingStatus === 'inactive')
-          return <RecordingButton type="Record" handleClick={startRecording} />;
+          return <RecordingButton type="Record" handleClick={checkRecording} />;
 
         if (recordingStatus === 'recording')
           return <RecordingButton type="Stop" handleClick={stopRecording} />;
@@ -276,10 +320,8 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({ onFileUpload }) => {
             <RecordingButton type="Cancel" handleClick={cancelRecording} />
           );
       })()}
-
-      {/* {audio && renderAudioPlayer()} */}
     </section>
   );
 };
 
-export default UploadAndRecord;
+export default UploadAndRecordNew;
