@@ -52,6 +52,10 @@ const UploadAndRecordNew: React.FC<IUploadAndRecord> = ({
     contentSettings.typeOfPromptId
   );
 
+  const outputLanguageRef = useRef(outputLanguage);
+  const writingStyleRef = useRef(writingStyle);
+  const typeOfPromptIdRef = useRef(typeOfPromptId);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserChooseRecording(false);
 
@@ -183,7 +187,12 @@ const UploadAndRecordNew: React.FC<IUploadAndRecord> = ({
           const file = new File(localAudioChunks, 'audio.webm', {
             type: 'audio/webm',
           });
-          onFileUpload(file, writingStyle, outputLanguage, typeOfPromptId);
+          onFileUpload(
+            file,
+            outputLanguageRef.current,
+            writingStyleRef.current,
+            typeOfPromptIdRef.current
+          );
         }
 
         setRecordingStatus('inactive');
@@ -225,6 +234,12 @@ const UploadAndRecordNew: React.FC<IUploadAndRecord> = ({
       clearInterval(recordingTimer.current!);
     };
   }, []);
+
+  useEffect(() => {
+    outputLanguageRef.current = outputLanguage;
+    writingStyleRef.current = writingStyle;
+    typeOfPromptIdRef.current = typeOfPromptId;
+  }, [outputLanguage, writingStyle, typeOfPromptId]);
 
   return (
     <section className="mt-10 flex flex-col items-center justify-center gap-10">
