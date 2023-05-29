@@ -164,8 +164,6 @@ export default function Client({
                     }
                     Writing style: ${writingStyle}`;
 
-                    console.log(userPrompt);
-
                     const gptResponse = await publicGetGptResponse(
                       systemPrompt,
                       userPrompt

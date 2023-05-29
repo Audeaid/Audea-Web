@@ -29,8 +29,6 @@ export default async function Page() {
     contentSettings = response;
   }
 
-  console.table(contentSettings);
-
   return (
     <Client
       token={token}
