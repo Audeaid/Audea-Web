@@ -1,13 +1,24 @@
 'use client';
 
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBoxesPacking } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
+import { MouseEventHandler } from 'react';
 
-const BackButton = ({ href }: { href: string }) => {
+const BackButton = ({
+  href,
+  withAction,
+  handleAction,
+}: {
+  href: string;
+  withAction?: boolean;
+  handleAction?: MouseEventHandler<HTMLButtonElement>;
+}) => {
   return (
     <motion.section
-      className="w-full h-fit flex items-center justify-start max-w-[1300px] mx-auto py-4 select-none"
+      className={`w-full h-fit flex items-center ${
+        withAction ? 'justify-between' : 'justify-start'
+      } justify-start max-w-[1300px] mx-auto py-4 select-none`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -20,6 +31,14 @@ const BackButton = ({ href }: { href: string }) => {
           Back
         </button>
       </a>
+
+      <button
+        className="flex items-center gap-2 font-bold text-lg bg-tertiaryContainerDark text-onTertiaryContainerDark shadow-xl px-4 py-1 rounded-lg"
+        onClick={handleAction}
+      >
+        Show actions
+        <FontAwesomeIcon icon={faBoxesPacking} />
+      </button>
     </motion.section>
   );
 };
