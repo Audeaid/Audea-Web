@@ -35,9 +35,15 @@ const Sequence = ({
 
   const [progress, setProgress] = useState(computeInitialProgress());
 
-  const [outputLanguage, setOutputLanguage] = useState('');
-  const [writingStyle, setWritingStyle] = useState('');
-  const [typeOfPromptId, setTypeOfPromptId] = useState('');
+  const [outputLanguage, setOutputLanguage] = useState<string>(
+    contentSettings.outputLanguage
+  );
+  const [writingStyle, setWritingStyle] = useState(
+    contentSettings.writingStyle
+  );
+  const [typeOfPromptId, setTypeOfPromptId] = useState(
+    contentSettings.typeOfPromptId
+  );
 
   switch (progress) {
     case 'output-language':
