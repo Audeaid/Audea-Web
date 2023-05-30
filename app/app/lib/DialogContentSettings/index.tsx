@@ -1,7 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Dispatch, Fragment, SetStateAction } from 'react';
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import { IGetContentSettings } from '../../graphql';
 import Sequence from './Sequence';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const DialogContentSettings = ({
   isOpen,
@@ -20,6 +22,24 @@ const DialogContentSettings = ({
     _typeOfPromptId: string
   ) => void;
 }) => {
+  const computeInitialProgress = () => {
+    if (contentSettings.outputLanguage === 'ASK') {
+      return 'output-language';
+    } else if (contentSettings.writingStyle === 'ASK') {
+      return 'writing-style';
+    } else if (contentSettings.typeOfPromptId === '647391c118e8a4e1170d3ec9') {
+      return 'type-of-prompt';
+    } else {
+      return 'output-language';
+    }
+  };
+
+  const [progress, setProgress] = useState(computeInitialProgress());
+
+  useEffect(() => {
+    console.log(progress);
+  }, [progress]);
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => {}}>
@@ -49,8 +69,31 @@ const DialogContentSettings = ({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-bold leading-6 w-full h-fit bg-primary text-onPrimary px-6 py-4 shadow-inner"
+                  className="text-lg font-bold leading-6 w-full h-fit bg-primary text-onPrimary px-6 py-4 shadow-inner flex items-center gap-2"
                 >
+                  {progress === 'writing-style' &&
+                    contentSettings.outputLanguage === 'ASK' && (
+                      <FontAwesomeIcon
+                        icon={faArrowLeft}
+                        onClick={() => {
+                          setProgress('output-language');
+                        }}
+                      />
+                    )}
+                  {progress === 'type-of-prompt' &&
+                    (contentSettings.writingStyle === 'ASK' ||
+                      contentSettings.outputLanguage === 'ASK') && (
+                      <FontAwesomeIcon
+                        icon={faArrowLeft}
+                        onClick={() => {
+                          if (contentSettings.writingStyle === 'ASK') {
+                            setProgress('writing-style');
+                          } else {
+                            setProgress('output-language');
+                          }
+                        }}
+                      />
+                    )}
                   Content Settings
                 </Dialog.Title>
 
@@ -60,6 +103,8 @@ const DialogContentSettings = ({
                     token={token}
                     setIsOpen={setIsOpen}
                     onFinish={onFinish}
+                    progress={progress}
+                    setProgress={setProgress}
                   />
                 </div>
               </Dialog.Panel>

@@ -11,6 +11,8 @@ const Sequence = ({
   token,
   onFinish,
   setIsOpen,
+  progress,
+  setProgress,
 }: {
   contentSettings: IGetContentSettings;
   token: string;
@@ -20,21 +22,9 @@ const Sequence = ({
     _typeOfPromptId: string
   ) => void;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  progress: string;
+  setProgress: Dispatch<SetStateAction<string>>;
 }) => {
-  const computeInitialProgress = () => {
-    if (contentSettings.outputLanguage === 'ASK') {
-      return 'output-language';
-    } else if (contentSettings.writingStyle === 'ASK') {
-      return 'writing-style';
-    } else if (contentSettings.typeOfPromptId === '647391c118e8a4e1170d3ec9') {
-      return 'type-of-prompt';
-    } else {
-      return 'output-language';
-    }
-  };
-
-  const [progress, setProgress] = useState(computeInitialProgress());
-
   const [outputLanguage, setOutputLanguage] = useState<string>(
     contentSettings.outputLanguage
   );
