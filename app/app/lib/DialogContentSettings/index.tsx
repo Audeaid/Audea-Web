@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { IGetContentSettings } from '../../graphql';
 import Sequence from './Sequence';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,10 +36,6 @@ const DialogContentSettings = ({
 
   const [progress, setProgress] = useState(computeInitialProgress());
 
-  useEffect(() => {
-    console.log(progress);
-  }, [progress]);
-
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => {}}>
@@ -68,33 +64,50 @@ const DialogContentSettings = ({
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
-                  as="h3"
-                  className="text-lg font-bold leading-6 w-full h-fit bg-primary text-onPrimary px-6 py-4 shadow-inner flex items-center gap-2"
+                  as="section"
+                  className="text-lg font-bold leading-6 w-full h-fit bg-primary text-onPrimary px-6 py-4 shadow-inner flex items-center justify-between"
                 >
-                  {progress === 'writing-style' &&
-                    contentSettings.outputLanguage === 'ASK' && (
-                      <FontAwesomeIcon
-                        icon={faArrowLeft}
-                        onClick={() => {
-                          setProgress('output-language');
-                        }}
-                      />
-                    )}
-                  {progress === 'type-of-prompt' &&
-                    (contentSettings.writingStyle === 'ASK' ||
-                      contentSettings.outputLanguage === 'ASK') && (
-                      <FontAwesomeIcon
-                        icon={faArrowLeft}
-                        onClick={() => {
-                          if (contentSettings.writingStyle === 'ASK') {
-                            setProgress('writing-style');
-                          } else {
+                  <p className="flex items-center gap-2">
+                    {progress === 'writing-style' &&
+                      contentSettings.outputLanguage === 'ASK' && (
+                        <button
+                          className="w-fit h-fit"
+                          onClick={() => {
                             setProgress('output-language');
-                          }
-                        }}
-                      />
-                    )}
-                  Content Settings
+                          }}
+                          type="button"
+                        >
+                          <FontAwesomeIcon icon={faArrowLeft} />
+                        </button>
+                      )}
+                    {progress === 'type-of-prompt' &&
+                      (contentSettings.writingStyle === 'ASK' ||
+                        contentSettings.outputLanguage === 'ASK') && (
+                        <button
+                          className="w-fit h-fit"
+                          onClick={() => {
+                            if (contentSettings.writingStyle === 'ASK') {
+                              setProgress('writing-style');
+                            } else {
+                              setProgress('output-language');
+                            }
+                          }}
+                          type="button"
+                        >
+                          <FontAwesomeIcon icon={faArrowLeft} />
+                        </button>
+                      )}
+                    Content Settings
+                  </p>
+
+                  <button
+                    className="bg-white text-primary px-3 py-1 rounded-md text-sm"
+                    onClick={() => {
+                      setIsOpen(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
                 </Dialog.Title>
 
                 <div className="text-onPrimaryContainer px-6 pb-4 pt-8">
