@@ -38,7 +38,7 @@ const Workspace = ({
         <RenderButtonComponent
           icon={faGear}
           text="Settings"
-          href="#"
+          href="/app/settings"
           type="anchor"
         />
 

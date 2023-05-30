@@ -16,7 +16,7 @@ import {
   faPlus,
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
-import { presets } from './presets';
+import { presets } from '@/app/utils/presets';
 
 const SecondSequence = ({
   setWritingStyle,

@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { outputLanguage } from './outputLanguage';
+import { outputLanguageList } from '@/app/utils/outputLanguage';
 import ProgressButton from '@/components/ProgressButton';
 import toast from 'react-hot-toast';
 import { updateContentSettings } from './script';
@@ -52,7 +52,7 @@ const FirstSequence = ({
           }}
           className="py-2 px-1 border-2 border-primary rounded-md"
         >
-          {outputLanguage.map((value, index) => {
+          {outputLanguageList.map((value, index) => {
             return (
               <option key={index} value={value.db}>
                 {value.displayName}

@@ -1,4 +1,4 @@
-export const outputLanguage = [
+export const outputLanguageList = [
   {
     displayName: 'Same as transcript',
     db: 'TRANSCRIPT',
@@ -46,4 +46,9 @@ export const outputLanguage = [
     displayName: 'Urdu',
     db: 'URDU',
   },
+];
+
+export const outputLanguageListWithAsk = [
+  ...outputLanguageList,
+  { displayName: 'Ask me everytime', db: 'ASK' },
 ];
