@@ -32,13 +32,15 @@ const BackButton = ({
         </button>
       </a>
 
-      <button
-        className="flex items-center gap-2 font-bold text-lg bg-tertiaryContainerDark text-onTertiaryContainerDark shadow-xl px-4 py-1 rounded-lg"
-        onClick={handleAction}
-      >
-        Show actions
-        <FontAwesomeIcon icon={faBoxesPacking} />
-      </button>
+      {withAction && (
+        <button
+          className="flex items-center gap-2 font-bold text-lg bg-tertiaryContainerDark text-onTertiaryContainerDark shadow-xl px-4 py-1 rounded-lg"
+          onClick={handleAction}
+        >
+          Show actions
+          <FontAwesomeIcon icon={faBoxesPacking} />
+        </button>
+      )}
     </motion.section>
   );
 };
