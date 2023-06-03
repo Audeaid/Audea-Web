@@ -1,18 +1,16 @@
-import { cookies } from 'next/headers';
 import {
   IGetContentSettings,
   createNewContentSettings,
   getContentSettings,
 } from './graphql';
 import Client from './lib';
+import { auth } from '@clerk/nextjs';
 
 export default async function Page() {
-  const cookieStore = cookies();
-  const token = cookieStore.get('audea_token')?.value;
-  const signInProvider = cookieStore.get('audea_signInProvider')?.value;
+  const { userId: clerkUserId } = auth();
+  const token = clerkUserId;
 
-  if (!token || !signInProvider)
-    throw new Error('Token and signInProvider is null');
+  if (!token) throw new Error('Token is null');
 
   const response = await getContentSettings(token);
 

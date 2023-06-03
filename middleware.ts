@@ -1,35 +1,29 @@
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import client from '$utils/middlewareGraphql';
+import { authMiddleware } from '@clerk/nextjs';
+import client from '@/utils/middlewareGraphql';
 import { gql } from '@apollo/client';
+import { NextResponse } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  try {
-    const token = request.cookies.get('audea_token')?.value;
-    const signInProvider = request.cookies.get('audea_signInProvider')?.value;
+export default authMiddleware({
+  async afterAuth(auth, req, _evt) {
+    if (auth.userId) {
+      try {
+        const subscription = await checkSubscription(auth.userId);
+        const endDate = subscription.endDate;
+        const notSubscribed = new Date() >= new Date(endDate);
 
-    const loginUrl = new URL('/login', request.url);
-
-    if (!token || !signInProvider) {
-      return NextResponse.redirect(loginUrl);
-    } else {
-      const subscription = await checkSubscription(token);
-      const endDate = subscription.endDate;
-      const notSubscribed = new Date() >= new Date(endDate);
-
-      const notAllowedUrl = new URL('/notallowed', request.url);
-
-      if (notSubscribed) {
-        return NextResponse.redirect(notAllowedUrl);
+        if (notSubscribed && req.nextUrl.pathname !== '/notallowed') {
+          const notAllowedUrl = new URL('/notallowed', req.url);
+          return NextResponse.redirect(notAllowedUrl);
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
-  } catch (error) {
-    console.error(error);
-  }
-}
+  },
+});
 
 export const config = {
-  matcher: ['/app/:path*'],
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 };
 
 interface ICheckSubscription {

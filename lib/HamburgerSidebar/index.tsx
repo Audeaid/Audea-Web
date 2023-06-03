@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import { getUserInfo, getUserSubscription } from './script';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +11,6 @@ import Resources from './Resources';
 import Accounts from './Accounts';
 
 const HamburgerSidebar = ({ token }: { token: string }) => {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const [startDate, setStartDate] = useState('');
@@ -88,7 +86,7 @@ const HamburgerSidebar = ({ token }: { token: string }) => {
             subscriptionType={subscriptionType}
           />
           <Resources />
-          <Accounts email={email} router={router} />
+          <Accounts email={email} />
         </section>
       </motion.aside>
 

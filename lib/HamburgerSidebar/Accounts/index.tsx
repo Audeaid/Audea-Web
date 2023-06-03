@@ -2,16 +2,11 @@
 
 import { faDoorClosed, faUser } from '@fortawesome/free-solid-svg-icons';
 import RenderButtonComponent from '../RenderButtonComponent';
-import cookieCutter from 'cookie-cutter';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { useClerk } from '@clerk/clerk-react';
 
-const Accounts = ({
-  email,
-  router,
-}: {
-  email: string;
-  router: AppRouterInstance;
-}) => {
+const Accounts = ({ email }: { email: string }) => {
+  const { signOut } = useClerk();
+
   return (
     <section className="flex flex-col gap-2">
       <h6 className="flex gap-2 items-center text-gray-600 text-xs font-medium">
@@ -25,21 +20,14 @@ const Accounts = ({
         <RenderButtonComponent
           icon={faUser}
           text="Edit Account"
-          href="#"
+          href="/app/accounts"
           type="anchor"
         />
         <RenderButtonComponent
           icon={faDoorClosed}
           text="Log out"
           type="button"
-          handleClick={(e) => {
-            e.preventDefault();
-            cookieCutter.set('audea_token', '', { expires: new Date(0) });
-            cookieCutter.set('audea_signInProvider', '', {
-              expires: new Date(0),
-            });
-            router.push('/login');
-          }}
+          handleClick={() => signOut()}
         />
       </section>
     </section>

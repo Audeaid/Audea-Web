@@ -1,19 +1,19 @@
-import { cookies } from 'next/headers';
 import { checkSubscription } from './graphql';
 import { redirect } from 'next/navigation';
 import Client from './lib';
+import { auth } from '@clerk/nextjs';
 
 export default async function Page() {
-  const cookieStore = cookies();
-  const token = cookieStore.get('audea_token')?.value;
-  const signInProvider = cookieStore.get('audea_signInProvider')?.value;
+  const { userId: clerkUserId } = auth();
+  const token = clerkUserId;
 
-  if (!token || !signInProvider)
-    throw new Error('Token and signInProvider is null');
+  if (!token) throw new Error('Token is null');
 
   const { endDate, type, user, extended } = await checkSubscription(token);
 
   const subscriptionEnd = new Date() >= new Date(endDate);
+
+  console.log('subscriptionEnd in notallowed', subscriptionEnd);
 
   if (subscriptionEnd) {
     return (

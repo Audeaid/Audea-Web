@@ -7,15 +7,17 @@ import EmptyContent from './EmptyContent';
 
 export default function Client({
   incomingContent,
-  userId,
+  clerkUserId,
 }: {
   incomingContent: IGetAllContent[] | null;
-  userId: string;
+  clerkUserId: string;
 }) {
   const router = useRouter();
 
   if (incomingContent !== null) {
-    return <Content incomingContent={incomingContent} userId={userId} />;
+    return (
+      <Content incomingContent={incomingContent} clerkUserId={clerkUserId} />
+    );
   } else {
     return <EmptyContent router={router} />;
   }

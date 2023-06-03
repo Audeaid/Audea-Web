@@ -12,18 +12,18 @@ import OneContentGalleryView from './OneContentGalleryView';
 
 const Content = ({
   incomingContent,
-  userId,
+  clerkUserId,
 }: {
   incomingContent: IGetAllContent[];
-  userId: string;
+  clerkUserId: string;
 }) => {
   // const router = useRouter();
   const [listView, setListView] = useState(true);
   const [contentData, setContentData] = useState(incomingContent);
 
   const contentLive = gql`
-    subscription ContentSubscription($userId: String!) {
-      contentSubscription(userId: $userId) {
+    subscription ContentSubscription($clerkUserId: String!) {
+      contentSubscription(clerkUserId: $clerkUserId) {
         content {
           id
           createdAt
@@ -36,7 +36,7 @@ const Content = ({
   `;
 
   const { data } = useSubscription(contentLive, {
-    variables: { userId },
+    variables: { clerkUserId },
   });
 
   useEffect(() => {

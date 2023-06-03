@@ -1,18 +1,17 @@
 import HamburgerSidebar from '@/lib/HamburgerSidebar';
-import { cookies } from 'next/headers';
+import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const cookieStore = cookies();
-  const token = cookieStore.get('audea_token')?.value;
-  const signInProvider = cookieStore.get('audea_signInProvider')?.value;
+  const { userId: clerkUserId } = auth();
+  const token = clerkUserId;
 
-  if (!token || !signInProvider)
-    throw new Error('Token and signInProvider is null');
+  if (!token) redirect('/login');
 
   return (
     <main className="min-w-screen min-h-screen overflow-x-hidden flex flex-col">
       <nav className="w-full h-fit flex justify-start px-10 py-10 max-h-[130px] items-center">
-        <HamburgerSidebar token={token} />
+        <HamburgerSidebar token={token as string} />
       </nav>
 
       {children}
