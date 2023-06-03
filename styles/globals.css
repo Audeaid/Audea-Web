@@ -239,3 +239,11 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* 
+Hiding secured by Clerk button
+*/
+
+.cl-internal-b3fm6y {
+  display: none;
+}
