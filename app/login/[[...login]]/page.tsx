@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { SignIn, useSignIn } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { SignIn } from '@clerk/nextjs';
 
 export default function SignInForm() {
-  return <SignIn />;
+  return (
+    <main className="min-w-screen min-h-screen flex items-center justify-center">
+      <SignIn />
+    </main>
+  );
   // const { isLoaded, signIn, setActive } = useSignIn();
   // const [emailAddress, setEmailAddress] = useState('');
   // const [password, setPassword] = useState('');
@@ -57,6 +59,7 @@ export default function SignInForm() {
   // );
 }
 
+// eslint-disable-next-line no-unused-vars
 const test = {
   pathRoot: '/me',
   id: 'user_2QcBTBfBfwUjmOAW99uvOrbHyuY',
