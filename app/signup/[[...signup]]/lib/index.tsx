@@ -20,7 +20,7 @@ export default function Client() {
         draggable={false}
         alt="Audea Logo"
         height={25}
-        className="lg:hidden block absolute left-4 top-4 md:left-8 md:top-8"
+        className="lg:hidden block absolute left-4 top-5 md:left-8 md:top-9"
       />
       <Link
         href="/login"
