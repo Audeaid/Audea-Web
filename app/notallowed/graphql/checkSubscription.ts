@@ -5,10 +5,6 @@ export interface ICheckSubscription {
   __typename: 'UserSubscription';
   endDate: string;
   type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'YEARLY' | 'EARLYADOPTER';
-  user: {
-    __typename: 'User';
-    email: string;
-  };
   extended: boolean;
 }
 
@@ -20,9 +16,6 @@ export const checkSubscription = (
       getUserSubscription {
         endDate
         type
-        user {
-          email
-        }
         extended
       }
     }

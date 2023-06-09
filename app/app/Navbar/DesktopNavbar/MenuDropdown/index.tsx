@@ -217,8 +217,8 @@ const MenuDropdown = ({
           <span>Edit account</span>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => {
-            signOut();
+          onClick={async () => {
+            await signOut();
             router.push('/login');
           }}
         >

@@ -22,7 +22,6 @@ const Navigation = ({
   });
 
   useEffect(() => {
-    console.log(arrayOfPath);
     if (arrayOfPath.length > 2 && arrayOfPath[1] === 'saved') {
       (async () => {
         const response = await getTitle(token, arrayOfPath[2]);

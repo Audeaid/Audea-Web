@@ -6,20 +6,20 @@ import { useEffect } from 'react';
 
 export default function Page() {
   const { loaded } = useClerk();
+
   useEffect(() => {
     if (loaded) {
       setTimeout(() => {
         const paragraphs = document.getElementsByTagName('p');
-        console.log(paragraphs.length);
         for (let i = 0; i < paragraphs.length; i++) {
           paragraphs[i].id = 'clerkKontolGuaGabisaStylingNgentot';
         }
-      }, 1000);
+      }, 2000);
     }
   }, [loaded]);
 
   return (
-    <main className="min-w-screen min-h-screen flex items-center justify-center select-none">
+    <section className="w-fit h-fit flex items-center justify-start mx-auto text-foreground">
       <UserProfile
         path="/app/accounts"
         routing="path"
@@ -28,7 +28,8 @@ export default function Page() {
             card: 'border-0 shadow-none rounded-none',
             navbar: 'hidden',
             scrollBox: 'text-foreground bg-background rounded-none',
-            pageScrollBox: 'text-foreground bg-background rounded-none',
+            pageScrollBox:
+              'text-foreground bg-background rounded-none pt-0 px-0 pb-4',
             page: 'text-foreground bg-background',
             profilePage: 'text-foreground',
             header: 'text-foreground',
@@ -51,6 +52,6 @@ export default function Page() {
           },
         }}
       />
-    </main>
+    </section>
   );
 }

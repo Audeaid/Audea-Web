@@ -9,11 +9,9 @@ export default async function Page() {
 
   if (!token) throw new Error('Token is null');
 
-  const { endDate, type, user, extended } = await checkSubscription(token);
+  const { endDate, type, extended } = await checkSubscription(token);
 
   const subscriptionEnd = new Date() >= new Date(endDate);
-
-  console.log('subscriptionEnd in notallowed', subscriptionEnd);
 
   if (subscriptionEnd) {
     return (
@@ -21,7 +19,6 @@ export default async function Page() {
         subscriptionType={type}
         hasExtendedTrial={extended}
         token={token}
-        email={user.email}
       />
     );
   } else {

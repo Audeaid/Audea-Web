@@ -71,6 +71,14 @@
     @apply text-foreground;
   }
 
+  p[data-localization-key='userProfile.start.activeDevicesSection.destructiveActionTitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.activeDevicesSection.destructiveActionSubtitle'] {
+    @apply text-foreground;
+  }
+
   p[data-localization-key='userProfile.emailAddressPage.emailCode.formSubtitle'] {
     @apply text-foreground;
   }
@@ -88,6 +96,10 @@
   }
 
   #clerkKontolGuaGabisaStylingNgentot {
+    @apply text-foreground;
+  }
+
+  div > p {
     @apply text-foreground;
   }
 }

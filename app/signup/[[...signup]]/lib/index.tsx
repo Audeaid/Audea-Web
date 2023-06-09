@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import Sequence from './Sequence';
 import ImageSrc from '@/public/logo/secondary.svg';
+import Toast from '@/app/app/Toast';
 
 export const metadata: Metadata = {
   title: 'Authentication',
@@ -18,7 +19,7 @@ export default function AuthenticationPage() {
   const router = useRouter();
 
   return (
-    <div className="container relative h-[800px] flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 px-0 select-none">
+    <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 px-0 select-none">
       <Link
         href="/login"
         className={cn(
@@ -59,6 +60,8 @@ export default function AuthenticationPage() {
       <div className="lg:p-8 block">
         <Sequence router={router} />
       </div>
+
+      <Toast />
     </div>
   );
 }

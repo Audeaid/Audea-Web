@@ -12,6 +12,8 @@ export interface IGetAllContent {
   gptGenerated: string | null;
   typeOfPromptId: string | null;
   userId: string;
+  writingStyle: string | null;
+  outputLanguage: string | null;
 }
 
 export const getAllContent = (
@@ -28,6 +30,8 @@ export const getAllContent = (
         gptGenerated
         typeOfPromptId
         userId
+        writingStyle
+        outputLanguage
       }
     }
   `;

@@ -2,22 +2,39 @@
 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useState } from 'react';
-import cookieCutter from 'cookie-cutter';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
-import { convertArrayToCSV, deleteAccount, getAllContent } from './script';
+import { convertArrayToCSV, getAllContent } from './script';
+import { useClerk, useUser } from '@clerk/nextjs';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Footer = ({
   token,
   router,
-  email,
 }: {
   token: string;
   router: AppRouterInstance;
-  email: string;
 }) => {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
+
   const [loading, setLoading] = useState(false);
   const [exportFile, setExportFile] = useState(false);
   const [csvString, setCsvString] = useState('');
+
+  if (!isLoaded || !isSignedIn) {
+    return (
+      <div className="flex flex-col gap-4">
+        <Skeleton className="w-12 h-4 rounded-full " />
+
+        <div className="flex flex-col gap-1">
+          <Skeleton className="w-12 h-4 rounded-full " />
+          <Skeleton className="w-12 h-4 rounded-full " />
+        </div>
+
+        <Skeleton className="w-12 h-4 rounded-full " />
+      </div>
+    );
+  }
 
   const renderExportAndDelete = () => {
     if (loading) {
@@ -26,23 +43,19 @@ const Footer = ({
       if (exportFile) {
         return (
           <a
-            className="text-primaryDark"
+            className="text-blue-500"
             href={`data:text/csv;charset=utf-8,${encodeURIComponent(
               csvString
             )}`}
             download={'audea-content.csv'}
-            onClick={async () => {
-              // delete account
-              await deleteAccount(token);
-            }}
           >
-            Download content and proceed on deleting your account
+            Download content
           </a>
         );
       } else {
         return (
           <button
-            className="text-primaryDark"
+            className="text-blue-500"
             type="button"
             onClick={async (e) => {
               e.preventDefault();
@@ -57,7 +70,7 @@ const Footer = ({
               setLoading(false);
             }}
           >
-            Export data and delete your account
+            Export data
           </button>
         );
       }
@@ -65,30 +78,30 @@ const Footer = ({
   };
 
   return (
-    <section className="flex flex-col text-gray-300 gap-4">
+    <section className="flex flex-col gap-4">
       <p>
         Need help? Email us at{' '}
-        <a className="text-primaryDark" href="mailto:support@audea.id">
+        <a className="text-blue-500" href="mailto:support@audea.id">
           support@audea.id
         </a>
       </p>
 
       <section className="flex flex-col gap-1">
         <p>
-          You are logged in as: <span className="font-medium">{email}</span>
+          You are logged in as:{' '}
+          <span className="font-medium">
+            {user.primaryEmailAddress?.emailAddress}
+          </span>
         </p>
 
         <p>
           Wrong account?{' '}
           <button
-            className="text-primaryDark"
+            className="text-blue-500"
             type="button"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
-              cookieCutter.set('audea_token', '', { expires: new Date(0) });
-              cookieCutter.set('audea_signInProvider', '', {
-                expires: new Date(0),
-              });
+              await signOut();
               router.push('/login');
             }}
           >

@@ -288,8 +288,8 @@ const MobileSheet = ({
           <SheetClose asChild>
             <Button
               variant="ghost"
-              onClick={() => {
-                signOut();
+              onClick={async () => {
+                await signOut();
                 router.push('/login');
               }}
               className={cn('w-full flex items-center justify-start')}
