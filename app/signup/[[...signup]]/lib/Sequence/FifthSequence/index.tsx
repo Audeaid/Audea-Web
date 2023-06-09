@@ -71,7 +71,7 @@ const FifthSequence = ({
 
   return (
     <motion.section
-      className="max-w-[400px] flex flex-col gap-0 mx-auto sm:px-0 px-4 pb-10 items-center justify-center"
+      className="max-w-[400px] flex flex-col gap-8 mx-auto sm:px-0 px-4 pb-10 items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -79,13 +79,13 @@ const FifthSequence = ({
         if (loading) {
           return (
             <>
-              <div className="w-fit h-fit max-w-[400px] max-h-[300px]">
+              <div className="w-fit h-fit max-w-[300px] max-h-[200px]">
                 <AddLottieAnimation
                   path="/lottie/9844-loading-40-paperplane.json"
                   loop={true}
                 />
               </div>
-              <h3 className="sm:text-3xl text-2xl text-center font-medium">
+              <h3 className="text-xl text-center font-medium">
                 Creating your account...
               </h3>
             </>
@@ -94,27 +94,25 @@ const FifthSequence = ({
           if (success === true) {
             return (
               <>
-                <div className="w-fit h-fit max-w-[400px] max-h-[300px]">
+                <div className="w-fit h-fit max-w-[300px] max-h-[200px]">
                   <AddLottieAnimation
                     path="/lottie/96237-success.json"
                     loop={false}
                   />
                 </div>
-                <h3 className="sm:text-3xl text-2xl text-center font-medium">
-                  Success!
-                </h3>
+                <h3 className="text-xl text-center font-medium">Success!</h3>
               </>
             );
           } else if (success === false) {
             return (
               <>
-                <div className="w-fit h-fit max-w-[300px] max-h-[300px]">
+                <div className="w-fit h-fit max-w-[200px] max-h-[200px]">
                   <AddLottieAnimation
                     path="/lottie/91878-bouncy-fail.json"
                     loop={false}
                   />
                 </div>
-                <h3 className="sm:text-3xl text-2xl text-center font-medium">
+                <h3 className="text-xl text-center font-medium">
                   Error connecting to the server!
                 </h3>
               </>

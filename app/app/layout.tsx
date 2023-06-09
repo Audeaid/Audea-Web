@@ -1,6 +1,7 @@
-import HamburgerSidebar from '@/lib/HamburgerSidebar';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+import Navbar from './Navbar';
+import Toast from './Toast';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { userId: clerkUserId } = auth();
@@ -9,12 +10,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   if (!token) redirect('/login');
 
   return (
-    <main className="min-w-screen min-h-screen overflow-x-hidden flex flex-col">
-      <nav className="w-full h-fit flex justify-start px-10 py-10 max-h-[130px] items-center">
-        <HamburgerSidebar token={token as string} />
-      </nav>
+    <main className="min-w-screen min-h-screen overflow-x-hidden">
+      <Navbar token={token as string} />
 
-      {children}
+      <section className="md:mt-14 mt-20 pb-20 sm:px-10 px-4 max-w-[1300px] mx-auto w-full">
+        {children}
+      </section>
+
+      <Toast />
     </main>
   );
 }

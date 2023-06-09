@@ -1,6 +1,8 @@
 'use client';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import OtpInput from 'react-otp-input';
@@ -17,17 +19,18 @@ const FourthSequence = ({
 
   return (
     <motion.section
-      className="max-w-[400px] flex flex-col sm:gap-12 gap-6 mx-auto sm:px-0 px-4 pb-10"
+      className="max-w-[400px] flex flex-col gap-6 mx-auto sm:px-0 px-4 pb-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2 className="text-3xl font-bold text-left select-none">
-        Please verify your email
-      </h2>
-
-      <p>
-        We&apos;ve sent a one-time code to <b>{email}</b>
-      </p>
+      <div className="flex flex-col space-y-2 text-center">
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Please verify your email
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          We&apos;ve sent a one-time code to <strong>{email}</strong>
+        </p>
+      </div>
 
       <form
         onSubmit={async (e) => {
@@ -71,22 +74,18 @@ const FourthSequence = ({
             maxWidth: '60px',
           }}
           renderInput={(props, index) => (
-            <input
+            <Input
               {...props}
-              className="border-2 border-[#d6e3ff] text-onPrimaryContainer p-2 rounded-md bg-onPrimary"
+              className="text-xl"
               name={`otp-${index}`}
               required={true}
             />
           )}
         />
-        <button
-          className="bg-[#FDF5F2] text-sm w-full h-fit py-1.5 rounded border border-[#FAC6C4] text-[#EB5757] flex items-center justify-center"
-          disabled={loading}
-          type="submit"
-        >
+        <Button disabled={loading} type="submit">
           {loading && <LoadingSpinner size={4} />}
           Verify code
-        </button>
+        </Button>
       </form>
     </motion.section>
   );

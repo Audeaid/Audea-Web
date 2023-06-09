@@ -11,7 +11,7 @@ import {
 } from './script';
 import TypeOfPrompt from './TypeOfPrompt';
 import WritingStyle from './WritingStyle';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export default function Client({
   contentSettings,
@@ -57,7 +57,7 @@ export default function Client({
 
   return (
     <motion.section
-      className={`flex flex-col gap-20 mt-10 pb-10 sm:px-10 px-4 max-w-[1300px] mx-auto w-full select-none`}
+      className={`flex flex-col gap-20 select-none`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -145,8 +145,6 @@ export default function Client({
           allTypeOfPrompt={allTypeOfPrompt ?? []}
         />
       </section>
-
-      <Toaster position="bottom-right" />
     </motion.section>
   );
 }

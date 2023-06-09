@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react';
 import type { ITextInput } from './index.d';
-import styles from './index.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,11 +22,13 @@ const TextInput: React.FC<ITextInput> = ({
   };
 
   return (
-    <section className={`${styles.section1}`}>
+    <section className={`flex flex-col gap-1 select-none`}>
       <label htmlFor={id}>{textLabel}</label>
-      <section className={`${styles.section2}`}>
+      <section
+        className={`flex justify-between items-center w-full h-fit bg-onPrimary shadow appearance-none border-2 rounded py-2 px-3 text-onPrimaryContainer leading-tight focus-within:outline-none focus-within:shadow-primaryDark focus-within:border-primaryDark gap-2`}
+      >
         <input
-          className={`${styles.input}`}
+          className={`bg-onPrimary focus:outline-none w-full`}
           id={id}
           ref={inputRef}
           onChange={(e) => {

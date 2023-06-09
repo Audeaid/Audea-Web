@@ -2,33 +2,14 @@
 
 import { motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useState } from 'react';
-import TextInput from '$components/TextInput';
 import LoadingSpinner from '$components/LoadingSpinner';
 import SocialMediaLogin from '$components/SocialMediaLogin';
 import { getDeletedUser } from './script';
 import axios from 'axios';
 import { User } from '@clerk/nextjs/dist/types/server';
-
-const socmedButton = [
-  {
-    type: 'google',
-    onClick: () => {},
-    disabled: true,
-    text: 'Sign up with Google',
-  },
-  {
-    type: 'apple',
-    onClick: () => {},
-    disabled: true,
-    text: 'Sign up with Apple',
-  },
-  {
-    type: 'microsoft',
-    onClick: () => {},
-    disabled: true,
-    text: 'Sign up with Microsoft',
-  },
-];
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const FirstSequence = ({
   setEmail,
@@ -46,9 +27,14 @@ const FirstSequence = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h1 className="sm:text-6xl text-4xl font-bold text-center select-none">
-        Sign up
-      </h1>
+      <div className="flex flex-col space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Create an account
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Enter your email below to create your account
+        </p>
+      </div>
       <section className="flex flex-col gap-8">
         <form
           className="flex flex-col gap-3"
@@ -100,53 +86,51 @@ const FirstSequence = ({
             }
           }}
         >
-          <TextInput
-            placeholder="Enter your email address..."
-            textLabel="Email"
-            id="email"
-            type="email"
-            name="email"
-            required={true}
-          />
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              placeholder="Enter your email address..."
+              type="email"
+              name="email"
+              required={true}
+              id="email"
+            />
+          </div>
 
-          <button
-            className="bg-[#FDF5F2] text-sm w-full h-fit py-1.5 rounded border border-[#FAC6C4] text-[#EB5757] flex items-center justify-center"
-            disabled={loading}
-            type="submit"
-          >
+          <Button disabled={loading} type="submit">
             {loading && <LoadingSpinner size={4} />}
             Sign up with email
-          </button>
+          </Button>
         </form>
 
         {errorMsg && (
-          <p className="text-xs text-justify text-errorDark">{errorMsg}</p>
+          <p className="text-xs text-justify text-destructive">{errorMsg}</p>
         )}
 
-        <p className="text-center text-primaryDark select-none">Or</p>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
 
         <section className="flex flex-col gap-3">
-          {socmedButton.map(({ disabled, onClick, type, text }, index) => {
-            return (
-              <SocialMediaLogin
-                disabled={disabled}
-                onClick={onClick}
-                type={type as any}
-                key={index}
-              >
-                {text}
-              </SocialMediaLogin>
-            );
-          })}
+          <SocialMediaLogin type="google" disabled={false}>
+            Google
+          </SocialMediaLogin>
         </section>
 
         <p className="text-xs text-justify select-none">
-          By clicking &quot;Sign up with Apple / Google / Microsoft /
-          Email&quot; above, you acknowledge that you have read and understood,
-          and agree to Audea&apos;s{' '}
+          By clicking &quot;Sign up with Google / Email&quot; above, you
+          acknowledge that you have read and understood, and agree to
+          Audea&apos;s{' '}
           <a
             href="https://audeaid.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f"
-            className="text-primaryDark hover:text-errorDark"
+            className="hover:text-blue-500"
             target="_blank"
           >
             Terms of Service
@@ -154,7 +138,7 @@ const FirstSequence = ({
           and{' '}
           <a
             href="https://audeaid.notion.site/Privacy-Policy-f865747ed0e142fa92680408d91fe136"
-            className="text-primaryDark hover:text-errorDark"
+            className="hover:text-blue-500"
             target="_blank"
           >
             Privacy Policy

@@ -2,6 +2,8 @@ import '$styles/globals.css';
 import { Inter } from 'next/font/google';
 import { ApolloNextClient } from './apollo';
 import { ClerkProvider } from '@clerk/nextjs';
+import { ViewportProvider } from '@/context/Viewport';
+import { DarkModeProvider } from '@/context/DarkMode';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,9 +20,22 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <ApolloNextClient>
-        <html lang="en">
-          <body className={inter.className}>{children}</body>
-        </html>
+        {/* Our custom provider */}
+        <ViewportProvider>
+          <DarkModeProvider>
+            <html lang="en">
+              <body className={inter.className}>
+                {children}
+
+                <script
+                  src="//code.tidio.co/qaqhmzyxhfsct6xkbaxicly6mv91mxsq.js"
+                  async
+                />
+                <script src="/tidioChat.js" async />
+              </body>
+            </html>
+          </DarkModeProvider>
+        </ViewportProvider>
       </ApolloNextClient>
     </ClerkProvider>
   );

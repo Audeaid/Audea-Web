@@ -2,19 +2,29 @@
 
 import { motion } from 'framer-motion';
 import type { ISocialMediaLogin } from './index.d';
-import styles from './index.module.css';
 import Google from './logo/google.svg';
 import Microsoft from './logo/microsoft.svg';
 import Apple from './logo/apple.svg';
 import Image from 'next/image';
+import { useSignIn } from '@clerk/nextjs';
+import { OAuthStrategy } from '@clerk/nextjs/dist/types/server';
 
 const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
   disabled,
-  onClick = () => {},
   children,
   type,
   ...props
 }) => {
+  const { signIn } = useSignIn();
+
+  const signInWith = (strategy: OAuthStrategy) => {
+    return signIn?.authenticateWithRedirect({
+      strategy,
+      redirectUrl: '/login/sso-callback',
+      redirectUrlComplete: '/',
+    });
+  };
+
   return (
     <motion.button
       type="button"
@@ -24,10 +34,12 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
       }}
       whileHover={{ scale: disabled ? [null, 1, 1] : [null, 1.1, 1.05] }}
       transition={{ duration: 0.5 }}
-      className={`${styles.button} ${
+      className={`text-sm select-none border-2 rounded shadow-sm border-border flex items-center justify-center w-full h-fit gap-4 bg-background text-foreground py-1.5 ${
         disabled ? 'cursor-not-allowed' : 'cursor-pointer'
       }`}
-      onClick={onClick}
+      onClick={() => {
+        signInWith(renderOauthStrategy(type));
+      }}
       {...props}
     >
       <RenderSocialImage type={type} />
@@ -55,4 +67,22 @@ const RenderSocialImage = ({ type }: { type: ISocialMediaLogin['type'] }) => {
     }
   };
   return <Image src={src()} alt={`${type} logo`} height={20} />;
+};
+
+const renderOauthStrategy = (
+  type: ISocialMediaLogin['type']
+): OAuthStrategy => {
+  switch (type) {
+    case 'google':
+      return 'oauth_google';
+
+    case 'apple':
+      return 'oauth_apple';
+
+    case 'microsoft':
+      return 'oauth_microsoft';
+
+    default:
+      return 'oauth_google';
+  }
 };

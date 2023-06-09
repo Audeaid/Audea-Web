@@ -2,8 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useState } from 'react';
-import TextInput from '$components/TextInput';
 import { capitalizeEveryWord } from './script';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import cn from '@/utils/cn';
 
 const ThirdSequence = ({
   setFirstName,
@@ -19,15 +22,18 @@ const ThirdSequence = ({
 
   return (
     <motion.section
-      className="max-w-[400px] flex flex-col sm:gap-12 gap-6 mx-auto sm:px-0 px-4 pb-10"
+      className="max-w-[400px] flex flex-col gap-6 mx-auto sm:px-0 px-4 pb-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2 className="text-3xl font-bold text-left select-none">
-        What should we call you?
-      </h2>
-
-      <p>Please insert you first and last name.</p>
+      <div className="flex flex-col space-y-2 text-center">
+        <h2 className="text-2xl font-semibold tracking-tight">
+          What should we call you?
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Please insert you first and last name.
+        </p>
+      </div>
 
       <form
         onSubmit={async (e) => {
@@ -48,65 +54,64 @@ const ThirdSequence = ({
         }}
         className="flex flex-col gap-6"
       >
-        <TextInput
-          placeholder="Ada"
-          textLabel="First Name"
-          id="first-name"
-          type="text"
-          name="first-name"
-          required={true}
-          maxLength={50}
-          onKeyUp={(e) => {
-            const name = e.currentTarget.value;
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="first-name">First name</Label>
+          <Input
+            placeholder="Ada"
+            id="first-name"
+            type="text"
+            name="first-name"
+            required={true}
+            maxLength={50}
+            onKeyUp={(e) => {
+              const name = e.currentTarget.value;
 
-            setFirstNameHere(capitalizeEveryWord(name));
-          }}
-        />
+              setFirstNameHere(capitalizeEveryWord(name));
+            }}
+          />
+        </div>
 
-        <TextInput
-          placeholder="Lovelace"
-          textLabel="Last Name"
-          id="last-name"
-          type="text"
-          name="last-name"
-          required={true}
-          maxLength={50}
-          onKeyUp={(e) => {
-            const name = e.currentTarget.value;
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="last-name">Last name</Label>
+          <Input
+            placeholder="Lovelace"
+            id="last-name"
+            type="text"
+            name="last-name"
+            required={true}
+            maxLength={50}
+            onKeyUp={(e) => {
+              const name = e.currentTarget.value;
 
-            setLastNameHere(capitalizeEveryWord(name));
-          }}
-        />
+              setLastNameHere(capitalizeEveryWord(name));
+            }}
+          />
+        </div>
 
         <section className="flex items-start justify-start gap-2">
           <div className="w-fit h-fit">
             <input type="checkbox" name="agree" id="agree" required={true} />
           </div>
-          <label htmlFor="agree">
+          <Label htmlFor="agree" className={cn('leading-5 text-left')}>
             I, {firstNameHere} {lastNameHere}, hereby agree to{' '}
             <a
               href="https://audeaid.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f"
-              className="text-primaryDark"
+              className="hover:text-blue-500"
             >
               Audea&apos;s Terms of Service
             </a>{' '}
             and{' '}
             <a
               href="https://audeaid.notion.site/Privacy-Policy-f865747ed0e142fa92680408d91fe136"
-              className="text-primaryDark"
+              className="hover:text-blue-500"
             >
               Privacy Policy
             </a>
             .
-          </label>
+          </Label>
         </section>
 
-        <button
-          className="bg-[#FDF5F2] text-sm w-full h-fit py-1.5 rounded border border-[#FAC6C4] text-[#EB5757] flex items-center justify-center"
-          type="submit"
-        >
-          Create your account
-        </button>
+        <Button type="submit">Create your account</Button>
       </form>
     </motion.section>
   );

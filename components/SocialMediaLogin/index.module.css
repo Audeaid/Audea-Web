@@ -1,3 +1,0 @@
-.button {
-  @apply text-sm select-none border-2 rounded shadow-sm border-background flex items-center justify-center w-full h-fit gap-4 bg-onPrimary text-onPrimaryContainer py-1.5;
-}

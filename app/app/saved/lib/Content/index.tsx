@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { gql, useSubscription } from '@apollo/client';
-import BackButton from '@/lib/BackButton';
 import OneContentListView from './OneContentListView';
 import OneContentGalleryView from './OneContentGalleryView';
 
@@ -70,7 +69,6 @@ const Content = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <BackButton href={'/app'} />
       <section className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-primaryDark">Saved Notes</h1>
 

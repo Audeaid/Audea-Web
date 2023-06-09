@@ -1,6 +1,6 @@
 'use client';
 
-import { Toaster, toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -210,8 +210,6 @@ export default function Client({
             <LoadingContent condition={condition} />
           )}
         </section>
-
-        <Toaster position="bottom-right" containerClassName="z-[999999]" />
       </section>
     </motion.section>
   );

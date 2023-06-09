@@ -1,3 +1,5 @@
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,56 +9,74 @@ module.exports = {
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: 'class',
+  important: true,
   theme: {
-    extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1400px',
       },
+    },
+    extend: {
       colors: {
-        primary: '#2C5EA8',
-        primaryDark: '#ABC7FF',
-        onPrimary: '#FFFFFF',
-        onPrimaryDark: '#002F65',
-        primaryContainer: '#D6E3FF',
-        primaryContainerDark: '#03458E',
-        onPrimaryContainer: '#001A40',
-        onPrimaryContainerDark: '#D7E3FF',
-        secondary: '#006974',
-        secondaryDark: '#4ED8E9',
-        onSecondary: '#FFFFFF',
-        onSecondaryDark: '#00363C',
-        secondaryContainer: '#8AF2FF',
-        secondaryContainerDark: '#004F57',
-        onSecondaryContainer: '#001F23',
-        onSecondaryContainerDark: '#91F1FF',
-        tertiary: '#953459',
-        tertiaryDark: '#FFB1C7',
-        tertiaryContainer: '#FFD9E3',
-        tertiaryContainerDark: '#802348',
-        onTertiaryContainer: '#3E001B',
-        onTertiaryContainerDark: '#FFD9E2',
-        error: '#BA1B1B',
-        errorDark: '#FFB4AB',
-        onError: '#FFFFFF',
-        onErrorDark: '#690005',
-        errorContainer: '#FFDAD4',
-        errorContainerDark: '#93000A',
-        onErrorContainer: '#410001',
-        onErrorContainerDark: '#FFDAD6',
-        background: '#E1E1E1',
-        onBackground: '#1A1B1F',
-        surface: '#FDFBFF',
-        onSurface: '#1A1B1F',
-        surfaceVariant: '#FDFBFF',
-        onSurfaceVariant: '#44474F',
-        outline: '#74777F',
-        neutral: '#44474F',
-        neutralOnBackground: '#1A1B1F',
-        neutralBackground: '#E1E1E1',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+      },
+      borderRadius: {
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
+        sm: 'calc(var(--radius) - 4px)',
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans],
+      },
+      keyframes: {
+        'accordion-down': {
+          from: { height: 0 },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: 0 },
+        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };

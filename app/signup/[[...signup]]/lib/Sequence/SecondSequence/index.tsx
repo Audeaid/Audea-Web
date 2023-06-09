@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { Dispatch, Reducer, SetStateAction, useReducer, useState } from 'react';
-import TextInput from '@/components/TextInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheck,
@@ -10,6 +9,9 @@ import {
   faEyeSlash,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 interface PasswordState {
   password: string;
@@ -65,15 +67,18 @@ const SecondSequence = ({
 
   return (
     <motion.section
-      className="max-w-[400px] flex flex-col sm:gap-12 gap-6 mx-auto sm:px-0 px-4 pb-10"
+      className="max-w-[400px] flex flex-col gap-6 mx-auto sm:px-0 px-4 pb-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2 className="text-3xl font-bold text-left select-none">
-        Create strong password
-      </h2>
-
-      <p>Next, please create a strong password for your Audea account.</p>
+      <div className="flex flex-col space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Create strong password
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Next, please create a strong password for your Audea account.
+        </p>
+      </div>
 
       <form
         onSubmit={async (e) => {
@@ -91,10 +96,10 @@ const SecondSequence = ({
         className="flex flex-col gap-6"
       >
         <section className="flex flex-col gap-4">
-          <section className="flex flex-col gap-1">
-            <TextInput
+          <section className="flex flex-col gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
               placeholder="New password"
-              textLabel="Create your password"
               id="password"
               type={showPassword ? 'text' : 'password'}
               name="password"
@@ -102,7 +107,7 @@ const SecondSequence = ({
               pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$"
               minLength={8}
               maxLength={64}
-              handleChange={(e) => {
+              onChange={(e) => {
                 const password = e.target.value;
                 setPassword(password);
                 passwordDispatch({
@@ -114,7 +119,7 @@ const SecondSequence = ({
 
             <button
               type="button"
-              className="text-sm font-medium flex gap-1 items-center text-purple-400 w-fit h-fit"
+              className="text-xs font-medium flex gap-1 items-center text-purple-400 w-fit h-fit"
               onClick={() => {
                 setShowPassword(!showPassword);
               }}
@@ -125,13 +130,13 @@ const SecondSequence = ({
           </section>
 
           <section className="flex flex-col gap-1">
-            <p className="text-base">Password must have:</p>
+            <p className="text-sm">Password must have:</p>
             <ul className="flex flex-col gap-0 text-sm">
               {passwordRequirement.map(({ text, bool }, index) => {
                 return (
                   <li
                     key={index}
-                    className="flex gap-1 items-center justify-start"
+                    className="flex gap-1 items-center justify-start text-xs"
                   >
                     <div className="w-fit h-fit">
                       <FontAwesomeIcon
@@ -149,10 +154,10 @@ const SecondSequence = ({
           </section>
         </section>
 
-        <section className="flex flex-col gap-1">
-          <TextInput
-            placeholder="Confirm password"
-            textLabel="Confirm your password"
+        <section className="flex flex-col gap-2">
+          <Label htmlFor="confirmPassword">Confirm Password</Label>
+          <Input
+            placeholder="Confirm your password"
             id="confirmPassword"
             type={showConfirmPassword ? 'text' : 'password'}
             name="confirmPassword"
@@ -160,7 +165,7 @@ const SecondSequence = ({
             pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$"
             minLength={8}
             maxLength={64}
-            handleChange={(e) => {
+            onChange={(e) => {
               const password = e.target.value;
               setConfirmPassword(password);
             }}
@@ -168,7 +173,7 @@ const SecondSequence = ({
 
           <button
             type="button"
-            className="text-sm font-medium flex gap-1 items-center text-purple-400 w-fit h-fit"
+            className="text-xs font-medium flex gap-1 items-center text-purple-400 w-fit h-fit"
             onClick={() => {
               setShowConfirmPassword(!showConfirmPassword);
             }}
@@ -178,13 +183,9 @@ const SecondSequence = ({
           </button>
         </section>
 
-        <button
-          className="bg-[#FDF5F2] text-sm w-full h-fit py-1.5 rounded border border-[#FAC6C4] text-[#EB5757] flex items-center justify-center"
-          type="submit"
-          disabled={password !== confirmPassword}
-        >
+        <Button type="submit" disabled={password !== confirmPassword}>
           Create your password
-        </button>
+        </Button>
       </form>
     </motion.section>
   );

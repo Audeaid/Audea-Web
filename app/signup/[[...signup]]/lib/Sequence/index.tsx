@@ -11,7 +11,7 @@ import { useSignUp } from '@clerk/nextjs';
 import toast from 'react-hot-toast';
 
 const Sequence = ({ router }: { router: AppRouterInstance }) => {
-  const [progress, setProgress] = useState(1);
+  const [progress, setProgress] = useState(3);
 
   const { isLoaded, signUp, setActive } = useSignUp();
 

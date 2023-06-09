@@ -1,13 +1,11 @@
 'use client';
 
-import BackButton from '@/lib/BackButton';
 import { IGetOneContent } from '../graphql';
 import ErrorShouldDelete from './ErrorShouldDelete';
 import { useRouter } from 'next/navigation';
 import GenerateContent from './GenerateContent';
 import { BulletPointsWithSummary } from '../view';
 import Sidebar, { IContent } from './Sidebar';
-import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 
 export default function Client({
@@ -63,18 +61,7 @@ export default function Client({
 
   return (
     <section className="relative">
-      <section className="max-w-[1300px] pb-20 mt-10 sm:px-10 px-4 w-full mx-auto">
-        <section className="flex items-center justify-between flex-wrap">
-          <BackButton
-            href="/app/saved"
-            withAction={true}
-            handleAction={() => {
-              setSidebarOpen(true);
-            }}
-          />
-        </section>
-        {renderContent()}
-      </section>
+      {renderContent()}
 
       {(() => {
         if (
@@ -101,8 +88,6 @@ export default function Client({
           return <></>;
         }
       })()}
-
-      <Toaster position="bottom-left" containerClassName="z-[999999999]" />
     </section>
   );
 }

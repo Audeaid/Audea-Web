@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  p[data-localization-key='userProfile.start.emailAddressesSection.detailsTitle__primary'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.detailsSubtitle__primary'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.profilePage.imageFormTitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.emailAddressPage.emailCode.formHint'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.connectedAccountPage.formHint'] {
+    @apply text-foreground;
+  }
+
+  #apple {
+    @apply bg-white text-black;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.destructiveActionTitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.destructiveActionSubtitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.connectedAccountsSection.destructiveActionTitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.connectedAccountsSection.destructiveActionSubtitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.emailAddressPage.emailCode.formTitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.detailsTitle__unverified'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.detailsSubtitle__unverified'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.emailAddressPage.removeResource.messageLine1'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.emailAddressPage.removeResource.messageLine2'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.emailAddressPage.removeResource.successMessage'] {
+    @apply text-foreground;
+  }
+
+  p[aria-live='polite'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.emailAddressPage.emailCode.formSubtitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.activeDevicesSection.detailsTitle'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.activeDevicesSection.detailsSubtitle'] {
+    @apply text-foreground;
+  }
+
+  p.cl-internal-of57g {
+    @apply text-foreground;
+  }
+
+  #clerkKontolGuaGabisaStylingNgentot {
+    @apply text-foreground;
+  }
+}
