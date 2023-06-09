@@ -1,6 +1,5 @@
 'use client';
 
-import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
@@ -10,16 +9,19 @@ import Sequence from './Sequence';
 import ImageSrc from '@/public/logo/secondary.svg';
 import Toast from '@/app/app/Toast';
 
-export const metadata: Metadata = {
-  title: 'Authentication',
-  description: 'Authentication forms built using the components.',
-};
-
-export default function AuthenticationPage() {
+export default function Client() {
   const router = useRouter();
 
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 px-0 select-none">
+      <Image
+        src={ImageSrc}
+        quality={100}
+        draggable={false}
+        alt="Audea Logo"
+        height={25}
+        className="lg:hidden block absolute left-4 top-4 md:left-8 md:top-8"
+      />
       <Link
         href="/login"
         className={cn(
