@@ -2,13 +2,15 @@ import { authMiddleware } from '@clerk/nextjs';
 import client from '@/utils/middlewareGraphql';
 import { gql } from '@apollo/client';
 import { NextResponse } from 'next/server';
-import { signJwt } from './utils/jwt';
 
 export default authMiddleware({
   async afterAuth(auth, req, _evt) {
     if (auth.userId) {
       try {
-        const subscription = await checkSubscription(signJwt(auth.userId));
+        const subscription = await checkSubscription(
+          process.env.CHECK_SUBSCRIPTION_SECRET as string,
+          auth.userId
+        );
         const endDate = subscription.endDate;
         const notSubscribed = new Date() >= new Date(endDate);
 
@@ -32,10 +34,13 @@ interface ICheckSubscription {
   endDate: string;
 }
 
-const checkSubscription = (token: string): Promise<ICheckSubscription> => {
+const checkSubscription = (
+  secret: string,
+  clerkUserId: string
+): Promise<ICheckSubscription> => {
   const query = gql`
-    query GetUserSubscription {
-      getUserSubscription {
+    query GetUserSubscriptionEDGE($secret: String!, $clerkUserId: String!) {
+      getUserSubscriptionEDGE(secret: $secret, clerkUserId: $clerkUserId) {
         endDate
       }
     }
@@ -45,18 +50,17 @@ const checkSubscription = (token: string): Promise<ICheckSubscription> => {
     (async () => {
       try {
         const {
-          data: { getUserSubscription },
+          data: { getUserSubscriptionEDGE },
         } = await client.query({
           query,
-          context: {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+          variables: {
+            secret,
+            clerkUserId,
           },
           fetchPolicy: 'network-only',
         });
 
-        resolve(getUserSubscription);
+        resolve(getUserSubscriptionEDGE);
       } catch (e) {
         reject(e);
       }
