@@ -1,16 +1,15 @@
+import { redirect } from 'next/navigation';
 import { getAllContent } from './graphql';
 import Client from './lib';
 import { auth } from '@clerk/nextjs';
-
-export interface AuthTokenPayload {
-  userId: string;
-}
+import { signJwt } from '@/utils/jwt';
 
 export default async function Page() {
   const { userId: clerkUserId } = auth();
-  const token = clerkUserId;
 
-  if (!token) throw new Error('Token is null');
+  if (!clerkUserId) redirect('/login');
+
+  const token = signJwt(clerkUserId);
 
   const content = await getAllContent(token);
 

@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import {
   IGetContentSettings,
   createNewContentSettings,
@@ -5,12 +6,14 @@ import {
 } from './graphql';
 import Client from './lib';
 import { auth } from '@clerk/nextjs';
+import { signJwt } from '@/utils/jwt';
 
 export default async function Page() {
   const { userId: clerkUserId } = auth();
-  const token = clerkUserId;
 
-  if (!token) throw new Error('Token is null');
+  if (!clerkUserId) redirect('/login');
+
+  const token = signJwt(clerkUserId);
 
   const response = await getContentSettings(token);
 

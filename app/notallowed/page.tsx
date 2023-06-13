@@ -2,12 +2,14 @@ import { checkSubscription } from './graphql';
 import { redirect } from 'next/navigation';
 import Client from './lib';
 import { auth } from '@clerk/nextjs';
+import { signJwt } from '@/utils/jwt';
 
 export default async function Page() {
   const { userId: clerkUserId } = auth();
-  const token = clerkUserId;
 
-  if (!token) throw new Error('Token is null');
+  if (!clerkUserId) throw new Error('clerkUserId is null');
+
+  const token = signJwt(clerkUserId);
 
   const { endDate, type, extended } = await checkSubscription(token);
 

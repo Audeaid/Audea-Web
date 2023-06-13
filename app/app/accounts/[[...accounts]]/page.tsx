@@ -1,11 +1,16 @@
 'use client';
 
-import { UserProfile, useClerk } from '@clerk/nextjs';
+import { UserProfile, auth, useClerk } from '@clerk/nextjs';
 import './styles.css';
 import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
   const { loaded } = useClerk();
+
+  const { userId: clerkUserId } = auth();
+
+  if (!clerkUserId) redirect('/login');
 
   useEffect(() => {
     if (loaded) {

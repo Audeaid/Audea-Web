@@ -2,14 +2,16 @@ import { getOneContent } from './graphql';
 import Client from './lib';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs';
+import { signJwt } from '@/utils/jwt';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
 
   const { userId: clerkUserId } = auth();
-  const token = clerkUserId;
 
-  if (!token) throw new Error('Token is null');
+  if (!clerkUserId) redirect('/login');
+
+  const token = signJwt(clerkUserId);
 
   try {
     const content = await getOneContent(token, id);

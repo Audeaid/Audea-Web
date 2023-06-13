@@ -2,12 +2,13 @@ import { authMiddleware } from '@clerk/nextjs';
 import client from '@/utils/middlewareGraphql';
 import { gql } from '@apollo/client';
 import { NextResponse } from 'next/server';
+import { signJwt } from './utils/jwt';
 
 export default authMiddleware({
   async afterAuth(auth, req, _evt) {
     if (auth.userId) {
       try {
-        const subscription = await checkSubscription(auth.userId);
+        const subscription = await checkSubscription(signJwt(auth.userId));
         const endDate = subscription.endDate;
         const notSubscribed = new Date() >= new Date(endDate);
 
