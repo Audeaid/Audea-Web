@@ -12,11 +12,13 @@ export const createUserFromClerk = ({
   clerkId,
   firstName,
   lastName,
+  referralJwt,
 }: {
   email: string;
   clerkId: string;
   firstName: string;
   lastName: string;
+  referralJwt: string | null;
 }): Promise<ICreateUserFromClerk> => {
   const mutation = gql`
     mutation CreateUserFromClerk(
@@ -24,12 +26,14 @@ export const createUserFromClerk = ({
       $clerkId: String!
       $firstName: String!
       $lastName: String!
+      $referralJwt: String
     ) {
       createUserFromClerk(
         email: $email
         clerkId: $clerkId
         firstName: $firstName
         lastName: $lastName
+        referralJwt: $referralJwt
       ) {
         id
         clerkUserId
@@ -44,7 +48,7 @@ export const createUserFromClerk = ({
           data: { createUserFromClerk },
         } = await client.mutate({
           mutation,
-          variables: { email, clerkId, firstName, lastName },
+          variables: { email, clerkId, firstName, lastName, referralJwt },
         });
         resolve(createUserFromClerk);
       } catch (e) {

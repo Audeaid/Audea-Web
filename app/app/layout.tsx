@@ -2,12 +2,14 @@ import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import Navbar from './Navbar';
 import Toast from './Toast';
+import { signJwt } from '@/utils/jwt';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { userId: clerkUserId } = auth();
-  const token = clerkUserId;
 
-  if (!token) redirect('/login');
+  if (!clerkUserId) redirect('/login');
+
+  const token = signJwt(clerkUserId);
 
   return (
     <main className="min-w-screen min-h-screen overflow-x-hidden">

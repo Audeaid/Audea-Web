@@ -12,13 +12,22 @@ const ThirdSequence = ({
   setFirstName,
   setLastName,
   handleClerkSubmit,
+  initialFirstName,
+  initialLastName,
 }: {
   setFirstName: Dispatch<SetStateAction<string>>;
   setLastName: Dispatch<SetStateAction<string>>;
   handleClerkSubmit: (_firstName: string, _lastName: string) => void;
+  initialFirstName: string | null;
+  initialLastName: string | null;
 }) => {
-  const [firstNameHere, setFirstNameHere] = useState('Ada');
-  const [lastNameHere, setLastNameHere] = useState('Lovelace');
+  const [firstNameHere, setFirstNameHere] = useState(initialFirstName ?? 'Ada');
+  const [lastNameHere, setLastNameHere] = useState(
+    initialLastName ?? 'Lovelace'
+  );
+
+  const [firstNameValue, setFirstNameValue] = useState(initialFirstName ?? '');
+  const [lastNameValue, setLastNameValue] = useState(initialLastName ?? '');
 
   return (
     <motion.section
@@ -68,6 +77,10 @@ const ThirdSequence = ({
 
               setFirstNameHere(capitalizeEveryWord(name));
             }}
+            value={firstNameValue}
+            onChange={(e) => {
+              setFirstNameValue(e.target.value);
+            }}
           />
         </div>
 
@@ -84,6 +97,10 @@ const ThirdSequence = ({
               const name = e.currentTarget.value;
 
               setLastNameHere(capitalizeEveryWord(name));
+            }}
+            value={lastNameValue}
+            onChange={(e) => {
+              setLastNameValue(e.target.value);
             }}
           />
         </div>

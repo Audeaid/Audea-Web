@@ -10,7 +10,19 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { useSignUp } from '@clerk/nextjs';
 import toast from 'react-hot-toast';
 
-const Sequence = ({ router }: { router: AppRouterInstance }) => {
+const Sequence = ({
+  router,
+  initialEmail,
+  initialFirstName,
+  initialLastName,
+  referralJwt,
+}: {
+  router: AppRouterInstance;
+  initialEmail: string | null;
+  initialFirstName: string | null;
+  initialLastName: string | null;
+  referralJwt: string | null;
+}) => {
   const [progress, setProgress] = useState(1);
 
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -23,7 +35,13 @@ const Sequence = ({ router }: { router: AppRouterInstance }) => {
 
   switch (progress) {
     case 1:
-      return <FirstSequence setEmail={setEmail} setProgress={setProgress} />;
+      return (
+        <FirstSequence
+          setEmail={setEmail}
+          setProgress={setProgress}
+          initialValue={initialEmail}
+        />
+      );
 
     case 2:
       return (
@@ -71,6 +89,8 @@ const Sequence = ({ router }: { router: AppRouterInstance }) => {
               console.log(JSON.stringify(error));
             }
           }}
+          initialFirstName={initialFirstName}
+          initialLastName={initialLastName}
         />
       );
 
@@ -126,6 +146,7 @@ const Sequence = ({ router }: { router: AppRouterInstance }) => {
 
             await setActive({ session: signUp.createdSessionId });
           }}
+          referralJwt={referralJwt}
         />
       );
 

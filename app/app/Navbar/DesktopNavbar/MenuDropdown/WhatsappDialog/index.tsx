@@ -57,7 +57,7 @@ const WhatsappDialog = ({ token }: { token: string }) => {
   const properFirstName = capitalizeEveryWord(firstName);
   const properLastName = capitalizeEveryWord(lastName);
 
-  const invitationLink = `https://kontolmemek.com/signup?firstName=${properFirstName}&lastName=${properLastName}&clerkUserId=${token}`;
+  const invitationLink = `https://app.audea.id/signup?firstName=${properFirstName}&lastName=${properLastName}&token=${token}`;
 
   const text = `Hey ${properFirstName} ${properLastName}!\n\nI'm inviting you to try Audea. Audea is blablablabla. I'm already an Audea user.\n\nJust register with the link below:\n${invitationLink}`;
 

@@ -14,12 +14,15 @@ import { Label } from '@/components/ui/label';
 const FirstSequence = ({
   setEmail,
   setProgress,
+  initialValue,
 }: {
   setEmail: Dispatch<SetStateAction<string>>;
   setProgress: Dispatch<SetStateAction<number>>;
+  initialValue: string | null;
 }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState(initialValue ?? '');
 
   return (
     <motion.section
@@ -94,6 +97,10 @@ const FirstSequence = ({
               name="email"
               required={true}
               id="email"
+              value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
             />
           </div>
 

@@ -18,6 +18,7 @@ const FifthSequence = ({
   lastName,
   router,
   handleClerk,
+  referralJwt,
 }: {
   email: string;
   clerkId: string;
@@ -25,6 +26,7 @@ const FifthSequence = ({
   lastName: string;
   router: AppRouterInstance;
   handleClerk: () => void;
+  referralJwt: string | null;
 }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | null>(null);
@@ -39,6 +41,7 @@ const FifthSequence = ({
           clerkId,
           firstName,
           lastName,
+          referralJwt,
         });
 
         await createNewUserSubscriptionTrial(response.clerkUserId);

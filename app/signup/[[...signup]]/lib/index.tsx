@@ -9,7 +9,17 @@ import Sequence from './Sequence';
 import ImageSrc from '@/public/logo/secondary.svg';
 import Toast from '@/app/app/Toast';
 
-export default function Client() {
+export default function Client({
+  initialEmail,
+  initialFirstName,
+  initialLastName,
+  referralJwt,
+}: {
+  initialEmail: string | null;
+  initialFirstName: string | null;
+  initialLastName: string | null;
+  referralJwt: string | null;
+}) {
   const router = useRouter();
 
   return (
@@ -60,7 +70,13 @@ export default function Client() {
         </div>
       </div>
       <div className="lg:p-8 block">
-        <Sequence router={router} />
+        <Sequence
+          router={router}
+          initialEmail={initialEmail}
+          initialFirstName={initialFirstName}
+          initialLastName={initialLastName}
+          referralJwt={referralJwt}
+        />
       </div>
 
       <Toast />
