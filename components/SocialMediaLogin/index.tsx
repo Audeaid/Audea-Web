@@ -13,6 +13,7 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
   disabled,
   children,
   type,
+  referralId,
   ...props
 }) => {
   const { signIn } = useSignIn();
@@ -20,7 +21,9 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn?.authenticateWithRedirect({
       strategy,
-      redirectUrl: '/login/sso-callback',
+      redirectUrl: referralId
+        ? `/login/sso-callback?referralId=${referralId}`
+        : '/login/sso-callback',
       redirectUrlComplete: '/',
     });
   };

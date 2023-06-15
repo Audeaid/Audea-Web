@@ -15,10 +15,12 @@ const FirstSequence = ({
   setEmail,
   setProgress,
   initialValue,
+  referralJwt,
 }: {
   setEmail: Dispatch<SetStateAction<string>>;
   setProgress: Dispatch<SetStateAction<number>>;
   initialValue: string | null;
+  referralJwt: string | null;
 }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -126,7 +128,11 @@ const FirstSequence = ({
         </div>
 
         <section className="flex flex-col gap-3">
-          <SocialMediaLogin type="google" disabled={false}>
+          <SocialMediaLogin
+            type="google"
+            disabled={false}
+            referralId={referralJwt}
+          >
             Google
           </SocialMediaLogin>
         </section>

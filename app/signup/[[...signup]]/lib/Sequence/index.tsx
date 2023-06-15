@@ -40,6 +40,7 @@ const Sequence = ({
           setEmail={setEmail}
           setProgress={setProgress}
           initialValue={initialEmail}
+          referralJwt={referralJwt}
         />
       );
 
