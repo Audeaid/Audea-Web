@@ -29,7 +29,7 @@ export default function Client({
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 px-0 select-none">
       <Image
-        src={!darkMode ? AudeaImageTwo : AudeaImage}
+        src={darkMode ? AudeaImageTwo : AudeaImage}
         quality={100}
         draggable={false}
         alt="Audea Logo"
