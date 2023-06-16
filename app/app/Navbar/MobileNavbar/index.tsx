@@ -69,7 +69,7 @@ const MobileNavbar = ({
   }, [pathname]);
 
   return (
-    <nav className="w-full h-fit fixed inset-0 text-primary bg-primary-foreground z-[49] px-2 py-1 text-base select-none md:hidden flex justify-between items-center font-medium border-b-2 border-border">
+    <nav className="w-full h-fit fixed inset-0 text-primary bg-primary-foreground z-[49] px-2 py-1 text-base select-none md:hidden flex justify-between items-center font-medium border-b-2 border-border print:hidden">
       <div className="flex gap-2 items-center">
         {pathname !== '/app' && (
           <button onClick={() => router.back()}>

@@ -13,7 +13,7 @@ const DesktopNavbar = ({
   token: string;
 }) => {
   return (
-    <nav className="w-full h-fit justify-between items-center max-w-[1300px] mx-auto gap-10 px-4 my-10 md:flex hidden">
+    <nav className="w-full h-fit justify-between items-center max-w-[1300px] mx-auto gap-10 px-4 my-10 md:flex hidden print:hidden">
       <MenuDropdown router={router} token={token} />
 
       <Navigation router={router} token={token} />

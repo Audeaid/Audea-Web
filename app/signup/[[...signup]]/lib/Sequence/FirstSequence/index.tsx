@@ -108,7 +108,7 @@ const FirstSequence = ({
 
           <Button disabled={loading} type="submit">
             {loading && <LoadingSpinner size={4} />}
-            Sign up with email
+            Continue with email
           </Button>
         </form>
 
@@ -121,9 +121,7 @@ const FirstSequence = ({
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
+            <span className="bg-background px-2 text-muted-foreground">Or</span>
           </div>
         </div>
 
@@ -132,13 +130,14 @@ const FirstSequence = ({
             type="google"
             disabled={false}
             referralId={referralJwt}
+            signInOrSignUp="signUp"
           >
-            Google
+            Continue with Google
           </SocialMediaLogin>
         </section>
 
         <p className="text-xs text-justify select-none">
-          By clicking &quot;Sign up with Google / Email&quot; above, you
+          By clicking &quot;Continue with Google / Email&quot; above, you
           acknowledge that you have read and understood, and agree to
           Audea&apos;s{' '}
           <a

@@ -1,20 +1,18 @@
 import client from '$utils/graphql';
 import { gql } from '@apollo/client';
 
-interface IGetEmailOtp {
-  __typename: 'ResponseMessage';
-  response: string;
+export interface ISearchUserByClerkId {
+  __typename: 'User';
+  id: string;
 }
 
-export const getEmailOtp = ({
-  email,
-}: {
-  email: string;
-}): Promise<IGetEmailOtp> => {
+export const searchUserByClerkId = (
+  clerkUserId: string
+): Promise<ISearchUserByClerkId | null> => {
   const query = gql`
-    query GetEmailOtp($email: String!) {
-      getEmailOtp(email: $email) {
-        response
+    query SearchUserByClerkId($clerkUserId: String!) {
+      searchUserByClerkId(clerkUserId: $clerkUserId) {
+        id
       }
     }
   `;
@@ -23,16 +21,16 @@ export const getEmailOtp = ({
     (async () => {
       try {
         const {
-          data: { getEmailOtp },
+          data: { searchUserByClerkId },
         } = await client.query({
           query,
           variables: {
-            email,
+            clerkUserId,
           },
           fetchPolicy: 'network-only',
         });
 
-        resolve(getEmailOtp);
+        resolve(searchUserByClerkId);
       } catch (e) {
         reject(e);
       }

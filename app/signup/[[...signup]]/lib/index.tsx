@@ -6,8 +6,11 @@ import { buttonVariants } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import Sequence from './Sequence';
-import ImageSrc from '@/public/logo/secondary.svg';
+import AudeaImage from '@/public/logo/secondary.svg';
+import AudeaImageTwo from '@/public/logo/logo_text_black.svg';
 import Toast from '@/app/app/Toast';
+import { useContext } from 'react';
+import { DarkModeContext } from '@/context/DarkMode';
 
 export default function Client({
   initialEmail,
@@ -21,11 +24,12 @@ export default function Client({
   referralJwt: string | null;
 }) {
   const router = useRouter();
+  const darkMode = useContext(DarkModeContext);
 
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 px-0 select-none">
       <Image
-        src={ImageSrc}
+        src={!darkMode ? AudeaImageTwo : AudeaImage}
         quality={100}
         draggable={false}
         alt="Audea Logo"
@@ -51,7 +55,7 @@ export default function Client({
         />
         <div className="relative z-20 flex items-center text-lg font-medium">
           <Image
-            src={ImageSrc}
+            src={AudeaImage}
             quality={100}
             draggable={false}
             alt="Audea Logo"

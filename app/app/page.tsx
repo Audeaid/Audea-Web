@@ -16,8 +16,6 @@ export default async function Page() {
 
   const token = signJwt(clerkUserId);
 
-  console.log(token);
-
   const content = await getAllContent(token);
   let hasContent: boolean = false;
   if (content !== null) hasContent = true;

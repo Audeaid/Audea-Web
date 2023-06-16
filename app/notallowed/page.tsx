@@ -24,6 +24,6 @@ export default async function Page() {
       />
     );
   } else {
-    redirect('/');
+    redirect('/app');
   }
 }

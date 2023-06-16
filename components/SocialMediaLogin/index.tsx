@@ -6,7 +6,7 @@ import Google from './logo/google.svg';
 import Microsoft from './logo/microsoft.svg';
 import Apple from './logo/apple.svg';
 import Image from 'next/image';
-import { useSignIn } from '@clerk/nextjs';
+import { useSignIn, useSignUp } from '@clerk/nextjs';
 import { OAuthStrategy } from '@clerk/nextjs/dist/types/server';
 
 const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
@@ -14,17 +14,30 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
   children,
   type,
   referralId,
+  signInOrSignUp,
   ...props
 }) => {
   const { signIn } = useSignIn();
 
+  const { signUp } = useSignUp();
+
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn?.authenticateWithRedirect({
       strategy,
-      redirectUrl: referralId
-        ? `/login/sso-callback?referralId=${referralId}`
-        : '/login/sso-callback',
-      redirectUrlComplete: '/',
+      redirectUrl: '/login/sso-callback',
+      redirectUrlComplete: referralId
+        ? `/login/check-user?referralId=${referralId}`
+        : '/login/check-user',
+    });
+  };
+
+  const signUpWith = (strategy: OAuthStrategy) => {
+    return signUp?.authenticateWithRedirect({
+      strategy,
+      redirectUrl: '/login/sso-callback',
+      redirectUrlComplete: referralId
+        ? `/login/check-user?referralId=${referralId}`
+        : '/login/check-user',
     });
   };
 
@@ -41,7 +54,11 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
         disabled ? 'cursor-not-allowed' : 'cursor-pointer'
       }`}
       onClick={() => {
-        signInWith(renderOauthStrategy(type));
+        if (signInOrSignUp === 'signIn') {
+          signInWith(renderOauthStrategy(type));
+        } else {
+          signUpWith(renderOauthStrategy(type));
+        }
       }}
       {...props}
     >

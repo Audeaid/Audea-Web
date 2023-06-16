@@ -148,7 +148,7 @@ export default function Client() {
           </div>
         </section>
 
-        <section className="flex gap-4 my-10 print:hidden">
+        <section className="flex md:flex-row flex-col flex-wrap gap-4 my-10 print:hidden">
           <Button
             variant="outline"
             className={cn('w-fit h-fit')}
