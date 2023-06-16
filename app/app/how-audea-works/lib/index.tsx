@@ -20,7 +20,7 @@ export default function Client() {
 
   return (
     <motion.section
-      className="lg:grid lg:grid-cols-[1fr_0.25fr] print:text-black"
+      className="lg:grid lg:grid-cols-[1fr_0.25fr] print:text-black select-none"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
