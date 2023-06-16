@@ -45,8 +45,11 @@ export default function Client() {
           formFieldSuccessText: 'text-foreground',
           formHeader: 'text-foreground',
           formHeaderSubtitle: 'text-foreground',
-          otpCodeFieldInput: 'border-border',
+          otpCodeFieldInput: 'border-border text-foreground',
           navbarMobileMenuButton: 'hidden',
+          otpCodeFieldInputs: 'text-foreground',
+          otpCodeBox: 'text-foreground',
+          otpCodeField: 'text-foreground',
         },
       }}
     />

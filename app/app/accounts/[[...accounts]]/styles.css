@@ -95,6 +95,18 @@
     @apply text-foreground;
   }
 
+  p[data-localization-key='userProfile.emailAddressPage.emailCode.successMessage'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.detailsTitle__nonPrimary'] {
+    @apply text-foreground;
+  }
+
+  p[data-localization-key='userProfile.start.emailAddressesSection.detailsSubtitle__nonPrimary'] {
+    @apply text-foreground;
+  }
+
   p.cl-internal-of57g {
     @apply text-foreground;
   }
