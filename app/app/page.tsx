@@ -8,8 +8,6 @@ import {
 import Client from './lib';
 import { auth } from '@clerk/nextjs';
 import { signJwt } from '@/utils/jwt';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/LoadingPage';
 
 export default async function Page() {
   const { userId: clerkUserId } = auth();
@@ -33,12 +31,10 @@ export default async function Page() {
   }
 
   return (
-    <Suspense fallback={<LoadingPage />}>
-      <Client
-        token={token}
-        hasContent={hasContent}
-        contentSettings={contentSettings}
-      />
-    </Suspense>
+    <Client
+      token={token}
+      hasContent={hasContent}
+      contentSettings={contentSettings}
+    />
   );
 }

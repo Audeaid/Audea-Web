@@ -7,7 +7,7 @@ export default function Page() {
   try {
     const { userId: clerkUserId } = auth();
 
-    if (!clerkUserId) redirect('/login');
+    if (!clerkUserId) return redirect('/login');
 
     return <Client />;
   } catch (error) {

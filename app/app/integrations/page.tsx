@@ -9,7 +9,7 @@ export default async function Page() {
   try {
     const { userId: clerkUserId } = auth();
 
-    if (!clerkUserId) redirect('/login');
+    if (!clerkUserId) return redirect('/login');
 
     const token = signJwt(clerkUserId);
 

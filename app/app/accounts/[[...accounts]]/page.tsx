@@ -8,7 +8,7 @@ export default function Page({ params }: { params: { accounts: string } }) {
   try {
     const { userId: clerkUserId } = auth();
 
-    if (!clerkUserId) redirect('/login');
+    if (!clerkUserId) return redirect('/login');
 
     return (
       <section className="w-fit h-fit flex items-center justify-start mx-auto text-foreground">
