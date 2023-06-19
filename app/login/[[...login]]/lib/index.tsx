@@ -47,7 +47,7 @@ export default function Client() {
 
   return (
     <motion.main
-      className="min-w-screen min-h-screen"
+      className="min-w-screen min-h-screen select-none"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >

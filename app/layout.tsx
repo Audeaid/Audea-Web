@@ -4,6 +4,7 @@ import { ApolloNextClient } from './apollo';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ViewportProvider } from '@/context/Viewport';
 import { DarkModeProvider } from '@/context/DarkMode';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,11 +28,11 @@ export default function RootLayout({
               <body className={inter.className}>
                 {children}
 
-                <script
+                <Script
                   src="//code.tidio.co/qaqhmzyxhfsct6xkbaxicly6mv91mxsq.js"
                   async
                 />
-                <script src="/tidioChat.js" async />
+                <Script src="/tidioChat.js" async />
               </body>
             </html>
           </DarkModeProvider>

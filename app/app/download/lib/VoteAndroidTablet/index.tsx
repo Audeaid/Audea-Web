@@ -16,6 +16,7 @@ import {
 import { Circle, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { votePlatform } from '../script';
+import ErrorToast from '@/components/ErrorToast';
 
 const VoteAndroidTablet = ({
   token,
@@ -27,6 +28,8 @@ const VoteAndroidTablet = ({
   isChecked: boolean;
 }) => {
   const [count, setCount] = useState(initialCount);
+  const [checked, setChecked] = useState(isChecked);
+  const [animate, setAnimate] = useState(false);
 
   const subscriptionQuery = gql`
     subscription AndroidTabletVoteSubscription {
@@ -37,7 +40,7 @@ const VoteAndroidTablet = ({
     }
   `;
 
-  const { data } = useSubscription(subscriptionQuery);
+  const { data, error: subscriptionError } = useSubscription(subscriptionQuery);
 
   useEffect(() => {
     if (data) {
@@ -51,6 +54,12 @@ const VoteAndroidTablet = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  useEffect(() => {
+    if (subscriptionError) {
+      ErrorToast('getting live upvote data', subscriptionError);
+    }
+  }, [subscriptionError]);
 
   return (
     <motion.div
@@ -71,29 +80,45 @@ const VoteAndroidTablet = ({
             </CardDescription>
           </div>
           <UpvoteButton
-            onChecked={() => {
-              toast
-                .promise(votePlatform(token, 'ANDROIDTABLET', true), {
-                  loading: 'Saving your vote...',
-                  success: 'Success saving your vote!',
-                  error: 'Error saving your vote!',
-                })
-                .catch((e) => {
-                  console.log(JSON.parse(e));
-                });
+            handleChange={(e) => {
+              if (e.target.checked) {
+                setAnimate(true);
+
+                toast
+                  .promise(votePlatform(token, 'ANDROIDTABLET', true), {
+                    loading: 'Saving your vote...',
+                    success: 'Success saving your vote!',
+                    error: 'Error saving your vote!',
+                  })
+                  .then(() => {
+                    setChecked(true);
+                  })
+                  .catch((e) => {
+                    ErrorToast('upvoting Android (tablet) platform', e);
+                  });
+
+                setTimeout(() => {
+                  setAnimate(false);
+                }, 700);
+              } else {
+                setAnimate(false);
+
+                toast
+                  .promise(votePlatform(token, 'ANDROIDTABLET', false), {
+                    loading: 'Saving your vote...',
+                    success: 'Success saving your vote!',
+                    error: 'Error saving your vote!',
+                  })
+                  .then(() => {
+                    setChecked(false);
+                  })
+                  .catch((e) => {
+                    ErrorToast('upvoting Android (tablet) platform', e);
+                  });
+              }
             }}
-            onUnChecked={() => {
-              toast
-                .promise(votePlatform(token, 'ANDROIDTABLET', false), {
-                  loading: 'Saving your vote...',
-                  success: 'Success saving your vote!',
-                  error: 'Error saving your vote!',
-                })
-                .catch((e) => {
-                  console.log(JSON.parse(e));
-                });
-            }}
-            isChecked={isChecked}
+            checked={checked}
+            animate={animate}
           />
         </CardHeader>
 

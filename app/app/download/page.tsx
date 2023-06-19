@@ -3,15 +3,16 @@ import { redirect } from 'next/navigation';
 import Client from './lib';
 import { signJwt } from '@/utils/jwt';
 import { checkIfVoted, getPlatformVote } from './graphql';
+import { generateUrl } from '@/utils/url';
 
 export default async function Page() {
-  const { userId: clerkUserId } = auth();
-
-  if (!clerkUserId) redirect('/login');
-
-  const token = signJwt(clerkUserId);
-
   try {
+    const { userId: clerkUserId } = auth();
+
+    if (!clerkUserId) redirect('/login');
+
+    const token = signJwt(clerkUserId);
+
     const iOSVote = await getPlatformVote(token, 'IOS');
     const iOSIsVoted = await checkIfVoted(token, 'IOS');
 
@@ -54,6 +55,11 @@ export default async function Page() {
     );
   } catch (error) {
     const e = JSON.stringify(error);
-    console.log(JSON.parse(e));
+    const url = generateUrl(
+      `/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent(
+        '/app/download'
+      )}`
+    );
+    return redirect(url.href);
   }
 }

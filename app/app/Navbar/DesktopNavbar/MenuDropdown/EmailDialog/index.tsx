@@ -10,7 +10,7 @@ import {
 import { DropdownMenuDialogItem } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertTriangle, Mail } from 'lucide-react';
+import { AlertTriangle, Mail, Send } from 'lucide-react';
 import cn from '@/utils/cn';
 import { capitalizeEveryWord } from '@/helper';
 import toast from 'react-hot-toast';
@@ -20,10 +20,12 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import ErrorToast from '@/components/ErrorToast';
 
 const EmailDialog = ({ token }: { token: string }) => {
   const [emailExist, setEmailExist] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   return (
     <DropdownMenuDialogItem
@@ -45,6 +47,8 @@ const EmailDialog = ({ token }: { token: string }) => {
           className={cn('flex flex-col gap-4')}
           onSubmit={async (e) => {
             e.preventDefault();
+            setEmailExist(false);
+            setEmailSent(false);
 
             const formData = new FormData(e.currentTarget);
 
@@ -63,6 +67,7 @@ const EmailDialog = ({ token }: { token: string }) => {
 
               try {
                 setLoading(true);
+
                 const { data: isEmailExistResponse }: { data: User[] } =
                   await axios.post('/api/clerkUser', formData);
 
@@ -81,14 +86,16 @@ const EmailDialog = ({ token }: { token: string }) => {
                         error: 'Error sending the email!',
                       }
                     )
+                    .then(() => {
+                      setEmailSent(true);
+                    })
                     .catch((e) => {
-                      console.log(JSON.parse(e));
+                      ErrorToast('sending invitation email', e);
                     });
                 }
               } catch (e) {
                 setLoading(false);
-                const error = JSON.stringify(e);
-                console.log(JSON.parse(error));
+                ErrorToast('checking if email exist', e);
               }
             }
           }}
@@ -142,6 +149,13 @@ const EmailDialog = ({ token }: { token: string }) => {
           <Alert className={cn('my-4')}>
             <AlertTriangle className="h-4 w-4 mr-2" />
             <AlertTitle>Email is a registered Audea user!</AlertTitle>
+          </Alert>
+        )}
+
+        {emailSent && (
+          <Alert className={cn('my-4')}>
+            <Send className="h-4 w-4 mr-2" />
+            <AlertTitle>Invitation email has been sent!</AlertTitle>
           </Alert>
         )}
       </DialogContent>

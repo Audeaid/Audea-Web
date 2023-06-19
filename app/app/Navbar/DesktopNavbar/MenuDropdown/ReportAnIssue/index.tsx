@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { pushIssue } from './script';
+import ErrorToast from '@/components/ErrorToast';
 
 const ReportAnIssue = ({ token }: { token: string }) => {
   const [issueSubmitted, setIssueSubmitted] = useState(false);
@@ -83,7 +84,7 @@ const ReportAnIssue = ({ token }: { token: string }) => {
                   setIssueSubmitted(true);
                 })
                 .catch((e) => {
-                  console.log(JSON.parse(e));
+                  ErrorToast('submitting issue form', e);
                 });
             }
           }}

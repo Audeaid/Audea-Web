@@ -2,20 +2,17 @@
 
 import { motion, useMotionValue } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { ChangeEventHandler } from 'react';
 
 const UpvoteButton = ({
-  isChecked,
-  onChecked,
-  onUnChecked,
+  checked,
+  animate,
+  handleChange,
 }: {
-  isChecked: boolean;
-  onChecked: () => void;
-  onUnChecked: () => void;
+  checked: boolean;
+  animate: boolean;
+  handleChange: ChangeEventHandler<HTMLInputElement>;
 }) => {
-  const [checked, setChecked] = useState(isChecked);
-  const [animate, setAnimate] = useState(false);
-
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -38,20 +35,7 @@ const UpvoteButton = ({
         <input
           type="checkbox"
           checked={checked}
-          onChange={(e) => {
-            setChecked(!checked);
-            if (e.target.checked) {
-              setAnimate(true);
-              onChecked();
-
-              setTimeout(() => {
-                setAnimate(false);
-              }, 700);
-            } else {
-              setAnimate(false);
-              onUnChecked();
-            }
-          }}
+          onChange={handleChange}
           style={{ display: 'none' }}
         />
 
