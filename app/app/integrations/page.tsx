@@ -4,6 +4,8 @@ import Client from './lib';
 import { signJwt } from '@/utils/jwt';
 import { getIntegrationRequest } from './graphql';
 import { generateUrl } from '@/utils/url';
+import { Suspense } from 'react';
+import LoadingPage from '@/components/LoadingPage';
 
 export default async function Page() {
   try {
@@ -27,21 +29,23 @@ export default async function Page() {
     const clickup = await getIntegrationRequest(token, 'CLICKUP');
 
     return (
-      <Client
-        token={token}
-        notionInitialState={notion ? notion.requested : false}
-        clickupInitialState={clickup ? clickup.requested : false}
-        craftInitialState={craft ? craft.requested : false}
-        evernoteInitialState={evernote ? evernote.requested : false}
-        githubInitialState={github ? github.requested : false}
-        gmailInitialState={gmail ? gmail.requested : false}
-        mondayInitialState={monday ? monday.requested : false}
-        obsidianInitialState={obsidian ? obsidian.requested : false}
-        sunsamaInitialState={sunsama ? sunsama.requested : false}
-        todoistInitialState={todoist ? todoist.requested : false}
-        whatsappInitialState={whatsapp ? whatsapp.requested : false}
-        zapierInitialState={zapier ? zapier.requested : false}
-      />
+      <Suspense fallback={<LoadingPage />}>
+        <Client
+          token={token}
+          notionInitialState={notion ? notion.requested : false}
+          clickupInitialState={clickup ? clickup.requested : false}
+          craftInitialState={craft ? craft.requested : false}
+          evernoteInitialState={evernote ? evernote.requested : false}
+          githubInitialState={github ? github.requested : false}
+          gmailInitialState={gmail ? gmail.requested : false}
+          mondayInitialState={monday ? monday.requested : false}
+          obsidianInitialState={obsidian ? obsidian.requested : false}
+          sunsamaInitialState={sunsama ? sunsama.requested : false}
+          todoistInitialState={todoist ? todoist.requested : false}
+          whatsappInitialState={whatsapp ? whatsapp.requested : false}
+          zapierInitialState={zapier ? zapier.requested : false}
+        />
+      </Suspense>
     );
   } catch (error) {
     const e = JSON.stringify(error);

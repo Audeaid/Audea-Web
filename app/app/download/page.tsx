@@ -4,6 +4,8 @@ import Client from './lib';
 import { signJwt } from '@/utils/jwt';
 import { checkIfVoted, getPlatformVote } from './graphql';
 import { generateUrl } from '@/utils/url';
+import { Suspense } from 'react';
+import LoadingPage from '@/components/LoadingPage';
 
 export default async function Page() {
   try {
@@ -35,23 +37,25 @@ export default async function Page() {
     const linuxIsVoted = await checkIfVoted(token, 'LINUX');
 
     return (
-      <Client
-        token={token}
-        initialIOSCount={iOSVote.count}
-        isCheckedIOS={iOSIsVoted.voted}
-        initialIPadOSCount={iPadOSVote.count}
-        isCheckedIPadOS={iPadOSIsVoted.voted}
-        initialMacOSCount={macOSVote.count}
-        isCheckedMacOS={macOSIsVoted.voted}
-        initialAndroidCount={androidVote.count}
-        isCheckedAndroid={androidIsVoted.voted}
-        initialAndroidTabletCount={androidTabletVote.count}
-        isCheckedAndroidTablet={androidTabletIsVoted.voted}
-        initialWindowsCount={windowsVote.count}
-        isCheckedWindows={windowsIsVoted.voted}
-        initialLinuxCount={linuxVote.count}
-        isCheckedLinux={linuxIsVoted.voted}
-      />
+      <Suspense fallback={<LoadingPage />}>
+        <Client
+          token={token}
+          initialIOSCount={iOSVote.count}
+          isCheckedIOS={iOSIsVoted.voted}
+          initialIPadOSCount={iPadOSVote.count}
+          isCheckedIPadOS={iPadOSIsVoted.voted}
+          initialMacOSCount={macOSVote.count}
+          isCheckedMacOS={macOSIsVoted.voted}
+          initialAndroidCount={androidVote.count}
+          isCheckedAndroid={androidIsVoted.voted}
+          initialAndroidTabletCount={androidTabletVote.count}
+          isCheckedAndroidTablet={androidTabletIsVoted.voted}
+          initialWindowsCount={windowsVote.count}
+          isCheckedWindows={windowsIsVoted.voted}
+          initialLinuxCount={linuxVote.count}
+          isCheckedLinux={linuxIsVoted.voted}
+        />
+      </Suspense>
     );
   } catch (error) {
     const e = JSON.stringify(error);

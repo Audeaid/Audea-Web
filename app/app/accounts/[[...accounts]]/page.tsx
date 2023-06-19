@@ -3,6 +3,8 @@ import './styles.css';
 import { redirect } from 'next/navigation';
 import Client from './client';
 import { generateUrl } from '@/utils/url';
+import { Suspense } from 'react';
+import LoadingPage from '@/components/LoadingPage';
 
 export default function Page({ params }: { params: { accounts: string } }) {
   try {
@@ -12,7 +14,9 @@ export default function Page({ params }: { params: { accounts: string } }) {
 
     return (
       <section className="w-fit h-fit flex items-center justify-start mx-auto text-foreground">
-        <Client />
+        <Suspense fallback={<LoadingPage />}>
+          <Client />
+        </Suspense>
       </section>
     );
   } catch (error) {
