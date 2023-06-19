@@ -24,7 +24,7 @@ export default async function Page() {
     const github = await getIntegrationRequest(token, 'GITHUB');
     const evernote = await getIntegrationRequest(token, 'EVERNOTE');
     const craft = await getIntegrationRequest(token, 'CRAFT');
-    const clickup = await getIntegrationRequest(token, 'CLICKUPP');
+    const clickup = await getIntegrationRequest(token, 'CLICKUP');
 
     return (
       <Client
