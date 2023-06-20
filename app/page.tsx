@@ -5,8 +5,8 @@ export default function Page() {
   const { userId: clerkUserId } = auth();
 
   if (clerkUserId) {
-    redirect('/app');
+    return redirect('/app');
   } else {
-    redirect('/login');
+    return redirect('/login');
   }
 }

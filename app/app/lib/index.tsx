@@ -1,11 +1,9 @@
 'use client';
 
-import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import LoadingContent from '$components/LoadingContent';
-import UploadAndRecordNew from './UploadAndRecordNew';
 import {
   createNewContent,
   getTypeOfPrompt,
@@ -15,6 +13,11 @@ import {
   uploadVoiceNoteToS3,
 } from './script';
 import { IGetContentSettings } from '../graphql';
+import { Button } from '@/components/ui/button';
+import cn from '@/utils/cn';
+import Link from 'next/link';
+import UploadAndRecord from './UploadAndRecord';
+import ErrorToast from '@/components/ErrorToast';
 
 export default function Client({
   hasContent,
@@ -45,32 +48,28 @@ export default function Client({
       animate={{ opacity: 1 }}
     >
       <section className="select-none mt-10 pb-10 sm:px-10 px-4 max-w-[1300px] mx-auto">
-        <section className="flex flex-col gap-4">
-          <h3 className="sm:text-4xl text-2xl font-bold text-center">
-            Turn your messy thoughts into structured notes.
-          </h3>
+        <section className="flex flex-col gap-4 items-center justify-center">
           <h4 className="sm:text-lg text-base font-light text-center">
             Upload your voice record or record it. Audea will do its magic.
           </h4>
           {hasContent ? (
-            <a href="/app/saved" className="mx-auto">
-              <button
-                className="sm:text-lg text-base font-light text-center w-fit h-fit underline"
-                tabIndex={-1}
-              >
+            <Link href="/app/saved">
+              <Button variant="outline" className={cn('w-fit h-fit')}>
                 See your saved notes
-              </button>
-            </a>
+              </Button>
+            </Link>
           ) : (
-            <h5 className="sm:text-lg text-base font-light text-center">
-              See how Audea works
-            </h5>
+            <Link href="/app/how-audea-works">
+              <Button variant="outline" className={cn('w-fit h-fit')}>
+                See how Audea works
+              </Button>
+            </Link>
           )}
         </section>
 
         <section>
           {isUploading === false ? (
-            <UploadAndRecordNew
+            <UploadAndRecord
               onFileUpload={(
                 file,
                 outputLanguage,
@@ -90,11 +89,11 @@ export default function Client({
                     );
                   }
 
-                  // First, create new content
-                  setCondition('Creating new database...');
-                  const content = await createNewContent(token);
-
                   try {
+                    // First, create new content
+                    setCondition('Creating new database...');
+                    const content = await createNewContent(token);
+
                     // Get typeOfPrompt
                     setCondition('Getting prompt from our database...');
                     const typeOfPrompt = await getTypeOfPrompt(
@@ -197,9 +196,7 @@ export default function Client({
 
                     router.push(`/app/saved/${response.id}`);
                   } catch (error) {
-                    console.error(error);
-                    toast.error('An error occurred during generating content!');
-                    router.push(`/app/saved/${content.id}`);
+                    ErrorToast('generating content', error);
                   }
                 })();
               }}

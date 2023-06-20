@@ -1,54 +1,65 @@
 export const outputLanguageList = [
   {
-    displayName: 'Same as transcript',
+    label: 'Same as transcript',
+    value: 'same as transcript',
     db: 'TRANSCRIPT',
   },
   {
-    displayName: 'Arabic',
+    label: 'Arabic',
+    value: 'arabic',
     db: 'ARABIC',
   },
   {
-    displayName: 'Bahasa Indonesia',
+    label: 'Bahasa Indonesia',
+    value: 'bahasa indonesia',
     db: 'BAHASAINDONESIA',
   },
   {
-    displayName: 'Chinese',
+    label: 'Chinese',
+    value: 'chinese',
     db: 'CHINESE',
   },
 
   {
-    displayName: 'English',
+    label: 'English',
+    value: 'english',
     db: 'ENGLISH',
   },
   {
-    displayName: 'French',
+    label: 'French',
+    value: 'french',
     db: 'FRENCH',
   },
 
   {
-    displayName: 'Hindi',
+    label: 'Hindi',
+    value: 'hindi',
     db: 'HINDI',
   },
   {
-    displayName: 'Japanese',
+    label: 'Japanese',
+    value: 'japanese',
     db: 'JAPANESE',
   },
   {
-    displayName: 'Russian',
+    label: 'Russian',
+    value: 'russian',
     db: 'RUSSIAN',
   },
   {
-    displayName: 'Spanish',
+    label: 'Spanish',
+    value: 'spanish',
     db: 'SPANISH',
   },
 
   {
-    displayName: 'Urdu',
+    label: 'Urdu',
+    value: 'urdu',
     db: 'URDU',
   },
 ];
 
 export const outputLanguageListWithAsk = [
   ...outputLanguageList,
-  { displayName: 'Ask me everytime', db: 'ASK' },
+  { label: 'Ask me everytime', value: 'ask me everytime', db: 'ASK' },
 ];

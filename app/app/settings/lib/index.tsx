@@ -1,17 +1,12 @@
 'use client';
 
-import { useLayoutEffect, useState } from 'react';
 import { IGetContentSettings } from '../graphql';
 import { motion } from 'framer-motion';
-import OutputLanguage from './OutputLanguage';
-import {
-  IGetTypeOfPrompt,
-  getTypeOfPrompt,
-  updateContentSettings,
-} from './script';
-import TypeOfPrompt from './TypeOfPrompt';
 import WritingStyle from './WritingStyle';
-import toast from 'react-hot-toast';
+import OutputLanguage from './OutputLanguage';
+import { Separator } from '@/components/ui/separator';
+import SelectPrompt from './SelectPrompt';
+import DangerZone from './DangerZone';
 
 export default function Client({
   contentSettings,
@@ -20,131 +15,41 @@ export default function Client({
   contentSettings: IGetContentSettings;
   token: string;
 }) {
-  const [outputLanguage, setOutputLanguage] = useState(
-    contentSettings.outputLanguage
-  );
-  const [writingStyle, setWritingStyle] = useState(
-    contentSettings.writingStyle
-  );
-  const [typeOfPromptId, setTypeOfPromptId] = useState(
-    contentSettings.typeOfPromptId
-  );
-
-  const [edit, setEdit] = useState(false);
-
-  const [allTypeOfPrompt, setAllTypeOfPrompt] = useState<
-    IGetTypeOfPrompt[] | null
-  >(null);
-
-  useLayoutEffect(() => {
-    (async () => {
-      try {
-        const response = await getTypeOfPrompt(token);
-        const reallyAllTypeOfPrompt: IGetTypeOfPrompt[] = [
-          ...response,
-          {
-            __typename: 'TypeOfPrompt',
-            id: '647391c118e8a4e1170d3ec9',
-            displayName: 'Ask me everytime',
-          },
-        ];
-        setAllTypeOfPrompt(reallyAllTypeOfPrompt);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  });
-
   return (
     <motion.section
-      className={`flex flex-col gap-20 select-none`}
+      className={`flex flex-col gap-20 select-none pb-20`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
       <section className="w-full flex sm:flex-row flex-col sm:items-center h-fit sm:justify-between sm:gap-0 gap-4">
-        <h1 className="text-4xl font-bold">Settings</h1>
-
-        {edit ? (
-          <section className="flex items-center gap-6">
-            <button
-              className="text-white px-5 py-1 text-xl rounded-lg shadow-xl font-bold w-fit h-fit border-2 border-gray-500"
-              onClick={() => {
-                setOutputLanguage(contentSettings.outputLanguage);
-                setWritingStyle(contentSettings.writingStyle);
-                setTypeOfPromptId(contentSettings.typeOfPromptId);
-                setEdit(false);
-              }}
-            >
-              CANCEL
-            </button>
-            <button
-              className="bg-primaryDark text-onPrimaryDark px-5 py-1 text-xl rounded-lg shadow-xl font-bold w-fit h-fit border-2 border-primaryDark"
-              onClick={() => {
-                toast
-                  .promise(
-                    updateContentSettings({
-                      token,
-                      outputLanguage,
-                      writingStyle:
-                        writingStyle === 'Ask me everytime'
-                          ? 'ASK'
-                          : writingStyle,
-                      typeOfPromptId,
-                    }),
-                    {
-                      loading: 'Saving your settings...',
-                      success: 'Success saving your settings!',
-                      error: 'Error saving your settings!',
-                    }
-                  )
-                  .then(
-                    () => {
-                      setEdit(false);
-                    },
-                    () => {
-                      setOutputLanguage(contentSettings.outputLanguage);
-                      setWritingStyle(contentSettings.writingStyle);
-                      setTypeOfPromptId(contentSettings.typeOfPromptId);
-                      setEdit(false);
-                    }
-                  );
-              }}
-            >
-              SAVE
-            </button>
-          </section>
-        ) : (
-          <button
-            className="bg-primaryDark text-onPrimaryDark px-5 py-1 text-xl rounded-lg shadow-xl font-bold w-fit h-fit border-2 border-primaryDark"
-            onClick={() => {
-              setEdit(true);
-            }}
-          >
-            EDIT
-          </button>
-        )}
+        <header className="space-y-2">
+          <h1 className="text-4xl font-bold">Workspace Settings</h1>
+          <p>Change your workspace preferences</p>
+        </header>
       </section>
 
-      <section className="flex flex-col gap-16">
+      <section className="flex flex-col gap-10">
         <OutputLanguage
-          userOutputLanguage={outputLanguage}
-          edit={edit}
-          setOutputLanguage={setOutputLanguage}
+          token={token}
+          initialValue={contentSettings.outputLanguage}
         />
+
+        <Separator />
 
         <WritingStyle
-          userWritingStyle={writingStyle}
-          edit={edit}
-          setWritingStyle={setWritingStyle}
+          token={token}
+          initialValue={contentSettings.writingStyle}
         />
 
-        <TypeOfPrompt
-          typeOfPromptId={typeOfPromptId}
-          edit={edit}
-          setTypeOfPromptId={setTypeOfPromptId}
-          allTypeOfPrompt={allTypeOfPrompt ?? []}
+        <Separator />
+
+        <SelectPrompt
+          token={token}
+          initialValue={contentSettings.typeOfPromptId}
         />
       </section>
+
+      <DangerZone token={token} />
     </motion.section>
   );
 }

@@ -1,170 +1,198 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import Tooltip from '@/components/Tooltip';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ChevronsUpDown, Megaphone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import cn from '@/utils/cn';
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from '@/components/ui/input';
 import { presets } from '@/app/utils/presets';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import toast from 'react-hot-toast';
+import { updateContentSettings } from '../script';
+import ErrorToast from '@/components/ErrorToast';
 
-const WritingStyle = ({
-  userWritingStyle,
-  edit,
-  setWritingStyle,
+export default function WritingStyle({
+  token,
+  initialValue,
 }: {
-  userWritingStyle: string;
-  edit: boolean;
-  setWritingStyle: Dispatch<SetStateAction<string>>;
-}) => {
-  const renderInitialOption = () => {
-    if (userWritingStyle === 'ASK') {
-      return 'Ask me everytime';
-    } else if (userWritingStyle === 'Default') {
-      return 'Default';
-    } else {
-      return 'Custom';
-    }
-  };
-  const [custom, setCustom] = useState(
-    userWritingStyle === 'ASK' || userWritingStyle === 'Default' ? false : true
+  token: string;
+  initialValue: string;
+}) {
+  const [value, setValue] = useState(
+    initialValue === 'ASK' || initialValue === 'Default'
+      ? initialValue
+      : 'custom'
   );
-  const [selectedOption, setSelectedOption] = useState(renderInitialOption());
-  const [textInput, setTextInput] = useState('');
-  const [showOptions, setShowOptions] = useState(false);
 
-  useEffect(() => {
-    if (textInput === '' && userWritingStyle !== 'ASK') {
-      setSelectedOption('Default');
-      setWritingStyle('Default');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [textInput]);
+  const [customValue, setCustomValue] = useState(
+    initialValue === 'ASK' || initialValue === 'Default' ? '' : initialValue
+  );
 
-  useEffect(() => {
-    if (
-      userWritingStyle === 'Default' ||
-      userWritingStyle === 'ASK' ||
-      userWritingStyle === 'Ask me everytime'
-    ) {
-      setCustom(false);
-    }
-  }, [userWritingStyle]);
+  const [open, setOpen] = useState(false);
 
   return (
-    <section className="flex sm:flex-row sm:items-center sm:justify-between flex-col gap-4 flex-wrap">
-      <section className="flex flex-col gap-2">
-        <h3 className="text-2xl text-primaryDark font-medium">Writing style</h3>
-        <p className="md:max-w-full max-w-[365px]">
-          Make the AI write in any style you want.{' '}
-          <Tooltip text="Writing style is not 100% effective if the output language is not English." />
-        </p>
-      </section>
+    <section className="flex flex-col gap-6">
+      <section className="flex md:flex-row md:items-start md:justify-between flex-col gap-4 flex-wrap">
+        <section className="flex flex-col gap-2">
+          <h3 className="text-2xl font-medium">Writing style</h3>
+          <p className="md:max-w-full max-w-[365px]">
+            Make the AI write in any style you want.
+          </p>
+        </section>
 
-      {(() => {
-        if (edit) {
-          if (custom) {
-            return (
-              <section className="flex flex-col gap-2">
-                <input
-                  type="text"
-                  className="py-2 px-1 border-2 border-primary rounded-md text-onPrimaryContainer"
-                  placeholder={
-                    userWritingStyle === 'ASK' ||
-                    userWritingStyle === 'Default' ||
-                    userWritingStyle === 'Ask me everytime'
-                      ? 'Write like shakespeare'
-                      : userWritingStyle
-                  }
-                  onChange={(e) => {
-                    setTextInput(e.target.value);
-                    setWritingStyle(e.target.value);
-                  }}
-                  value={textInput}
-                />
+        <section className="flex flex-col gap-4">
+          {value === 'custom' && (
+            <form
+              className="flex flex-col gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
 
-                <div className="relative">
-                  <button
-                    className="w-full h-fit rounded-md bg-blue-500/20 flex items-center justify-center gap-2 text-blue-500 py-2"
-                    onClick={() => {
-                      setShowOptions(!showOptions);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faPlus} />
-                    Choose style preset
-                  </button>
+                const formData = new FormData(e.currentTarget);
 
-                  {showOptions && (
-                    <>
-                      <div
-                        className="fixed inset-0 bg-black bg-opacity-70"
-                        onClick={() => setShowOptions(false)}
-                      />
-                      <ul className="absolute z-10 bg-white rounded-md shadow-md mt-2 w-full overflow-hidden text-onPrimaryContainer">
-                        {presets.map((preset) => (
-                          <li
-                            key={preset}
-                            className="px-4 py-2 cursor-pointer hover:bg-gray-300"
-                            onClick={() => {
-                              setTextInput(preset);
-                              setWritingStyle(preset);
-                              setShowOptions(false);
+                const customValueForm = formData.get('custom-value');
+
+                if (!customValueForm) return;
+
+                toast
+                  .promise(
+                    updateContentSettings({
+                      token,
+                      writingStyle: customValueForm.toString(),
+                      outputLanguage: null,
+                      typeOfPromptId: null,
+                    }),
+                    {
+                      loading: 'Saving your settings...',
+                      success: 'Settings saved!',
+                      error: 'Error saving your settings!',
+                    }
+                  )
+                  .catch((e) => {
+                    ErrorToast('saving writing style', e);
+                  });
+              }}
+            >
+              <Input
+                placeholder="Write like shakespeare"
+                value={customValue}
+                onChange={(e) => {
+                  setCustomValue(e.currentTarget.value);
+                }}
+                required={true}
+                name="custom-value"
+              />
+
+              <div className="flex items-center justify-between gap-2">
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-label="Load a preset..."
+                      aria-expanded={open}
+                      className="flex-1 justify-between"
+                    >
+                      Load a preset...
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full max-w-[350px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search presets..." />
+                      <CommandEmpty>No presets found.</CommandEmpty>
+                      <CommandGroup heading="Examples">
+                        {presets.map((preset, id) => (
+                          <CommandItem
+                            key={id}
+                            onSelect={() => {
+                              setCustomValue(preset);
+                              setOpen(false);
                             }}
                           >
                             {preset}
-                          </li>
+                          </CommandItem>
                         ))}
-                      </ul>
-                    </>
-                  )}
-                </div>
-              </section>
-            );
-          } else {
-            return (
-              <select
-                id="dropdown"
-                name="output-language"
-                value={selectedOption}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (val === 'Custom') {
-                    setCustom(true);
-                  } else {
-                    setWritingStyle(val);
-                    setSelectedOption(val);
-                  }
-                }}
-                className="py-2 px-1 border-2 border-primary rounded-md text-onPrimaryContainer"
-              >
-                {['Default', 'Custom', 'Ask me everytime'].map(
-                  (value, index) => {
-                    return (
-                      <option key={index} value={value}>
-                        {value}
-                      </option>
-                    );
-                  }
-                )}
-              </select>
-            );
-          }
-        } else {
-          return (
-            <p className="py-2 px-1 border-2 border-gray-700 bg-gray-600 rounded-md text-white w-fit cursor-not-allowed">
-              {(() => {
-                if (userWritingStyle === '') {
-                  return 'Default';
-                } else if (userWritingStyle === 'ASK') {
-                  return 'Ask me everytime';
-                } else {
-                  return userWritingStyle;
-                }
-              })()}
-            </p>
-          );
-        }
-      })()}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                <Button type="submit">Save</Button>
+              </div>
+            </form>
+          )}
+          <RadioGroup
+            defaultValue={value}
+            onValueChange={(value) => {
+              setValue(value);
+              setCustomValue('');
+
+              if (value !== 'custom') {
+                toast
+                  .promise(
+                    updateContentSettings({
+                      token,
+                      writingStyle: value,
+                      outputLanguage: null,
+                      typeOfPromptId: null,
+                    }),
+                    {
+                      loading: 'Saving your settings...',
+                      success: 'Settings saved!',
+                      error: 'Error saving your settings!',
+                    }
+                  )
+                  .catch((e) => {
+                    ErrorToast('saving writing style', e);
+                  });
+              }
+            }}
+            className={cn(
+              value === 'custom' ? 'flex items-center gap-2' : 'grid gap-2'
+            )}
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="Default" id="r1" />
+              <Label htmlFor="r1">Default</Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="ASK" id="r3" />
+              <Label htmlFor="r3">Ask me everytime</Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="custom" id="r2" />
+              <Label htmlFor="r2">Custom</Label>
+            </div>
+          </RadioGroup>
+        </section>
+      </section>
+
+      <Alert>
+        <Megaphone className="h-4 w-4" />
+        <AlertTitle className={cn('text-orange-400 font-bold')}>
+          Caution!
+        </AlertTitle>
+        <AlertDescription>
+          Writing style is not 100% effective if the output language is not
+          English.
+        </AlertDescription>
+      </Alert>
     </section>
   );
-};
-
-export default WritingStyle;
+}
