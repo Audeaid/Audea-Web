@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { IGetContentSettings } from '../../graphql';
 import {
   AlertDialog,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
@@ -11,7 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import cn from '@/utils/cn';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { OutputLanguage, TypeOfPrompt, WritingStyle } from './Sequence';
 import { toast } from 'react-hot-toast';
 import { updateContentSettings } from './script';
@@ -72,8 +73,13 @@ export default function DialogSettings({
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
-        <AlertDialogHeader>
+        <AlertDialogHeader
+          className={cn('flex flex-row items-center justify-between gap-4')}
+        >
           <AlertDialogTitle>{currentSequence.displayName}</AlertDialogTitle>
+          <AlertDialogCancel className={cn('w-fit h-fit p-2')}>
+            <X />
+          </AlertDialogCancel>
         </AlertDialogHeader>
 
         {(() => {
