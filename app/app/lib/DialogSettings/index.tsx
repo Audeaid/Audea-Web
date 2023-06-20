@@ -123,8 +123,8 @@ export default function DialogSettings({
                 type="button"
                 variant="default"
                 className={cn(
-                  'w-full h-fit flex items-center justify-between',
-                  currentIndex === 0 ? 'border-none p-0' : ''
+                  'w-full h-full flex items-center justify-between',
+                  currentIndex === 0 ? 'border-none p-0 bg-background' : ''
                 )}
                 disabled={currentIndex === 0}
                 onClick={() => {
@@ -138,7 +138,7 @@ export default function DialogSettings({
                   <>
                     <ChevronLeft />
                     <p className="flex flex-col items-end gap-1">
-                      <span className="font-medium">
+                      <span className="font-medium text-right">
                         {sequence[currentIndex - 1].displayName}
                       </span>
                       <span className="text-xs font-normal">Previous</span>
@@ -152,7 +152,9 @@ export default function DialogSettings({
               <Button
                 type="button"
                 variant="default"
-                className={cn('w-full h-fit flex items-center justify-between')}
+                className={cn(
+                  'w-full h-full flex items-center justify-between'
+                )}
                 onClick={() => {
                   if (currentIndex < sequence.length - 1) {
                     setCurrentIndex(currentIndex + 1);
@@ -218,7 +220,7 @@ export default function DialogSettings({
                 })()}
               >
                 <p className="flex flex-col items-start gap-1">
-                  <span className="font-medium">
+                  <span className="font-medium text-left">
                     {currentIndex < sequence.length - 1
                       ? sequence[currentIndex + 1].displayName
                       : 'Generating Content'}

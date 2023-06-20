@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Prompt, prompt } from '@/app/utils/typeOfPrompt';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,7 @@ import cn from '@/utils/cn';
 import toast from 'react-hot-toast';
 import { updateContentSettings } from '../script';
 import ErrorToast from '@/components/ErrorToast';
+import { ViewportContext } from '@/context/Viewport';
 
 export default function SelectPrompt({
   token,
@@ -42,6 +43,8 @@ export default function SelectPrompt({
   const [peekedPrompt, setPeekedPrompt] = useState<Prompt>(
     prompt.find((prompt) => prompt.id === initialValue) ?? prompt[0]
   );
+
+  const { isMobile } = useContext(ViewportContext);
 
   return (
     <section className="flex md:flex-row md:items-start md:justify-between flex-col gap-4 flex-wrap">
@@ -64,136 +67,208 @@ export default function SelectPrompt({
       </section>
 
       <div className="grid gap-2">
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              aria-label="Select a prompt"
-              className="w-full justify-between"
-            >
-              {selectedPrompt ? selectedPrompt.name : 'Select a prompt...'}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="w-[250px] p-0">
-            <HoverCard>
-              <HoverCardContent
-                side="left"
-                align="start"
-                forceMount
-                className="min-h-[280px]"
+        {isMobile ? (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-[250px] justify-between"
               >
-                <div className="grid gap-2">
-                  <h4 className="font-medium leading-none">
-                    {peekedPrompt.name}
-                  </h4>
-                  <div className="text-sm text-muted-foreground">
-                    {peekedPrompt.description}
-                  </div>
-                  {peekedPrompt.strengths ? (
-                    <div className="mt-4 grid gap-2">
-                      <h5 className="text-sm font-medium leading-none">
-                        Strengths
-                      </h5>
-                      <ul className="text-sm text-muted-foreground">
-                        {peekedPrompt.strengths}
-                      </ul>
-                    </div>
-                  ) : null}
-                </div>
-              </HoverCardContent>
-              <Command loop>
-                <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                  <CommandInput placeholder="Search prompt..." />
-                  <CommandEmpty>No prompt found.</CommandEmpty>
-                  <HoverCardTrigger />
+                {selectedPrompt
+                  ? prompt.find((prompt) => prompt.id === selectedPrompt.id)
+                      ?.name
+                  : 'Select type of content...'}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[250px] p-0">
+              <Command>
+                <CommandInput placeholder="Search type of content..." />
+                <CommandEmpty>No type of content exist.</CommandEmpty>
+                <CommandGroup>
+                  {prompt
+                    .filter((v) => v.id !== '647391c118e8a4e1170d3ec9')
+                    .map((oneprompt) => (
+                      <CommandItem
+                        key={oneprompt.id}
+                        onSelect={(currentValue) => {
+                          const selectPrompt = prompt.find(
+                            (v) => v.name.toLowerCase() === currentValue
+                          );
 
-                  <CommandGroup>
-                    {prompt.map((prompt) => {
-                      if (prompt.id !== '647391c118e8a4e1170d3ec9') {
-                        return (
-                          <PromptItem
-                            key={prompt.id}
-                            prompt={prompt}
-                            isSelected={selectedPrompt?.id === prompt.id}
-                            onPeek={(prompt) => setPeekedPrompt(prompt)}
-                            onSelect={() => {
-                              setSelectedPrompt(prompt);
-                              setOpen(false);
+                          if (!selectPrompt) return;
 
-                              toast
-                                .promise(
-                                  updateContentSettings({
-                                    token,
-                                    writingStyle: null,
-                                    outputLanguage: null,
-                                    typeOfPromptId: prompt.id,
-                                  }),
-                                  {
-                                    loading: 'Saving your settings...',
-                                    success: 'Settings saved!',
-                                    error: 'Error saving your settings!',
-                                  }
-                                )
-                                .catch((e) => {
-                                  ErrorToast('saving writing style', e);
-                                });
-                            }}
-                          />
-                        );
-                      }
-                    })}
-                  </CommandGroup>
+                          setSelectedPrompt(selectPrompt);
+                          setOpen(false);
 
-                  <CommandGroup heading="Or">
-                    <CommandItem
-                      onSelect={() => {
-                        setSelectedPrompt({
-                          id: '647391c118e8a4e1170d3ec9',
-                          name: 'Ask me everytime',
-                          description: '',
-                          strengths: '',
-                        });
-                        setOpen(false);
-
-                        toast
-                          .promise(
-                            updateContentSettings({
-                              token,
-                              writingStyle: null,
-                              outputLanguage: null,
-                              typeOfPromptId: '647391c118e8a4e1170d3ec9',
-                            }),
-                            {
-                              loading: 'Saving your settings...',
-                              success: 'Settings saved!',
-                              error: 'Error saving your settings!',
-                            }
-                          )
-                          .catch((e) => {
-                            ErrorToast('saving writing style', e);
-                          });
-                      }}
-                      className="aria-selected:bg-primary aria-selected:text-primary-foreground"
-                    >
-                      Ask me everytime
-                      <Check
-                        className={cn(
-                          'ml-auto h-4 w-4',
-                          selectedPrompt?.id === '647391c118e8a4e1170d3ec9'
-                            ? 'opacity-100'
-                            : 'opacity-0'
-                        )}
-                      />
-                    </CommandItem>
-                  </CommandGroup>
-                </CommandList>
+                          toast
+                            .promise(
+                              updateContentSettings({
+                                token,
+                                writingStyle: null,
+                                outputLanguage: null,
+                                typeOfPromptId: selectPrompt.id,
+                              }),
+                              {
+                                loading: 'Saving your settings...',
+                                success: 'Settings saved!',
+                                error: 'Error saving your settings!',
+                              }
+                            )
+                            .catch((e) => {
+                              ErrorToast('saving writing style', e);
+                            });
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            'mr-2 h-4 w-4',
+                            selectedPrompt.id === oneprompt.id
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          )}
+                        />
+                        {oneprompt.name}
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
               </Command>
-            </HoverCard>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
+        ) : (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                aria-label="Select a prompt"
+                className="w-full justify-between"
+              >
+                {selectedPrompt ? selectedPrompt.name : 'Select a prompt...'}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-[250px] p-0">
+              <HoverCard>
+                <HoverCardContent
+                  side="left"
+                  align="start"
+                  forceMount
+                  className="min-h-[280px]"
+                >
+                  <div className="grid gap-2">
+                    <h4 className="font-medium leading-none">
+                      {peekedPrompt.name}
+                    </h4>
+                    <div className="text-sm text-muted-foreground">
+                      {peekedPrompt.description}
+                    </div>
+                    {peekedPrompt.strengths ? (
+                      <div className="mt-4 grid gap-2">
+                        <h5 className="text-sm font-medium leading-none">
+                          Strengths
+                        </h5>
+                        <ul className="text-sm text-muted-foreground">
+                          {peekedPrompt.strengths}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                </HoverCardContent>
+                <Command loop>
+                  <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
+                    <CommandInput placeholder="Search prompt..." />
+                    <CommandEmpty>No prompt found.</CommandEmpty>
+                    <HoverCardTrigger />
+
+                    <CommandGroup>
+                      {prompt.map((prompt) => {
+                        if (prompt.id !== '647391c118e8a4e1170d3ec9') {
+                          return (
+                            <PromptItem
+                              key={prompt.id}
+                              prompt={prompt}
+                              isSelected={selectedPrompt?.id === prompt.id}
+                              onPeek={(prompt) => setPeekedPrompt(prompt)}
+                              onSelect={() => {
+                                setSelectedPrompt(prompt);
+                                setOpen(false);
+
+                                toast
+                                  .promise(
+                                    updateContentSettings({
+                                      token,
+                                      writingStyle: null,
+                                      outputLanguage: null,
+                                      typeOfPromptId: prompt.id,
+                                    }),
+                                    {
+                                      loading: 'Saving your settings...',
+                                      success: 'Settings saved!',
+                                      error: 'Error saving your settings!',
+                                    }
+                                  )
+                                  .catch((e) => {
+                                    ErrorToast('saving writing style', e);
+                                  });
+                              }}
+                            />
+                          );
+                        }
+                      })}
+                    </CommandGroup>
+
+                    <CommandGroup heading="Or">
+                      <CommandItem
+                        onSelect={() => {
+                          setSelectedPrompt({
+                            id: '647391c118e8a4e1170d3ec9',
+                            name: 'Ask me everytime',
+                            description: '',
+                            strengths: '',
+                          });
+                          setOpen(false);
+
+                          toast
+                            .promise(
+                              updateContentSettings({
+                                token,
+                                writingStyle: null,
+                                outputLanguage: null,
+                                typeOfPromptId: '647391c118e8a4e1170d3ec9',
+                              }),
+                              {
+                                loading: 'Saving your settings...',
+                                success: 'Settings saved!',
+                                error: 'Error saving your settings!',
+                              }
+                            )
+                            .catch((e) => {
+                              ErrorToast('saving writing style', e);
+                            });
+                        }}
+                        className="aria-selected:bg-primary aria-selected:text-primary-foreground"
+                      >
+                        Ask me everytime
+                        <Check
+                          className={cn(
+                            'ml-auto h-4 w-4',
+                            selectedPrompt?.id === '647391c118e8a4e1170d3ec9'
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          )}
+                        />
+                      </CommandItem>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </HoverCard>
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
     </section>
   );

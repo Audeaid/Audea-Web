@@ -1,14 +1,15 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Prompt, prompt } from '@/app/utils/typeOfPrompt';
-import { ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
+  CommandItem,
   CommandList,
 } from '@/components/ui/command';
 import {
@@ -24,6 +25,8 @@ import {
 import { PromptItem } from '@/app/app/settings/lib/SelectPrompt/component/PromptItem';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { ViewportContext } from '@/context/Viewport';
+import cn from '@/utils/cn';
 
 export const TypeOfPrompt = ({
   value,
@@ -46,6 +49,8 @@ export const TypeOfPrompt = ({
 
   const [checked, setChecked] = useState(saved ?? false);
 
+  const { isMobile } = useContext(ViewportContext);
+
   return (
     <section className="flex flex-col gap-8">
       <p>
@@ -61,76 +66,131 @@ export const TypeOfPrompt = ({
       </p>
 
       <div className="grid gap-2">
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              aria-label="Select a prompt"
-              className="w-full justify-between"
-            >
-              {selectedPrompt ? selectedPrompt.name : 'Select a prompt...'}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="w-[250px] p-0">
-            <HoverCard>
-              <HoverCardContent
-                side="left"
-                align="start"
-                forceMount
-                className="min-h-[280px]"
+        {isMobile ? (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-full justify-between"
               >
-                <div className="grid gap-2">
-                  <h4 className="font-medium leading-none">
-                    {peekedPrompt.name}
-                  </h4>
-                  <div className="text-sm text-muted-foreground">
-                    {peekedPrompt.description}
-                  </div>
-                  {peekedPrompt.strengths ? (
-                    <div className="mt-4 grid gap-2">
-                      <h5 className="text-sm font-medium leading-none">
-                        Strengths
-                      </h5>
-                      <ul className="text-sm text-muted-foreground">
-                        {peekedPrompt.strengths}
-                      </ul>
-                    </div>
-                  ) : null}
-                </div>
-              </HoverCardContent>
-              <Command loop>
-                <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                  <CommandInput placeholder="Search prompt..." />
-                  <CommandEmpty>No prompt found.</CommandEmpty>
-                  <HoverCardTrigger />
+                {selectedPrompt
+                  ? prompt.find((prompt) => prompt.id === selectedPrompt.id)
+                      ?.name
+                  : 'Select type of content...'}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[250px] p-0">
+              <Command>
+                <CommandInput placeholder="Search type of content..." />
+                <CommandEmpty>No type of content exist.</CommandEmpty>
+                <CommandGroup>
+                  {prompt
+                    .filter((v) => v.id !== '647391c118e8a4e1170d3ec9')
+                    .map((oneprompt) => (
+                      <CommandItem
+                        key={oneprompt.id}
+                        onSelect={(currentValue) => {
+                          const selectPrompt = prompt.find(
+                            (v) => v.name.toLowerCase() === currentValue
+                          );
 
-                  <CommandGroup>
-                    {prompt.map((prompt) => {
-                      if (prompt.id !== '647391c118e8a4e1170d3ec9') {
-                        return (
-                          <PromptItem
-                            key={prompt.id}
-                            prompt={prompt}
-                            isSelected={selectedPrompt?.id === prompt.id}
-                            onPeek={(prompt) => setPeekedPrompt(prompt)}
-                            onSelect={() => {
-                              setSelectedPrompt(prompt);
-                              setOpen(false);
-                              setValue(prompt.id);
-                            }}
-                          />
-                        );
-                      }
-                    })}
-                  </CommandGroup>
-                </CommandList>
+                          if (!selectPrompt) return;
+
+                          setSelectedPrompt(selectPrompt);
+                          setValue(selectPrompt.id);
+                          setOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            'mr-2 h-4 w-4',
+                            selectedPrompt.id === oneprompt.id
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          )}
+                        />
+                        {oneprompt.name}
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
               </Command>
-            </HoverCard>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
+        ) : (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                aria-label="Select a prompt"
+                className="w-full justify-between"
+              >
+                {selectedPrompt ? selectedPrompt.name : 'Select a prompt...'}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-[250px] p-0">
+              <HoverCard>
+                <HoverCardContent
+                  side="left"
+                  align="start"
+                  forceMount
+                  className="min-h-[280px]"
+                >
+                  <div className="grid gap-2">
+                    <h4 className="font-medium leading-none">
+                      {peekedPrompt.name}
+                    </h4>
+                    <div className="text-sm text-muted-foreground">
+                      {peekedPrompt.description}
+                    </div>
+                    {peekedPrompt.strengths ? (
+                      <div className="mt-4 grid gap-2">
+                        <h5 className="text-sm font-medium leading-none">
+                          Strengths
+                        </h5>
+                        <ul className="text-sm text-muted-foreground">
+                          {peekedPrompt.strengths}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                </HoverCardContent>
+                <Command loop>
+                  <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
+                    <CommandInput placeholder="Search prompt..." />
+                    <CommandEmpty>No prompt found.</CommandEmpty>
+                    <HoverCardTrigger />
+
+                    <CommandGroup>
+                      {prompt.map((prompt) => {
+                        if (prompt.id !== '647391c118e8a4e1170d3ec9') {
+                          return (
+                            <PromptItem
+                              key={prompt.id}
+                              prompt={prompt}
+                              isSelected={selectedPrompt?.id === prompt.id}
+                              onPeek={(prompt) => setPeekedPrompt(prompt)}
+                              onSelect={() => {
+                                setSelectedPrompt(prompt);
+                                setOpen(false);
+                                setValue(prompt.id);
+                              }}
+                            />
+                          );
+                        }
+                      })}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </HoverCard>
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
 
       <div className="flex items-center space-x-2">
