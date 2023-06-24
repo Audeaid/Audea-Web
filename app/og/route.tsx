@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
             justifyContent: 'center',
             padding: '20px 40px',
             margin: '0 30px',
-            fontSize: 40,
+            fontSize: 50,
             width: 'auto',
             maxWidth: 800,
             textAlign: 'center',
