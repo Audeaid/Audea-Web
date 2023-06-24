@@ -1,16 +1,10 @@
 'use client';
 
-import moment from 'moment';
-
 export const BulletPointsWithSummary = ({
   content,
-  title,
-  createdAt,
   dir,
 }: {
   content: any[];
-  title: string;
-  createdAt: string;
   dir: 'rtl' | 'ltr';
 }) => {
   let summary: any[] = [];
@@ -56,71 +50,57 @@ export const BulletPointsWithSummary = ({
     }
   }
   return (
-    <section className="flex flex-col gap-14" dir={dir}>
-      <header className="flex flex-col gap-2">
-        <h1 className="sm:text-4xl text-3xl font-bold text-primaryDark">
-          {title}
-        </h1>
-        <p>
-          Created{' '}
-          <span className="text-onPrimary/70">
-            @ {moment(createdAt).format('DD MMMM YYYY, HH:mm')}
-          </span>
-        </p>
-      </header>
+    <article className="flex flex-col gap-8" dir={dir}>
+      <section className="flex flex-col gap-2">
+        {summary.map(({ type, content }, index) => {
+          if (type === 'heading_1') {
+            return (
+              <h2
+                key={`${index}-summary`}
+                className="sm:text-3xl text-2xl font-bold"
+              >
+                {content}
+              </h2>
+            );
+          } else if (type === 'paragraph') {
+            return (
+              <p key={`${index}-summary`} className="">
+                {content}
+              </p>
+            );
+          } else {
+            return <></>;
+          }
+        })}
+      </section>
 
-      <article className="flex flex-col gap-8">
-        <section className="flex flex-col gap-2">
-          {summary.map(({ type, content }, index) => {
-            if (type === 'heading_1') {
-              return (
-                <h1
-                  key={`${index}-summary`}
-                  className="sm:text-3xl text-2xl font-bold"
-                >
-                  {content}
-                </h1>
-              );
-            } else if (type === 'paragraph') {
-              return (
-                <p key={`${index}-summary`} className="">
-                  {content}
-                </p>
-              );
-            } else {
-              return <></>;
-            }
+      <section>
+        <h2 className="sm:text-3xl text-2xl font-bold my-6">
+          {additionalInfo[0].content}
+        </h2>
+
+        <section className="flex flex-col gap-6">
+          {bulletPoints.map(({ content, children }, index) => {
+            return (
+              <section
+                key={`${index}-bulletPoints`}
+                className="flex flex-col gap-2"
+              >
+                <h3 className="sm:text-2xl text-xl font-medium">{content}</h3>
+                <ul className="flex flex-col gap-1 list-disc list-inside">
+                  {children.map((value: any, index: any) => {
+                    return (
+                      <li key={`${index}-bulletPoint-Child`} className="">
+                        {value.content}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            );
           })}
         </section>
-
-        <section>
-          <h2 className="sm:text-3xl text-2xl font-bold my-6">
-            {additionalInfo[0].content}
-          </h2>
-
-          <section className="flex flex-col gap-6">
-            {bulletPoints.map(({ content, children }, index) => {
-              return (
-                <section
-                  key={`${index}-bulletPoints`}
-                  className="flex flex-col gap-2"
-                >
-                  <h3 className="sm:text-2xl text-xl font-medium">{content}</h3>
-                  <ul className="flex flex-col gap-1 list-disc list-inside">
-                    {children.map((value: any, index: any) => {
-                      return (
-                        <li key={`${index}-bulletPoint-Child`} className="">
-                          {value.content}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </section>
-              );
-            })}
-          </section>
-        </section>
-      </article>
-    </section>
+      </section>
+    </article>
   );
 };

@@ -66,7 +66,7 @@ const VoteLinux = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="w-full h-full select-none max-w-[300px]"
+      className="w-full h-full select-none max-w-[300px] max-h-[250px]"
     >
       <Card className="w-full h-full flex flex-col justify-between">
         <CardHeader className="flex items-start justify-between gap-4 space-y-0">

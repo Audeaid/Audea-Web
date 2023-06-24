@@ -27,6 +27,7 @@ const Navigation = ({
         const response = await getTitle(token, arrayOfPath[2]);
 
         if (response.title) setTitle(response.title);
+        else setTitle('No title');
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

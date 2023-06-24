@@ -14,19 +14,16 @@ const OneContentListView = ({
   date: string;
 }) => {
   return (
-    <a href={`/app/saved/${contentId}`} className="w-full h-fit">
-      <button
-        className="flex items-center justify-between cursor-pointer w-full"
-        type="button"
-        tabIndex={-1}
-      >
-        <section className="flex items-center justify-center gap-2 font-normal sm:text-lg text-base">
-          <FontAwesomeIcon icon={faNewspaper} />
-          <p className="lg:max-w-[800px] md:max-w-[450px] sm:max-w-[300px] max-w-[200px] truncate">
-            {title ?? 'No Title'}
-          </p>
-        </section>
+    <a
+      href={`/app/saved/${contentId}`}
+      className="w-full h-fit flex items-center justify-between gap-10 flex-nowrap"
+    >
+      <section className="flex items-center justify-center gap-2 font-normal sm:text-lg text-base w-full max-w-full truncate">
+        <FontAwesomeIcon icon={faNewspaper} />
+        <p className="w-full max-w-full truncate">{title ?? 'No Title'}</p>
+      </section>
 
+      <div className="min-w-fit h-fit">
         <p className="font-light text-base sm:block hidden">
           {moment(date).format('MMMM DD, YYYY HH:mm')}
         </p>
@@ -34,7 +31,7 @@ const OneContentListView = ({
         <p className="font-light text-xs sm:hidden block">
           {moment(date).format('MM/DD/YY')}
         </p>
-      </button>
+      </div>
     </a>
   );
 };

@@ -19,7 +19,7 @@ export default function Page({
     const from = decodeURIComponent(searchParams.from.toString());
 
     return (
-      <section className="h-full max-w-[1300px] m-auto w-full mt-10 px-4">
+      <section className="h-full max-w-[1300px] m-auto w-full mt-10 px-4 pb-20">
         <div className="w-full flex flex-col items-center justify-center gap-10">
           <div className="w-full h-fit max-w-[1000px]">
             <h1 className="text-2xl font-bold select-none">

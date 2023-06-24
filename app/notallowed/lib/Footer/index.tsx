@@ -24,14 +24,16 @@ const Footer = ({
   if (!isLoaded || !isSignedIn) {
     return (
       <div className="flex flex-col gap-4">
-        <Skeleton className="w-12 h-4 rounded-full " />
+        <Skeleton className="w-80 h-4 rounded-full" />
 
         <div className="flex flex-col gap-1">
-          <Skeleton className="w-12 h-4 rounded-full " />
-          <Skeleton className="w-12 h-4 rounded-full " />
+          <Skeleton className="w-80 h-4 rounded-full" />
+          <Skeleton className="w-64 h-4 rounded-full" />
         </div>
 
-        <Skeleton className="w-12 h-4 rounded-full " />
+        <Skeleton className="w-72 h-4 rounded-full" />
+
+        <Skeleton className="w-72 h-4 rounded-full" />
       </div>
     );
   }
@@ -114,6 +116,13 @@ const Footer = ({
         <p>Not upgrading?</p>
         {renderExportAndDelete()}
       </section>
+
+      <p>
+        Want to see invoices?{' '}
+        <a className="text-blue-500" href="/app/subscriptions">
+          head to subscriptions page
+        </a>
+      </p>
     </section>
   );
 };

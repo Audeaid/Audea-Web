@@ -38,8 +38,7 @@ export const getTitle = (
 
         resolve(getOneContent);
       } catch (e) {
-        const error = JSON.stringify(e);
-        reject(error);
+        reject(e);
       }
     })();
   });

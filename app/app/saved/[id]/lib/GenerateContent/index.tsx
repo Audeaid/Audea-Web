@@ -13,6 +13,8 @@ import AddLottieAnimation from '@/components/AddLottieAnimation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
+import ErrorToast from '@/components/ErrorToast';
+import { Button } from '@/components/ui/button';
 
 const GenerateContent = ({
   token,
@@ -99,7 +101,7 @@ const GenerateContent = ({
 
         router.push(`/app/saved/${response.id}`);
       } catch (error) {
-        console.error(error);
+        ErrorToast('generating content', error);
         setIsUploading(false);
       }
     }
@@ -152,7 +154,7 @@ const GenerateContent = ({
 
         router.push(`/app/saved/${response.id}`);
       } catch (error) {
-        console.error(error);
+        ErrorToast('generating content', error);
         setIsUploading(false);
       }
     }
@@ -176,7 +178,7 @@ const GenerateContent = ({
           </div>
           <section className="mt-[-5rem] flex flex-col gap-8 items-center justify-center">
             <section className="flex flex-col gap-2">
-              <p className="font-bold text-xl max-w-[600px] text-center text-primaryDark">
+              <p className="font-bold text-xl max-w-[600px] text-center">
                 Sorry, it seems like there is an error while generating your
                 transcript and or content.
               </p>
@@ -184,14 +186,10 @@ const GenerateContent = ({
                 Please click the button below to retry.
               </p>
             </section>
-            <button
-              onClick={handleClick}
-              className="px-4 py-1 rounded-md shadow-xl text-lg bg-primaryDark text-onPrimaryDark w-fit flex items-center justify-center gap-2"
-              type="button"
-            >
-              <FontAwesomeIcon icon={faArrowRotateRight} />
+            <Button onClick={handleClick} type="button">
+              <FontAwesomeIcon icon={faArrowRotateRight} className="mr-2" />
               Retry generating content
-            </button>
+            </Button>
           </section>
         </motion.section>
       )}

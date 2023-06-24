@@ -42,6 +42,9 @@ import toast from 'react-hot-toast';
 import { useClerk, useUser } from '@clerk/nextjs';
 import { Skeleton } from '@/components/ui/skeleton';
 import ReportAnIssue from '../../DesktopNavbar/MenuDropdown/ReportAnIssue';
+import { loadTidio, onTidioChatApiReady } from '../../utils';
+import ErrorToast from '@/components/ErrorToast';
+import { useState } from 'react';
 
 const MobileSheet = ({
   router,
@@ -52,6 +55,7 @@ const MobileSheet = ({
 }) => {
   const { isLoaded, isSignedIn, user } = useUser();
   const { signOut } = useClerk();
+  const [chatIsLoaded, setChatIsLoaded] = useState(false);
 
   if (!isLoaded || !isSignedIn) {
     return <Skeleton className="w-10 h-10 rounded-md" />;
@@ -212,27 +216,48 @@ const MobileSheet = ({
                       { duration: Infinity }
                     );
                   } else {
-                    //@ts-ignore
-                    if (window.tidioChatApi) {
-                      //@ts-ignore
-                      window.tidioChatApi.setVisitorData = {
-                        distinct_id: token, // Unique visitor ID in your system
-                        email: user.emailAddresses[0].emailAddress, // visitor email
-                        name: `${user.firstName} ${user.lastName}`, // Visitor name
-                        phone: null, //Visitor phone
-                      };
+                    if (chatIsLoaded) {
                       //@ts-ignore
                       window.tidioChatApi.show();
                       //@ts-ignore
                       window.tidioChatApi.open();
-                      //@ts-ignore
-                      window.tidioChatApi.messageFromOperator(
-                        'Message from operator!'
-                      );
                     } else {
-                      toast.error(
-                        'Chat is not available at the moment due to server issues.'
-                      );
+                      //@ts-ignore
+                      document.tidioIdentify = {
+                        distinct_id: user.id, // Unique visitor ID in your system
+                        email: user.primaryEmailAddress?.emailAddress, // visitor email
+                        name: `${user.firstName} ${user.lastName}`, // Visitor name
+                        phone: user.phoneNumbers ? user.phoneNumbers[0] : '', //Visitor phone
+                      };
+
+                      toast
+                        .promise(loadTidio(), {
+                          loading: 'Loading chat...',
+                          success: 'Chat is loaded!',
+                          error: 'Error loading chat!',
+                        })
+                        .then(() => {
+                          //@ts-ignore
+                          if (window.tidioChatApi) {
+                            //@ts-ignore
+                            window.tidioChatApi.on(
+                              'ready',
+                              onTidioChatApiReady
+                            );
+                          } else {
+                            //@ts-ignore
+                            document.addEventListener(
+                              'tidioChat-ready',
+                              onTidioChatApiReady
+                            );
+                          }
+
+                          setChatIsLoaded(true);
+                        })
+                        .catch((e) => {
+                          setChatIsLoaded(false);
+                          ErrorToast('loading support chat', e);
+                        });
                     }
                   }
                 }}

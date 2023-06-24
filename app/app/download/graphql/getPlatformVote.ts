@@ -38,7 +38,7 @@ export const getPlatformVote = (
 
         resolve(getPlatformVote);
       } catch (e) {
-        reject(JSON.stringify(e));
+        reject(e);
       }
     })();
   });

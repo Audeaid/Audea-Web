@@ -6,15 +6,20 @@ import { ICheckSubscription } from '../graphql';
 import RestartTrial from './RestartTrial';
 import { useRouter } from 'next/navigation';
 import Footer from './Footer';
+import Toast from '@/app/app/Toast';
 
 export default function Client({
   subscriptionType,
   hasExtendedTrial,
   token,
+  stripeCustomerId,
+  clerkUserId,
 }: {
   subscriptionType: ICheckSubscription['type'];
   hasExtendedTrial: ICheckSubscription['extended'];
   token: string;
+  stripeCustomerId: string;
+  clerkUserId: string;
 }) {
   const router = useRouter();
   return (
@@ -24,7 +29,11 @@ export default function Client({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <SubscribeNowButton subscriptionType={subscriptionType} />
+        <SubscribeNowButton
+          subscriptionType={subscriptionType}
+          stripeCustomerId={stripeCustomerId}
+          clerkUserId={clerkUserId}
+        />
 
         {subscriptionType === 'TRIAL' && !hasExtendedTrial && (
           <RestartTrial router={router} token={token} />
@@ -32,6 +41,8 @@ export default function Client({
 
         <Footer token={token} router={router} />
       </motion.section>
+
+      <Toast />
     </main>
   );
 }

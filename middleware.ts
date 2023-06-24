@@ -14,7 +14,12 @@ export default authMiddleware({
         const endDate = subscription.endDate;
         const notSubscribed = new Date() >= new Date(endDate);
 
-        if (notSubscribed && req.nextUrl.pathname !== '/notallowed') {
+        if (
+          notSubscribed &&
+          req.nextUrl.pathname !== '/notallowed' &&
+          !/^\/app\/subscriptions(?:\/|$)/.test(req.nextUrl.pathname) &&
+          !/^\/api\/stripe(?:\/|$)/.test(req.nextUrl.pathname)
+        ) {
           const notAllowedUrl = new URL('/notallowed', req.url);
           return NextResponse.redirect(notAllowedUrl);
         }

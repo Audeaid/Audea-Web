@@ -60,7 +60,7 @@ export const pushIssue = ({
 
         resolve(pushSupportTicket);
       } catch (e) {
-        reject(JSON.stringify(e));
+        reject(e);
       }
     })();
   });

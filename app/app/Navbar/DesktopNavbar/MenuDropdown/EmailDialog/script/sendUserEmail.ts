@@ -55,7 +55,7 @@ export const sendUserEmail = ({
 
         resolve(sendInvitationEmailFromUser);
       } catch (e) {
-        reject(JSON.stringify(e));
+        reject(e);
       }
     })();
   });

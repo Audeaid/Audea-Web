@@ -1,19 +1,15 @@
 import client from '$utils/graphql';
 import { gql } from '@apollo/client';
+import { IGetPaidObject } from './getPaidObject';
 
-interface IDeleteOneContent {
-  __typename: 'ResponseMessage';
-  response: string;
-}
-
-export const deleteOneContent = (
+export const createPaidObject = (
   token: string,
-  contentId: string
-): Promise<IDeleteOneContent> => {
+  sessionId: string
+): Promise<IGetPaidObject> => {
   const mutation = gql`
-    mutation DeleteContent($contentId: String!) {
-      deleteContent(contentId: $contentId) {
-        response
+    mutation CreatePaidObject($sessionId: String!) {
+      createPaidObject(sessionId: $sessionId) {
+        redeem
       }
     }
   `;
@@ -22,11 +18,11 @@ export const deleteOneContent = (
     (async () => {
       try {
         const {
-          data: { deleteContent },
+          data: { createPaidObject },
         } = await client.mutate({
           mutation,
           variables: {
-            contentId,
+            sessionId,
           },
           context: {
             headers: {
@@ -35,7 +31,7 @@ export const deleteOneContent = (
           },
         });
 
-        resolve(deleteContent);
+        resolve(createPaidObject);
       } catch (e) {
         reject(e);
       }

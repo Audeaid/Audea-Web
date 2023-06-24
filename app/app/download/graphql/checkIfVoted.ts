@@ -38,7 +38,7 @@ export const checkIfVoted = (
 
         resolve(checkIfAlreadyVotedPlatform);
       } catch (e) {
-        reject(JSON.stringify(e));
+        reject(e);
       }
     })();
   });
