@@ -18,7 +18,8 @@ export default authMiddleware({
           notSubscribed &&
           req.nextUrl.pathname !== '/notallowed' &&
           !/^\/app\/subscriptions(?:\/|$)/.test(req.nextUrl.pathname) &&
-          !/^\/api\/stripe(?:\/|$)/.test(req.nextUrl.pathname)
+          !/^\/api\/stripe(?:\/|$)/.test(req.nextUrl.pathname) &&
+          req.nextUrl.pathname !== '/og'
         ) {
           const notAllowedUrl = new URL('/notallowed', req.url);
           return NextResponse.redirect(notAllowedUrl);
