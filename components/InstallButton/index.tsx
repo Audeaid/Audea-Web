@@ -23,7 +23,7 @@ const InstallButton = () => {
   const [supported, setSupported] = useState(false);
   const [useSafari, setUseSafari] = useState(false);
   const [useIOS, setUseIOS] = useState(false);
-  const [useIpadOS, setUseIpadOS] = useState(true);
+  const [useIpadOS, setUseIpadOS] = useState(false);
   const [useChrome, setUseChrome] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(
     {} as BeforeInstallPromptEvent | null
