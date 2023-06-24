@@ -1,9 +1,8 @@
-import { ImageResponse } from 'next/server';
-import { NextApiRequest } from 'next';
+import { ImageResponse, NextRequest } from 'next/server';
 
 export const runtime = 'edge';
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url as string);
   const firstName = searchParams.get('firstName');
   const lastName = searchParams.get('lastName');
