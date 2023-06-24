@@ -6,6 +6,9 @@ import Sheet, { SheetRef } from 'react-modal-sheet';
 import ipadfirst from '../image/ipadfirst.jpg';
 import ipadsecond from '../image/ipadsecond.jpg';
 import ipadthird from '../image/ipadthird.jpg';
+import cn from '@/utils/cn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 export const UseIpadOS = ({
   isOpen,
@@ -18,16 +21,21 @@ export const UseIpadOS = ({
 
   return (
     <Sheet isOpen={isOpen} onClose={onClose} ref={ref}>
-      <Sheet.Container>
-        <Sheet.Header>
-          <h1 className="font-bold text-2xl px-8 py-4">Install di iPadOS</h1>
+      <Sheet.Container
+        className={cn('bg-card text-card-foreground select-none')}
+      >
+        <Sheet.Header className={cn('flex items-center gap-4 px-8 py-4')}>
+          <button className="w-fit h-fit" onClick={onClose}>
+            <FontAwesomeIcon icon={faX} size="lg" />
+          </button>
+          <h1 className="font-bold text-2xl">Install Audea PWA in iPadOS</h1>
         </Sheet.Header>
         <Sheet.Content>
           <div className="w-full h-full overflow-auto pb-24">
             <div className="flex flex-col gap-14 px-8 pb-4">
               <div className="flex flex-col gap-4">
                 <h2 className="text-xl">
-                  <span className="font-bold">1.</span> Tekan icon{' '}
+                  <span className="font-bold">1.</span> Press this share icon{' '}
                   <svg
                     width="35"
                     height="46"
@@ -40,8 +48,8 @@ export const UseIpadOS = ({
                       d="M17.4901 29.8397C18.338 29.8397 19.0676 29.127 19.0676 28.2956V7.96448L18.9493 4.99499L20.2704 6.40055L23.2676 9.60759C23.5437 9.92434 23.938 10.0827 24.3324 10.0827C25.1408 10.0827 25.7718 9.48881 25.7718 8.67716C25.7718 8.26143 25.5944 7.94468 25.2986 7.64773L18.6338 1.19405C18.2394 0.798122 17.9042 0.659546 17.4901 0.659546C17.0958 0.659546 16.7606 0.798122 16.3465 1.19405L9.68169 7.64773C9.38592 7.94468 9.22817 8.26143 9.22817 8.67716C9.22817 9.48881 9.81972 10.0827 10.6479 10.0827C11.0225 10.0827 11.4563 9.92434 11.7324 9.60759L14.7099 6.40055L16.0507 4.99499L15.9324 7.96448V28.2956C15.9324 29.127 16.6423 29.8397 17.4901 29.8397ZM6.19155 45.3404H28.8085C32.9296 45.3404 35 43.2816 35 39.2035V19.4465C35 15.3684 32.9296 13.3096 28.8085 13.3096H23.307V16.4968H28.7493C30.7014 16.4968 31.8254 17.5658 31.8254 19.6247V39.0253C31.8254 41.0841 30.7014 42.1531 28.7493 42.1531H6.23099C4.25915 42.1531 3.17465 41.0841 3.17465 39.0253V19.6247C3.17465 17.5658 4.25915 16.4968 6.23099 16.4968H11.693V13.3096H6.19155C2.07042 13.3096 0 15.3684 0 19.4465V39.2035C0 43.2816 2.07042 45.3404 6.19155 45.3404Z"
                       fill="#007AFF"
                     />
-                  </svg>
-                  dibagian pojok kanan atas browser ini (
+                  </svg>{' '}
+                  on the top right of this browser (
                   <span className="font-bold">Safari</span>
                   ).
                 </h2>
@@ -49,8 +57,8 @@ export const UseIpadOS = ({
               </div>
               <div className="flex flex-col gap-4">
                 <h2 className="text-xl">
-                  <span className="font-bold">2.</span> Scroll kebawah, sampe
-                  ketemu tulisan &quot;Add to Home Screen&quot; yang ada icon
+                  <span className="font-bold">2.</span> Scroll down until you
+                  find &quot;Add to Home Screen&quot;, marked with an icon{' '}
                   <svg
                     width="37"
                     height="38"
@@ -76,8 +84,8 @@ export const UseIpadOS = ({
               </div>
               <div className="flex flex-col gap-4">
                 <h2 className="text-xl">
-                  <span className="font-bold">3.</span> Langsung aja gas tekan
-                  tombol &quot;Add&quot;.
+                  <span className="font-bold">3.</span> Finally, just press the{' '}
+                  &quot;Add&quot; button.
                 </h2>
                 <Image src={ipadthird} alt="" draggable={false} />
               </div>
@@ -95,7 +103,7 @@ export const UseIpadOS = ({
 
 const FloatingIpadOS = () => {
   return (
-    <div className="bg-primary rounded-xl w-fit h-fit pointer-events-none fixed top-0 right-0 flex flex-col items-center justify-center gap-y-6 px-6 py-4 text-center text-white z-20">
+    <div className="bg-card text-card-foreground rounded-xl w-fit h-fit pointer-events-none fixed top-0 right-0 flex flex-col items-center justify-center gap-y-6 px-6 py-4 text-center z-20 border-2 border-border">
       <div className="py-2">
         <svg
           width="18"
@@ -113,9 +121,9 @@ const FloatingIpadOS = () => {
           />
         </svg>
       </div>
-      <div className="flex flex-col items-center justify-center gap-y-1  text-sm">
+      <div className="flex flex-col items-center justify-center gap-y-1 text-sm">
         <div className="flex items-center justify-center font-title font-bold">
-          Tekan tombol icon{' '}
+          Press this icon{' '}
           <span className="inline-block px-2">
             <svg
               width="30"
@@ -137,10 +145,10 @@ const FloatingIpadOS = () => {
               ></path>
             </svg>
           </span>{' '}
-          diatas,
+          above,
         </div>
         <div className="flex items-center justify-center font-title font-bold">
-          trus &quot;Add to home screen&quot;.
+          then press &quot;Add to home screen&quot;.
         </div>
       </div>
     </div>

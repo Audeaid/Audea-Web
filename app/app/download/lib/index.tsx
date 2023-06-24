@@ -73,7 +73,7 @@ export default function Client({
 
         <InstallButton />
       </div>
-      <div className="flex flex-col items-center justify-center gap-8">
+      <div className="flex flex-col items-center justify-center gap-8 select-none">
         <div className="grid lg:grid-cols-4 lg:grid-rows-2 md:grid-cols-3 md:grid-rows-3 sm:grid-cols-2 sm:grid-rows-4 grid-cols-1 grid-rows-7 justify-items-center gap-4 w-fit h-fit">
           <VoteIOS
             token={token}
