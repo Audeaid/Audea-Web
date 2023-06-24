@@ -18,7 +18,7 @@ const OneContentGalleryView = ({
   return (
     <a
       href={`/app/saved/${contentId}`}
-      className="cursor-pointer overflow-hidden rounded-lg h-full min-h-[336px] w-full border border-border"
+      className="cursor-pointer overflow-hidden rounded-lg h-full min-h-[336px] max-h-[336px] w-full border border-border"
     >
       <section className="text-left max-h-[250px] p-4 shadow-inner bg-secondary text-secondary-foreground w-full min-h-[250px] overflow-hidden">
         {(() => {
