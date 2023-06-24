@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
         clerkUserId,
       },
       customer: stripeCustomerId,
-      success_url: `${req.url}/app/subscriptions/success/{CHECKOUT_SESSION_ID}?priceId=${stripePriceId}`,
-      cancel_url: `${req.url}/app/subscriptions`,
+      success_url: `${req.nextUrl.origin}/app/subscriptions/success/{CHECKOUT_SESSION_ID}?priceId=${stripePriceId}`,
+      cancel_url: `${req.nextUrl.origin}/app/subscriptions`,
     };
 
     const checkoutSession: Stripe.Checkout.Session =
