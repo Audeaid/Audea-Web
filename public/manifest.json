@@ -1,0 +1,50 @@
+{
+  "name": "Audea",
+  "short_name": "Audea",
+  "icons": [
+    {
+      "src": "/manifest/icons/128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/manifest/icons/256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/manifest/icons/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/manifest/icons/1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#030711",
+  "theme_color": "#030711",
+  "shortcuts": [
+    {
+      "name": "Record new audio",
+      "short_name": "New audio",
+      "description": "Record new audio and make a new note",
+      "url": "/audio?record=true",
+      "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
+    },
+    {
+      "name": "See saved notes",
+      "short_name": "Saved notes",
+      "description": "View saved notes on Audea",
+      "url": "/app/saved",
+      "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
+    }
+  ]
+}

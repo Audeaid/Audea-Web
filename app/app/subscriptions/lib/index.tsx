@@ -21,12 +21,13 @@ export default function Client({
   invoices: Stripe.Invoice[];
 }) {
   const endDate = new Date(currentSubscription.endDate);
+  const endDateMoment = moment(endDate);
+
   const startDate = new Date(currentSubscription.startDate);
+  const startDateMoment = moment(startDate);
 
   const now = new Date();
-
-  const endDateLocale = endDate.toLocaleString();
-  const startDateLocale = startDate.toLocaleString();
+  const nowMoment = moment(now);
 
   return (
     <motion.section
@@ -35,7 +36,7 @@ export default function Client({
       animate={{ opacity: 1 }}
     >
       {(() => {
-        if (now > endDate) {
+        if (nowMoment.isSameOrAfter(endDateMoment)) {
           return (
             <SubscribeNowButton
               subscriptionType={currentSubscription.type}
@@ -55,7 +56,7 @@ export default function Client({
                 </h3>
                 <p>
                   Your premium ends at{' '}
-                  {moment(endDateLocale).format('HH:mm DD MMMM YYYY')}.
+                  {endDateMoment.format('HH:mm DD MMMM YYYY')}.
                 </p>
               </section>
             );
@@ -69,12 +70,9 @@ export default function Client({
               </section>
             );
           } else {
-            const remainingTime = moment(endDateLocale).diff(
-              moment(),
-              'seconds'
-            );
-            const totalDuration = moment(endDateLocale).diff(
-              moment(startDateLocale),
+            const remainingTime = endDateMoment.diff(nowMoment, 'seconds');
+            const totalDuration = endDateMoment.diff(
+              startDateMoment,
               'seconds'
             );
             const to = `${
@@ -91,7 +89,7 @@ export default function Client({
 
                     <p>
                       Your trial ends at{' '}
-                      {moment(endDateLocale).format('HH:mm DD MMMM YYYY')}.
+                      {endDateMoment.format('HH:mm DD MMMM YYYY')}.
                     </p>
                   </section>
 
@@ -106,8 +104,7 @@ export default function Client({
                     </div>
 
                     <p className="text-right text-muted-foreground font-light">
-                      {moment(endDateLocale).diff(moment(), 'days')} days
-                      remaining
+                      {endDateMoment.diff(nowMoment, 'days')} days remaining
                     </p>
                   </section>
                 </section>
@@ -156,7 +153,7 @@ export default function Client({
       {(currentSubscription.type === 'MONTHLY' ||
         currentSubscription.type === 'YEARLY' ||
         currentSubscription.type === 'LIFETIME') &&
-        now < endDate && (
+        nowMoment.isBefore(endDateMoment) && (
           <Fireworks
             options={{
               rocketsPoint: {

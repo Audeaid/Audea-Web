@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import VoteAndroid from './VoteAndroid';
 import VoteAndroidTablet from './VoteAndroidTablet';
 import VoteIOS from './VoteIOS';
@@ -8,9 +7,8 @@ import VoteIPadOS from './VoteIPadOS';
 import VoteLinux from './VoteLinux';
 import VoteMacOS from './VoteMacOS';
 import VoteWindows from './VoteWindows';
-import { PlusSquare } from 'lucide-react';
-import cn from '@/utils/cn';
 import { motion } from 'framer-motion';
+import InstallButton from '@/components/InstallButton';
 
 export default function Client({
   token,
@@ -73,12 +71,10 @@ export default function Client({
           voice heard by casting your vote below!
         </p>
 
-        <Button className={cn('w-fit h-fit')}>
-          <PlusSquare className="mr-2 w-4 h-4" /> Install as a PWA
-        </Button>
+        <InstallButton />
       </div>
       <div className="flex flex-col items-center justify-center gap-8">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-items-center gap-4">
+        <div className="grid lg:grid-cols-4 lg:grid-rows-2 md:grid-cols-3 md:grid-rows-3 sm:grid-cols-2 sm:grid-rows-4 grid-cols-1 grid-rows-7 justify-items-center gap-4 w-fit h-fit">
           <VoteIOS
             token={token}
             initialCount={initialIOSCount}

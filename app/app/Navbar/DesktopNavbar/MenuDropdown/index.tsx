@@ -44,6 +44,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { loadTidio, onTidioChatApiReady } from '../../utils';
 import ErrorToast from '@/components/ErrorToast';
 import { useState } from 'react';
+import ErrorSafariContentBlocker from '@/components/ErrorSafariContentBlocker';
 
 const MenuDropdown = ({
   router,
@@ -206,8 +207,15 @@ const MenuDropdown = ({
                           setChatIsLoaded(true);
                         })
                         .catch((e) => {
+                          const isSafari =
+                            /^((?!chrome|android).)*safari/i.test(
+                              navigator.userAgent
+                            );
+
                           setChatIsLoaded(false);
                           ErrorToast('loading support chat', e);
+
+                          ErrorSafariContentBlocker(isSafari);
                         });
                     }
                   }

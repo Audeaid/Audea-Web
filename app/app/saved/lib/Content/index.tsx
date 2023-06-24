@@ -18,13 +18,17 @@ const Content = ({
   clerkUserId: string;
 }) => {
   const [listView, setListView] = useState(() => {
-    const storedData = localStorage.getItem('audea__view');
+    if (window) {
+      const storedData = window.localStorage.getItem('audea__view');
 
-    if (storedData) {
-      if (storedData === 'list') {
-        return true;
+      if (storedData) {
+        if (storedData === 'list') {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        return true;
       }
     } else {
       return true;

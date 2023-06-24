@@ -45,6 +45,7 @@ import ReportAnIssue from '../../DesktopNavbar/MenuDropdown/ReportAnIssue';
 import { loadTidio, onTidioChatApiReady } from '../../utils';
 import ErrorToast from '@/components/ErrorToast';
 import { useState } from 'react';
+import ErrorSafariContentBlocker from '@/components/ErrorSafariContentBlocker';
 
 const MobileSheet = ({
   router,
@@ -255,8 +256,15 @@ const MobileSheet = ({
                           setChatIsLoaded(true);
                         })
                         .catch((e) => {
+                          const isSafari =
+                            /^((?!chrome|android).)*safari/i.test(
+                              navigator.userAgent
+                            );
+
                           setChatIsLoaded(false);
                           ErrorToast('loading support chat', e);
+
+                          ErrorSafariContentBlocker(isSafari);
                         });
                     }
                   }

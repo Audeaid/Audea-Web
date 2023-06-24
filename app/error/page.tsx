@@ -24,8 +24,8 @@ export default function Page({
           <div className="w-full h-fit max-w-[1000px]">
             <h1 className="text-2xl font-bold select-none">
               Oops, there&apos;s an error generating page{' '}
-              <code className="px-4 py-1 rounded-md dark:bg-gray-700 bg-gray-200 text-orange-500 select-text">
-                {from}
+              <code className="px-4 py-1 rounded-md dark:bg-gray-700 bg-gray-200 text-orange-500 select-text cursor-pointer hover:underline">
+                <a href={from}>{from}</a>
               </code>
             </h1>
           </div>

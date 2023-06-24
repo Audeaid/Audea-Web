@@ -15,6 +15,7 @@ import cn from '@/utils/cn';
 import { Trash2 } from 'lucide-react';
 import ViewTranscript from './ViewTranscript';
 import { useState } from 'react';
+import DeleteNote from './DeleteNote';
 
 export default function Title({
   token,
@@ -38,6 +39,7 @@ export default function Title({
   writingStyle: string;
 }) {
   const [viewTranscriptOpen, setViewTranscriptOpen] = useState(false);
+  const [deleteNoteOpen, setDeleteNoteOpen] = useState(false);
 
   return (
     <header className="flex flex-col gap-4">
@@ -78,6 +80,9 @@ export default function Title({
               className={cn(
                 'text-destructive focus:bg-destructive focus:text-destructive-foreground'
               )}
+              onClick={() => {
+                setDeleteNoteOpen(true);
+              }}
             >
               <Trash2 className="mr-2 w-4 h-4" />
               Delete note
@@ -95,6 +100,14 @@ export default function Title({
         typeOfPromptId={typeOfPromptId}
         outputLanguage={outputLanguage}
         writingStyle={writingStyle}
+      />
+
+      <DeleteNote
+        token={token}
+        open={deleteNoteOpen}
+        setOpen={setDeleteNoteOpen}
+        title={title}
+        contentId={contentId}
       />
     </header>
   );
