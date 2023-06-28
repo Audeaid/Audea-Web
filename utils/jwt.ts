@@ -5,14 +5,6 @@ export function signJwt(clerkUserId: string) {
 }
 
 export function signJwtClient(clerkUserId: string) {
-  console.log(
-    'NEXT_PUBLIC_APP_SECRET on signJwtClient',
-    process.env.NEXT_PUBLIC_APP_SECRET
-  );
-  const titit = jwt.sign(
-    { clerkUserId: clerkUserId },
-    process.env.NEXT_PUBLIC_APP_SECRET as string
-  );
   const token = jwt.sign(
     { clerkUserId },
     process.env.NEXT_PUBLIC_APP_SECRET as string
