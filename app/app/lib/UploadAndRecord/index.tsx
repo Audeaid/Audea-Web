@@ -102,7 +102,7 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({
       ) {
         setIsDialogOpen(true);
       } else {
-        onFileUpload(file, writingStyle, outputLanguage, typeOfPromptId);
+        onFileUpload(file, outputLanguage, writingStyle, typeOfPromptId);
       }
     }
   };
@@ -252,44 +252,53 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({
 
   return (
     <section className="mt-10 flex flex-col items-center justify-center gap-10">
-      <DialogSettings
-        isOpen={isDialogOpen}
-        contentSettings={contentSettings}
-        setIsOpen={setIsDialogOpen}
-        onFinish={async (outputLanguage, writingStyle, typeOfPromptId) => {
-          if (writingStyle === '') {
-            setWritingStyle('Default');
-          } else {
-            setWritingStyle(writingStyle);
-          }
+      {(contentSettings.outputLanguage === 'ASK' ||
+        contentSettings.typeOfPromptId === '647391c118e8a4e1170d3ec9' ||
+        contentSettings.writingStyle === 'ASK') && (
+        <DialogSettings
+          isOpen={isDialogOpen}
+          contentSettings={contentSettings}
+          setIsOpen={setIsDialogOpen}
+          onFinish={async (outputLanguage, writingStyle, typeOfPromptId) => {
+            if (writingStyle === '') {
+              setWritingStyle('Default');
+            } else {
+              setWritingStyle(writingStyle);
+            }
 
-          setOutputLanguage(
-            outputLanguage as
-              | 'TRANSCRIPT'
-              | 'ENGLISH'
-              | 'BAHASAINDONESIA'
-              | 'CHINESE'
-              | 'HINDI'
-              | 'JAPANESE'
-              | 'SPANISH'
-              | 'FRENCH'
-              | 'RUSSIAN'
-              | 'URDU'
-              | 'ARABIC'
-              | 'ASK'
-          );
+            setOutputLanguage(
+              outputLanguage as
+                | 'TRANSCRIPT'
+                | 'ENGLISH'
+                | 'BAHASAINDONESIA'
+                | 'CHINESE'
+                | 'HINDI'
+                | 'JAPANESE'
+                | 'SPANISH'
+                | 'FRENCH'
+                | 'RUSSIAN'
+                | 'URDU'
+                | 'ARABIC'
+                | 'ASK'
+            );
 
-          setTypeOfPromptId(typeOfPromptId);
+            setTypeOfPromptId(typeOfPromptId);
 
-          if (userChooseRecording) {
-            await startRecording();
-          } else {
-            if (file)
-              onFileUpload(file, outputLanguage, writingStyle, typeOfPromptId);
-          }
-        }}
-        token={token}
-      />
+            if (userChooseRecording) {
+              await startRecording();
+            } else {
+              if (file)
+                onFileUpload(
+                  file,
+                  outputLanguage,
+                  writingStyle,
+                  typeOfPromptId
+                );
+            }
+          }}
+          token={token}
+        />
+      )}
 
       {(() => {
         if (recordingStatus === 'inactive') {
