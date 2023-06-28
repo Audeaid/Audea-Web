@@ -8,6 +8,10 @@ import {
   createUserFromClerk,
   sendNewUserEmail,
 } from '@/app/signup/[[...signup]]/lib/Sequence/FifthSequence/script';
+import axios from 'axios';
+import { generateUrl } from '@/utils/url';
+import { User } from '@clerk/nextjs/dist/types/server';
+import { signJwt } from '@/utils/jwt';
 
 export default async function Page({
   params,
@@ -16,11 +20,11 @@ export default async function Page({
   params: { login: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { userId: clerkUserId, user } = auth();
+  const { userId: clerkUserId } = auth();
 
   if (params.login) {
     if (params.login[0] === 'check-user') {
-      if (clerkUserId && user) {
+      if (clerkUserId) {
         // check if user exist
         const response = await searchUserByClerkId(clerkUserId);
 
@@ -41,21 +45,36 @@ export default async function Page({
             }
           })();
 
+          const { data: userData }: { data: User } = await axios.post(
+            generateUrl('/api/getUserByClerkId').href,
+            {
+              clerkUserId,
+            }
+          );
+
+          const email = userData.emailAddresses.find(
+            (v) => v.id === userData.primaryEmailAddressId
+          )?.emailAddress as string;
+          const firstName = userData.firstName as string;
+          const lastName = userData.lastName as string;
+
           const response = await createUserFromClerk({
-            email: user.emailAddresses[0].emailAddress,
+            email,
             clerkId: clerkUserId,
-            firstName: user.firstName ?? '',
-            lastName: user.lastName ?? '',
+            firstName,
+            lastName,
             referralJwt,
           });
 
-          await createNewUserSubscriptionTrial(response.clerkUserId);
+          const token = signJwt(response.clerkUserId);
 
-          await createNewContentSettings(response.clerkUserId);
+          await createNewUserSubscriptionTrial(token);
+
+          await createNewContentSettings(token);
 
           await sendNewUserEmail({
-            email: user.emailAddresses[0].emailAddress,
-            name: user.firstName ?? '',
+            email,
+            name: firstName,
           });
 
           redirect('/app');

@@ -10,6 +10,7 @@ import {
   createUserFromClerk,
   sendNewUserEmail,
 } from './script';
+import { signJwtClient } from '@/utils/jwt';
 
 const FifthSequence = ({
   email,
@@ -44,8 +45,10 @@ const FifthSequence = ({
           referralJwt,
         });
 
-        await createNewUserSubscriptionTrial(response.clerkUserId);
-        await createNewContentSettings(response.clerkUserId);
+        const token = signJwtClient(response.clerkUserId);
+
+        await createNewUserSubscriptionTrial(token);
+        await createNewContentSettings(token);
 
         // Run sendNewUserEmail query
         await sendNewUserEmail({ email, name: firstName });

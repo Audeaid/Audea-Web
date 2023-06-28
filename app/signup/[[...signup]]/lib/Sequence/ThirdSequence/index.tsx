@@ -110,12 +110,12 @@ const ThirdSequence = ({
             <input type="checkbox" name="agree" id="agree" required={true} />
           </div>
           <Label htmlFor="agree" className={cn('leading-5 text-left')}>
-            I, {firstNameHere} {lastNameHere}, hereby agree to{' '}
+            I, {firstNameHere} {lastNameHere}, hereby agree to Audea&apos;s{' '}
             <a
               href="https://audeaid.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f"
               className="hover:text-blue-500"
             >
-              Audea&apos;s Terms of Service
+              Terms of Service
             </a>{' '}
             and{' '}
             <a

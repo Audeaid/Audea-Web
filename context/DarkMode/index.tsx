@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useLayoutEffect } from 'react';
 import { useSubscription, useQuery, useMutation, gql } from '@apollo/client';
 import { useAuth } from '@clerk/nextjs';
+import { signJwtClient } from '@/utils/jwt';
 
 interface IDarkModeContext {
   darkMode: boolean;
@@ -52,6 +53,17 @@ export const DarkModeContext = createContext<IDarkModeContext | undefined>(
 export const DarkModeProvider: React.FC<IDarkModeProvider> = ({ children }) => {
   const { userId: clerkUserId } = useAuth();
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [token, setToken] = useState(
+    clerkUserId ? signJwtClient(clerkUserId) : ''
+  );
+
+  useLayoutEffect(() => {
+    if (clerkUserId) {
+      const token = signJwtClient(clerkUserId);
+      setToken(token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -69,7 +81,7 @@ export const DarkModeProvider: React.FC<IDarkModeProvider> = ({ children }) => {
     {
       context: {
         headers: {
-          Authorization: `Bearer ${clerkUserId}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     }
@@ -77,7 +89,7 @@ export const DarkModeProvider: React.FC<IDarkModeProvider> = ({ children }) => {
   const [updateDarkModePreferences] = useMutation(DARK_MODE_UPDATE_MUTATION, {
     context: {
       headers: {
-        Authorization: `Bearer ${clerkUserId}`,
+        Authorization: `Bearer ${token}`,
       },
     },
   });
@@ -103,7 +115,7 @@ export const DarkModeProvider: React.FC<IDarkModeProvider> = ({ children }) => {
   const { data } = useQuery(DARK_MODE_GET_QUERY, {
     context: {
       headers: {
-        Authorization: `Bearer ${clerkUserId}`,
+        Authorization: `Bearer ${token}`,
       },
     },
   });
