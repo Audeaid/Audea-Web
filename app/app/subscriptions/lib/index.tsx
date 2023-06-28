@@ -94,7 +94,7 @@ export default function Client({
                   </section>
 
                   <section className="flex flex-col gap-2">
-                    <div className="min-w-full h-fit dark:bg-gray-800 bg-gray-400 rounded-full">
+                    <div className="min-w-full h-fit dark:bg-gray-800 bg-gray-400 rounded-full overflow-hidden">
                       <motion.div
                         className="h-[30px] dark:bg-green-800 bg-green-400 rounded-full"
                         animate={{ width: to }}
