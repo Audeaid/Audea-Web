@@ -31,7 +31,7 @@ export default async function Page({
         const userExist = response === null ? false : true;
 
         if (userExist) {
-          redirect('/app');
+          return redirect('/app');
         } else {
           const referralJwt = (() => {
             if (searchParams) {
@@ -77,19 +77,19 @@ export default async function Page({
             name: firstName,
           });
 
-          redirect('/app');
+          return redirect('/app');
         }
       } else {
-        redirect('/login');
+        return redirect('/login');
       }
     } else if (params.login[0] === 'sso-callback') {
       return <AuthenticateWithRedirectCallback />;
     } else {
-      notFound();
+      return notFound();
     }
   } else {
     if (clerkUserId) {
-      redirect('/app');
+      return redirect('/app');
     } else {
       return <Client />;
     }
