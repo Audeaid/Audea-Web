@@ -59,7 +59,7 @@ const WhatsappDialog = ({ token }: { token: string }) => {
 
   const invitationLink = `https://app.audea.id/signup?firstName=${properFirstName}&lastName=${properLastName}&token=${token}`;
 
-  const text = `Hey ${properFirstName} ${properLastName}!\n\nI'm inviting you to try Audea. Audea is blablablabla. I'm already an Audea user.\n\nJust register with the link below:\n${invitationLink}`;
+  const text = `Hey ${properFirstName} ${properLastName}!\n\n You should try this!\n\n I’ve been using this to convert my messy thoughts to structured notes, and I think you’d like it, too.\n\n You can register with my referral link below:\n${invitationLink}`;
 
   const waLink = `https://wa.me/${properWhatsapp}?text=${encodeURIComponent(
     text
