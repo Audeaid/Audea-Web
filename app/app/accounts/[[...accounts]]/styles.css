@@ -107,6 +107,10 @@
     @apply text-foreground;
   }
 
+  p[data-localization-key='userProfile.passwordPage.changePasswordSuccessMessage'] {
+    @apply text-foreground;
+  }
+
   p.cl-internal-of57g {
     @apply text-foreground;
   }
