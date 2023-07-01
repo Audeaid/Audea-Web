@@ -2,16 +2,10 @@ import { AuthenticateWithRedirectCallback, auth } from '@clerk/nextjs';
 import { notFound, redirect } from 'next/navigation';
 import Client from './lib';
 import { searchUserByClerkId } from './graphql';
-import {
-  createNewContentSettings,
-  createNewUserSubscriptionTrial,
-  createUserFromClerk,
-  sendNewUserEmail,
-} from '@/app/signup/[[...signup]]/lib/Sequence/FifthSequence/script';
 import axios from 'axios';
 import { generateUrl } from '@/utils/url';
 import { User } from '@clerk/nextjs/dist/types/server';
-import { signJwt } from '@/utils/jwt';
+import CreatingNewUser from './lib/CreatingNewUser';
 
 export default async function Page({
   params,
@@ -58,26 +52,17 @@ export default async function Page({
           const firstName = userData.firstName as string;
           const lastName = userData.lastName as string;
 
-          const response = await createUserFromClerk({
-            email,
-            clerkId: clerkUserId,
-            firstName,
-            lastName,
-            referralJwt,
-          });
-
-          const token = signJwt(response.clerkUserId);
-
-          await createNewUserSubscriptionTrial(token);
-
-          await createNewContentSettings(token);
-
-          await sendNewUserEmail({
-            email,
-            name: firstName,
-          });
-
-          return redirect('/app');
+          return (
+            <section className="w-full h-it mx-auto">
+              <CreatingNewUser
+                email={email}
+                clerkId={clerkUserId}
+                firstName={firstName}
+                lastName={lastName}
+                referralJwt={referralJwt}
+              />
+            </section>
+          );
         }
       } else {
         return redirect('/login');

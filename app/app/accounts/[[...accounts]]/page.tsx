@@ -13,7 +13,7 @@ export default function Page({ params }: { params: { accounts: string } }) {
     if (!clerkUserId) return redirect('/login');
 
     return (
-      <section className="w-fit h-fit flex items-center justify-start mx-auto text-foreground">
+      <section className="w-fit h-fit flex items-center justify-start mx-auto text-foreground sm:px-2">
         <Suspense fallback={<LoadingPage />}>
           <Client />
         </Suspense>
