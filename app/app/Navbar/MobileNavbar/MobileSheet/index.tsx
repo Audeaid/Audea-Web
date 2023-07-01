@@ -170,7 +170,7 @@ const MobileSheet = ({
                   onClick={() => router.push('/app/how-audea-works')}
                 >
                   <Video className="mr-2 h-4 w-4" />
-                  <span>How Audea works</span>
+                  <span>How to use Audea</span>
                 </DropdownMenuItem>
               </SheetClose>
               <DropdownMenuItem>

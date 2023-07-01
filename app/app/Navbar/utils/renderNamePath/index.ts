@@ -43,7 +43,7 @@ export const renderNamePath = (pathname: string) => {
     case 'how-audea-works':
       return {
         icon: Video,
-        name: 'How Audea works',
+        name: 'How to use Audea',
       };
 
     case 'subscriptions':
@@ -55,7 +55,7 @@ export const renderNamePath = (pathname: string) => {
     default:
       return {
         icon: Video,
-        name: 'How Audea works',
+        name: 'How to use Audea',
       };
   }
 };

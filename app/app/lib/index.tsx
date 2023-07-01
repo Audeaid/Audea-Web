@@ -61,7 +61,7 @@ export default function Client({
           ) : (
             <Link href="/app/how-audea-works">
               <Button variant="outline" className={cn('w-fit h-fit')}>
-                See how Audea works
+                See how to use Audea
               </Button>
             </Link>
           )}

@@ -37,7 +37,7 @@ const EmptyContent = ({ router }: { router: AppRouterInstance }) => {
         <p>
           Not sure how?{' '}
           <a className="text-blue-500" href="/app/how-audea-works">
-            See how Audea works.
+            See how to use Audea.
           </a>
         </p>
       </section>
