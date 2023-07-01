@@ -179,7 +179,9 @@ const SecondSequence = ({
             }}
           >
             <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-            {showConfirmPassword ? 'Hide password' : 'Show password'}
+            <p className="min-w-fit h-fit">
+              {showConfirmPassword ? 'Hide password' : 'Show password'}
+            </p>
           </button>
         </section>
 
