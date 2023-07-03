@@ -22,11 +22,11 @@ import ChooseFirstFactor from './ChooseFirstFactor';
 import EmailCode from './EmailCode';
 import { toast } from 'react-hot-toast';
 import Toast from '@/app/app/Toast';
-import { useRouter } from 'next/navigation';
 import Password from './Password';
 import ForgotPassword from './ForgotPassword';
+import { useRouter } from 'next/navigation';
 
-export default function Client() {
+export default function Login() {
   const router = useRouter();
   const { isLoaded, signIn, setActive } = useSignIn();
   const darkMode = useContext(DarkModeContext);

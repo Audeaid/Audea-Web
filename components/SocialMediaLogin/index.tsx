@@ -24,7 +24,9 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn?.authenticateWithRedirect({
       strategy,
-      redirectUrl: '/login/sso-callback',
+      redirectUrl: referralId
+        ? `/login/sso-callback?referralId=${referralId}`
+        : '/login/sso-callback',
       redirectUrlComplete: referralId
         ? `/login/check-user?referralId=${referralId}`
         : '/login/check-user',
@@ -34,7 +36,9 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
   const signUpWith = (strategy: OAuthStrategy) => {
     return signUp?.authenticateWithRedirect({
       strategy,
-      redirectUrl: '/login/sso-callback',
+      redirectUrl: referralId
+        ? `/login/sso-callback?referralId=${referralId}`
+        : '/login/sso-callback',
       redirectUrlComplete: referralId
         ? `/login/check-user?referralId=${referralId}`
         : '/login/check-user',

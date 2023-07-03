@@ -9,7 +9,7 @@ import {
 import AddLottieAnimation from '@/components/AddLottieAnimation';
 import { signJwtClient } from '@/utils/jwt';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { deleteUserMutation } from './deleteUserMutation';
 import axios from 'axios';

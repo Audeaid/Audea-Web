@@ -1,11 +1,11 @@
 import { AuthenticateWithRedirectCallback, auth } from '@clerk/nextjs';
 import { notFound, redirect } from 'next/navigation';
-import Client from './lib';
 import { searchUserByClerkId } from './graphql';
 import axios from 'axios';
 import { generateUrl } from '@/utils/url';
 import { User } from '@clerk/nextjs/dist/types/server';
 import CreatingNewUser from './lib/CreatingNewUser';
+import Login from './lib/Login';
 
 export default async function Page({
   params,
@@ -68,7 +68,15 @@ export default async function Page({
         return redirect('/login');
       }
     } else if (params.login[0] === 'sso-callback') {
-      return <AuthenticateWithRedirectCallback />;
+      return (
+        <AuthenticateWithRedirectCallback
+          redirectUrl={
+            searchParams.referralId
+              ? `/login/check-user?referralId=${searchParams.referralId}`
+              : '/login/check-user'
+          }
+        />
+      );
     } else {
       return notFound();
     }
@@ -76,7 +84,7 @@ export default async function Page({
     if (clerkUserId) {
       return redirect('/app');
     } else {
-      return <Client />;
+      return <Login />;
     }
   }
 }
