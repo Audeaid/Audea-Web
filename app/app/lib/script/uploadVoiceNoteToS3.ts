@@ -1,20 +1,23 @@
-import { ManagedUpload } from 'aws-sdk/clients/s3';
 import axios from 'axios';
 
-export const uploadVoiceNoteToS3 = (
-  file: File,
-  contentId: string
-): Promise<ManagedUpload.SendData> => {
+export const uploadVoiceNoteToS3 = (file: File, url: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('contentId', contentId);
 
-        const { data } = await axios.post('/api/s3', formData);
+        await axios.put(url, formData, {
+          headers: {
+            'Content-Type': file.type,
+          },
+        });
 
-        resolve(data as ManagedUpload.SendData);
+        const location = url.split('?')[0];
+
+        if (!location) throw new Error('Invalid generated URL.');
+
+        resolve(location);
       } catch (error) {
         console.error(error);
         reject(error);

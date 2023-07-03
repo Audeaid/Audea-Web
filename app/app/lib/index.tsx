@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import LoadingContent from '$components/LoadingContent';
 import {
   createNewContent,
+  getS3PresignedPost,
   getTypeOfPrompt,
   publicGetGptResponse,
   publicGetTranscriptFromWhisper,
@@ -75,7 +76,7 @@ export default function Client({
               if (isError) {
                 return (
                   <section className="w-full h-fit border-dashed border-2 border-border rounded-xl py-20 max-w-[800px] mx-auto relative sm:px-0 px-4 dark:bg-gray-900 bg-gray-100 flex flex-col items-center justify-center mt-10">
-                    <div className="max-w-[500px]">
+                    <div className="max-w-[300px]">
                       <AddLottieAnimation
                         path="/lottie/91878-bouncy-fail.json"
                         loop={false}
@@ -139,16 +140,14 @@ export default function Client({
 
                         // Upload the voice note to s3 using contentId
                         setCondition('Uploading the audio file...');
-                        const uploadedVoiceNote = await uploadVoiceNoteToS3(
-                          file,
-                          content.id
-                        );
+                        const url = await getS3PresignedPost(file, content.id);
+                        const location = await uploadVoiceNoteToS3(file, url);
 
                         await updateContent({
                           token,
                           contentId: content.id,
                           title: null,
-                          voiceNoteUrl: uploadedVoiceNote.Location,
+                          voiceNoteUrl: location,
                           transcript: null,
                           gptGenerated: null,
                           typeOfPromptId: null,

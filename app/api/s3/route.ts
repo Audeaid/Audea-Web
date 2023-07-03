@@ -10,21 +10,19 @@ export async function POST(request: NextRequest) {
     if (!file) throw new Error('File is missing');
     if (!contentId) throw new Error('contentId is missing');
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
     const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
 
-    const params = {
+    const fileParams = {
       Bucket: 'audea-voice-note',
       Key: `${contentId}${fileExtension}`,
-      Body: buffer,
+      Expires: 600,
+      ContentType: file.type,
       ACL: 'public-read',
     };
 
-    const upload = await s3.upload(params).promise();
+    const url = await s3.getSignedUrlPromise('putObject', fileParams);
 
-    return NextResponse.json(upload);
+    return NextResponse.json(url);
   } catch (error) {
     console.error(error);
     return NextResponse.error();

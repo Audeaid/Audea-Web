@@ -4,3 +4,4 @@ export * from './publicGetGptResponse';
 export * from './publicGetTranscriptFromWhisper';
 export * from './updateContent';
 export * from './uploadVoiceNoteToS3';
+export * from './getS3PresignedPost';
