@@ -18,6 +18,7 @@ import cn from '@/utils/cn';
 import Link from 'next/link';
 import UploadAndRecord from './UploadAndRecord';
 import ErrorToast from '@/components/ErrorToast';
+import AddLottieAnimation from '@/components/AddLottieAnimation';
 
 export default function Client({
   hasContent,
@@ -31,6 +32,7 @@ export default function Client({
   const router = useRouter();
   const [condition, setCondition] = useState('inactive');
   const [isUploading, setIsUploading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const [userContentSettings, _setUserContentSettings] =
@@ -68,7 +70,7 @@ export default function Client({
         </section>
 
         <section>
-          {isUploading === false ? (
+          {!isUploading && !isError ? (
             <UploadAndRecord
               onFileUpload={(
                 file,
@@ -196,6 +198,7 @@ export default function Client({
 
                     router.push(`/app/saved/${response.id}`);
                   } catch (error) {
+                    setIsError(true);
                     ErrorToast('generating content', error);
                   }
                 })();
@@ -205,6 +208,20 @@ export default function Client({
             />
           ) : (
             <LoadingContent condition={condition} />
+          )}
+
+          {isUploading && isError && (
+            <section className="w-full h-fit border-dashed border-2 border-border rounded-xl py-20 max-w-[800px] mx-auto relative sm:px-0 px-4 dark:bg-gray-900 bg-gray-100 flex flex-col items-center justify-center mt-10">
+              <div className="max-w-[500px]">
+                <AddLottieAnimation
+                  path="/lottie/91878-bouncy-fail.json"
+                  loop={false}
+                />
+              </div>
+              <p className="font-bold sm:text-2xl text-lg text-center">
+                There is an error generating your note
+              </p>
+            </section>
           )}
         </section>
       </section>
