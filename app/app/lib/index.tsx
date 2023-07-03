@@ -140,7 +140,11 @@ export default function Client({
 
                         // Upload the voice note to s3 using contentId
                         setCondition('Uploading the audio file...');
-                        const url = await getS3PresignedPost(file, content.id);
+                        const url = await getS3PresignedPost(
+                          content.id,
+                          file.type,
+                          file.name.substring(file.name.lastIndexOf('.'))
+                        );
                         const location = await uploadVoiceNoteToS3(file, url);
 
                         await updateContent({
