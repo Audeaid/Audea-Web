@@ -70,93 +70,113 @@ export default function Client({
         </section>
 
         <section>
-          {!isUploading && !isError ? (
-            <UploadAndRecord
-              onFileUpload={(
-                file,
-                outputLanguage,
-                writingStyle,
-                typeOfPromptId
-              ) => {
-                (async () => {
-                  setIsUploading(true);
+          {(() => {
+            if (isUploading) {
+              if (isError) {
+                return (
+                  <section className="w-full h-fit border-dashed border-2 border-border rounded-xl py-20 max-w-[800px] mx-auto relative sm:px-0 px-4 dark:bg-gray-900 bg-gray-100 flex flex-col items-center justify-center mt-10">
+                    <div className="max-w-[500px]">
+                      <AddLottieAnimation
+                        path="/lottie/91878-bouncy-fail.json"
+                        loop={false}
+                      />
+                    </div>
+                    <p className="font-bold sm:text-2xl text-lg text-center">
+                      There is an error generating your note
+                    </p>
+                  </section>
+                );
+              } else {
+                return <LoadingContent condition={condition} />;
+              }
+            } else {
+              return (
+                <UploadAndRecord
+                  onFileUpload={(
+                    file,
+                    outputLanguage,
+                    writingStyle,
+                    typeOfPromptId
+                  ) => {
+                    (async () => {
+                      setIsUploading(true);
 
-                  if (
-                    outputLanguage === 'ASK' ||
-                    writingStyle === 'ASK' ||
-                    typeOfPromptId === '647391c118e8a4e1170d3ec9'
-                  ) {
-                    throw new Error(
-                      'Somewhere, there is an error because the data is invalid'
-                    );
-                  }
+                      if (
+                        outputLanguage === 'ASK' ||
+                        writingStyle === 'ASK' ||
+                        typeOfPromptId === '647391c118e8a4e1170d3ec9'
+                      ) {
+                        throw new Error(
+                          'Somewhere, there is an error because the data is invalid'
+                        );
+                      }
 
-                  try {
-                    // First, create new content
-                    setCondition('Creating new database...');
-                    const content = await createNewContent(token);
+                      try {
+                        // First, create new content
+                        setCondition('Creating new database...');
+                        const content = await createNewContent(token);
 
-                    // Get typeOfPrompt
-                    setCondition('Getting prompt from our database...');
-                    const typeOfPrompt = await getTypeOfPrompt(
-                      token,
-                      typeOfPromptId
-                    );
-                    if (typeOfPrompt === null)
-                      throw new Error('typeOfPrompt is null');
+                        // Get typeOfPrompt
+                        setCondition('Getting prompt from our database...');
+                        const typeOfPrompt = await getTypeOfPrompt(
+                          token,
+                          typeOfPromptId
+                        );
+                        if (typeOfPrompt === null)
+                          throw new Error('typeOfPrompt is null');
 
-                    await updateContent({
-                      token,
-                      contentId: content.id,
-                      title: null,
-                      voiceNoteUrl: null,
-                      transcript: null,
-                      gptGenerated: null,
-                      typeOfPromptId: typeOfPromptId,
-                      writingStyle: writingStyle,
-                      outputLanguage: outputLanguage,
-                    });
+                        await updateContent({
+                          token,
+                          contentId: content.id,
+                          title: null,
+                          voiceNoteUrl: null,
+                          transcript: null,
+                          gptGenerated: null,
+                          typeOfPromptId: typeOfPromptId,
+                          writingStyle: writingStyle,
+                          outputLanguage: outputLanguage,
+                        });
 
-                    // Upload the voice note to s3 using contentId
-                    setCondition('Uploading the audio file...');
-                    const uploadedVoiceNote = await uploadVoiceNoteToS3(
-                      file,
-                      content.id
-                    );
+                        // Upload the voice note to s3 using contentId
+                        setCondition('Uploading the audio file...');
+                        const uploadedVoiceNote = await uploadVoiceNoteToS3(
+                          file,
+                          content.id
+                        );
 
-                    await updateContent({
-                      token,
-                      contentId: content.id,
-                      title: null,
-                      voiceNoteUrl: uploadedVoiceNote.Location,
-                      transcript: null,
-                      gptGenerated: null,
-                      typeOfPromptId: null,
-                      writingStyle: null,
-                      outputLanguage: null,
-                    });
+                        await updateContent({
+                          token,
+                          contentId: content.id,
+                          title: null,
+                          voiceNoteUrl: uploadedVoiceNote.Location,
+                          transcript: null,
+                          gptGenerated: null,
+                          typeOfPromptId: null,
+                          writingStyle: null,
+                          outputLanguage: null,
+                        });
 
-                    // Get the transcript from whisper
-                    setCondition('Getting the transcript...');
-                    const transcript = await publicGetTranscriptFromWhisper(
-                      file
-                    );
-                    await updateContent({
-                      token,
-                      contentId: content.id,
-                      title: null,
-                      voiceNoteUrl: null,
-                      transcript: transcript.text,
-                      gptGenerated: null,
-                      typeOfPromptId: null,
-                      writingStyle: null,
-                      outputLanguage: null,
-                    });
+                        // Get the transcript from whisper
+                        setCondition('Getting the transcript...');
+                        const transcript = await publicGetTranscriptFromWhisper(
+                          file
+                        );
+                        await updateContent({
+                          token,
+                          contentId: content.id,
+                          title: null,
+                          voiceNoteUrl: null,
+                          transcript: transcript.text,
+                          gptGenerated: null,
+                          typeOfPromptId: null,
+                          writingStyle: null,
+                          outputLanguage: null,
+                        });
 
-                    // Get chatGPT response
-                    setCondition('Transcript is being analyzed by AI...');
-                    const systemPrompt = typeOfPrompt.systemPrompt;
-                    const userPrompt = `Audio transcription:
+                        // Get chatGPT response
+                        setCondition('Transcript is being analyzed by AI...');
+                        const systemPrompt = typeOfPrompt.systemPrompt;
+                        const userPrompt = `Audio transcription:
                     ${transcript.text}
                     Output language: ${
                       outputLanguage === 'TRANSCRIPT'
@@ -165,64 +185,50 @@ export default function Client({
                     }
                     Writing style: ${writingStyle}`;
 
-                    const gptResponse = await publicGetGptResponse(
-                      systemPrompt,
-                      userPrompt
-                    );
+                        const gptResponse = await publicGetGptResponse(
+                          systemPrompt,
+                          userPrompt
+                        );
 
-                    // Parsing the response
-                    setCondition('Parsing AI response...');
-                    const actualGptResponse =
-                      gptResponse.choices[0].message.content;
-                    const jsonGptResponse = JSON.parse(actualGptResponse);
+                        // Parsing the response
+                        setCondition('Parsing AI response...');
+                        const actualGptResponse =
+                          gptResponse.choices[0].message.content;
+                        const jsonGptResponse = JSON.parse(actualGptResponse);
 
-                    let title = '';
-                    for (const obj of jsonGptResponse) {
-                      if (obj.type === 'title') {
-                        title = obj.content;
-                        break;
+                        let title = '';
+                        for (const obj of jsonGptResponse) {
+                          if (obj.type === 'title') {
+                            title = obj.content;
+                            break;
+                          }
+                        }
+
+                        const response = await updateContent({
+                          token,
+                          contentId: content.id,
+                          title: title,
+                          voiceNoteUrl: null,
+                          transcript: null,
+                          gptGenerated: actualGptResponse,
+                          typeOfPromptId: null,
+                          writingStyle: null,
+                          outputLanguage: null,
+                        });
+
+                        router.push(`/app/saved/${response.id}`);
+                      } catch (error) {
+                        setIsError(true);
+                        ErrorToast('generating content', error);
                       }
-                    }
-
-                    const response = await updateContent({
-                      token,
-                      contentId: content.id,
-                      title: title,
-                      voiceNoteUrl: null,
-                      transcript: null,
-                      gptGenerated: actualGptResponse,
-                      typeOfPromptId: null,
-                      writingStyle: null,
-                      outputLanguage: null,
-                    });
-
-                    router.push(`/app/saved/${response.id}`);
-                  } catch (error) {
-                    setIsError(true);
-                    ErrorToast('generating content', error);
-                  }
-                })();
-              }}
-              contentSettings={userContentSettings}
-              token={bearerToken}
-            />
-          ) : (
-            <LoadingContent condition={condition} />
-          )}
-
-          {isUploading && isError && (
-            <section className="w-full h-fit border-dashed border-2 border-border rounded-xl py-20 max-w-[800px] mx-auto relative sm:px-0 px-4 dark:bg-gray-900 bg-gray-100 flex flex-col items-center justify-center mt-10">
-              <div className="max-w-[500px]">
-                <AddLottieAnimation
-                  path="/lottie/91878-bouncy-fail.json"
-                  loop={false}
+                    })();
+                  }}
+                  contentSettings={userContentSettings}
+                  token={bearerToken}
                 />
-              </div>
-              <p className="font-bold sm:text-2xl text-lg text-center">
-                There is an error generating your note
-              </p>
-            </section>
-          )}
+              );
+            }
+          })()}
         </section>
       </section>
     </motion.section>
