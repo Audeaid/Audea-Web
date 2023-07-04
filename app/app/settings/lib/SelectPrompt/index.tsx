@@ -88,51 +88,49 @@ export default function SelectPrompt({
                 <CommandInput placeholder="Search type of note..." />
                 <CommandEmpty>No type of note exist.</CommandEmpty>
                 <CommandGroup>
-                  {prompt
-                    .filter((v) => v.id !== '647391c118e8a4e1170d3ec9')
-                    .map((oneprompt) => (
-                      <CommandItem
-                        key={oneprompt.id}
-                        onSelect={(currentValue) => {
-                          const selectPrompt = prompt.find(
-                            (v) => v.name.toLowerCase() === currentValue
-                          );
+                  {prompt.map((oneprompt) => (
+                    <CommandItem
+                      key={oneprompt.id}
+                      onSelect={(currentValue) => {
+                        const selectPrompt = prompt.find(
+                          (v) => v.name.toLowerCase() === currentValue
+                        );
 
-                          if (!selectPrompt) return;
+                        if (!selectPrompt) return;
 
-                          setSelectedPrompt(selectPrompt);
-                          setOpen(false);
+                        setSelectedPrompt(selectPrompt);
+                        setOpen(false);
 
-                          toast
-                            .promise(
-                              updateContentSettings({
-                                token,
-                                writingStyle: null,
-                                outputLanguage: null,
-                                typeOfPromptId: selectPrompt.id,
-                              }),
-                              {
-                                loading: 'Saving your settings...',
-                                success: 'Settings saved!',
-                                error: 'Error saving your settings!',
-                              }
-                            )
-                            .catch((e) => {
-                              ErrorToast('saving writing style', e);
-                            });
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            'mr-2 h-4 w-4',
-                            selectedPrompt.id === oneprompt.id
-                              ? 'opacity-100'
-                              : 'opacity-0'
-                          )}
-                        />
-                        {oneprompt.name}
-                      </CommandItem>
-                    ))}
+                        toast
+                          .promise(
+                            updateContentSettings({
+                              token,
+                              writingStyle: null,
+                              outputLanguage: null,
+                              typeOfPromptId: selectPrompt.id,
+                            }),
+                            {
+                              loading: 'Saving your settings...',
+                              success: 'Settings saved!',
+                              error: 'Error saving your settings!',
+                            }
+                          )
+                          .catch((e) => {
+                            ErrorToast('saving writing style', e);
+                          });
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          'mr-2 h-4 w-4',
+                          selectedPrompt.id === oneprompt.id
+                            ? 'opacity-100'
+                            : 'opacity-0'
+                        )}
+                      />
+                      {oneprompt.name}
+                    </CommandItem>
+                  ))}
                 </CommandGroup>
               </Command>
             </PopoverContent>
