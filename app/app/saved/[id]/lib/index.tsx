@@ -4,7 +4,7 @@ import { IGetOneContent } from '../graphql';
 import ErrorShouldDelete from './ErrorShouldDelete';
 import { useRouter } from 'next/navigation';
 import GenerateContent from './GenerateContent';
-import { BulletPointsWithSummary } from '../view';
+import { BulletPointsWithSummary, SummariseMyThoughts } from '../view';
 import Title from './Title';
 import Footer from './Footer';
 
@@ -61,6 +61,13 @@ export default function Client({
           if (content.typeOfPromptId === '646a2fc687e737835670b7b3') {
             return (
               <BulletPointsWithSummary
+                content={parseContent}
+                dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
+              />
+            );
+          } else if (content.typeOfPromptId === '64a3da8642064a96db90e15e') {
+            return (
+              <SummariseMyThoughts
                 content={parseContent}
                 dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
               />
