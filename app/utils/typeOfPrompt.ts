@@ -8,12 +8,12 @@ export interface Prompt {
 export const prompt: Prompt[] = [
   {
     id: '646a2fc687e737835670b7b3',
-    name: 'Bulleted points with Summary',
+    name: 'Bullet points with summary',
     description:
-      'Generated content with Summary, and Additional Info. The Additional Info then further consist of bulleted points in Main Point, Action Items, Follow Up Questions, and Potential Argument Against.',
+      'A note with Summary, and Additional Info. The Additional Info then further consist of bulleted points in Main Point, Action Items, Follow Up Questions, and Potential Argument Against.',
 
     strengths:
-      'Suitable for brainstorming in any types of ideas. Good for translating messy thoughts into structured content.',
+      'Suitable for brainstorming in any types of ideas. Good for translating messy thoughts into structured note.',
   },
 
   {

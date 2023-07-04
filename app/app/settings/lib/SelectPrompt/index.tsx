@@ -49,9 +49,9 @@ export default function SelectPrompt({
   return (
     <section className="flex md:flex-row md:items-start md:justify-between flex-col gap-4 flex-wrap">
       <section className="flex flex-col gap-2">
-        <h3 className="text-2xl font-medium">Type of content</h3>
+        <h3 className="text-2xl font-medium">Type of note</h3>
         <p className="md:max-w-full max-w-[365px]">
-          Change the type of content the AI will generate.
+          Change the type of note the AI will generate.
         </p>
         <p>
           See all the examples{' '}
@@ -79,14 +79,14 @@ export default function SelectPrompt({
                 {selectedPrompt
                   ? prompt.find((prompt) => prompt.id === selectedPrompt.id)
                       ?.name
-                  : 'Select type of content...'}
+                  : 'Select type of note...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[250px] p-0">
               <Command>
-                <CommandInput placeholder="Search type of content..." />
-                <CommandEmpty>No type of content exist.</CommandEmpty>
+                <CommandInput placeholder="Search type of note..." />
+                <CommandEmpty>No type of note exist.</CommandEmpty>
                 <CommandGroup>
                   {prompt
                     .filter((v) => v.id !== '647391c118e8a4e1170d3ec9')
@@ -147,7 +147,9 @@ export default function SelectPrompt({
                 aria-label="Select a prompt"
                 className="w-full justify-between"
               >
-                {selectedPrompt ? selectedPrompt.name : 'Select a prompt...'}
+                {selectedPrompt
+                  ? selectedPrompt.name
+                  : 'Select a type of note...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -180,8 +182,8 @@ export default function SelectPrompt({
                 </HoverCardContent>
                 <Command loop>
                   <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                    <CommandInput placeholder="Search prompt..." />
-                    <CommandEmpty>No prompt found.</CommandEmpty>
+                    <CommandInput placeholder="Search type of note..." />
+                    <CommandEmpty>No type of note found.</CommandEmpty>
                     <HoverCardTrigger />
 
                     <CommandGroup>

@@ -38,7 +38,7 @@ export default function DialogSettings({
   let sequence = [
     { value: 'output-language', displayName: 'Output Language' },
     { value: 'writing-style', displayName: 'Writing Style' },
-    { value: 'type-of-prompt', displayName: 'Type of Content' },
+    { value: 'type-of-prompt', displayName: 'Type of Note' },
   ];
 
   if (contentSettings.outputLanguage !== 'ASK') {
