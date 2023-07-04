@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-export const uploadVoiceNoteToS3 = (file: File, url: string): Promise<any> => {
+export const uploadVoiceNoteToS3 = (
+  file: File,
+  url: string
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
