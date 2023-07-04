@@ -199,7 +199,7 @@ export default function Bahasa() {
                 }}
               >
                 <iframe
-                  src="https://www.loom.com/embed/679eefb452f640c3af83e25ce36a695a?sid=84bd60fd-df78-49a9-9cd0-80363dbb057f"
+                  src="https://www.loom.com/embed/b847e07b5a7f449cb3bc30b2b993ab77?sid=071efa97-8701-4ee7-86b5-368b4e616361"
                   allowFullScreen={true}
                   style={{
                     position: 'absolute',
@@ -208,7 +208,7 @@ export default function Bahasa() {
                     width: '100%',
                     height: '100%',
                   }}
-                ></iframe>
+                />
               </div>
             </AspectRatio>
           </div>
