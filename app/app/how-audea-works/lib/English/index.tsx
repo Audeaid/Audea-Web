@@ -193,7 +193,7 @@ export default function English() {
                 }}
               >
                 <iframe
-                  src="https://www.loom.com/embed/679eefb452f640c3af83e25ce36a695a?sid=84bd60fd-df78-49a9-9cd0-80363dbb057f"
+                  src="https://www.loom.com/embed/45689b82453b4f2caf95444fb4bf6ee8?sid=7c74d624-1c3b-4961-9319-fca376cf9433"
                   allowFullScreen={true}
                   style={{
                     position: 'absolute',
@@ -202,7 +202,7 @@ export default function English() {
                     width: '100%',
                     height: '100%',
                   }}
-                ></iframe>
+                />
               </div>
             </AspectRatio>
           </div>
