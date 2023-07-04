@@ -15,7 +15,6 @@ import { useState, Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 import ErrorToast from '@/components/ErrorToast';
 import { useUser } from '@clerk/nextjs';
-import { Skeleton } from '@/components/ui/skeleton';
 import { deleteOneNote } from './script';
 
 export default function DeleteNote({
@@ -37,16 +36,7 @@ export default function DeleteNote({
   const { isLoaded, isSignedIn, user } = useUser();
 
   if (!isLoaded || !isSignedIn) {
-    return (
-      <section className="flex md:flex-row md:items-start md:justify-between flex-col items-start gap-4 flex-wrap">
-        <section className="flex flex-col gap-2">
-          <Skeleton className="w-40 h-8 rounded-full" />
-          <Skeleton className="w-96 h-6 rounded-full" />
-        </section>
-
-        <Skeleton className="w-20 h-10 rounded-md" />
-      </section>
-    );
+    return <></>;
   }
 
   const valueToCheck = `Audea/${user.primaryEmailAddress?.emailAddress}`;
