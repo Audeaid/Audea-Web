@@ -17,6 +17,15 @@ export const prompt: Prompt[] = [
   },
 
   {
+    id: '64a3da8642064a96db90e15e',
+    name: 'Summarise my thoughts',
+    description:
+      'A note with several paragraphs that contains a revitalised summary of your audio.',
+
+    strengths: 'Suitable for quickly summarise your thoughts.',
+  },
+
+  {
     id: '647391c118e8a4e1170d3ec9',
     name: 'Ask me everytime',
     description: '',
