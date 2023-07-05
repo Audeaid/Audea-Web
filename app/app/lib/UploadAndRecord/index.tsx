@@ -86,12 +86,12 @@ const UploadAndRecord: React.FC<IUploadAndRecord> = ({
   const validateFile = (file: File | undefined) => {
     if (!file) {
       toast.error('Please upload an audio file.');
-    }
-
-    // else if (!file.type.startsWith('audio/')) {
-    //   toast.error('Please upload an audio file.');
-    // }
-    else if (file.size > 25 * 1024 * 1024) {
+    } else if (
+      !file.type.startsWith('audio/') &&
+      !file.type.startsWith('video/')
+    ) {
+      toast.error('Please upload an audio file.');
+    } else if (file.size > 25 * 1024 * 1024) {
       toast.error(
         'File size exceeds the limit. Please upload a file up to 25MB.'
       );
