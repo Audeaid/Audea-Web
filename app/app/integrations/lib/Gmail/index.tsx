@@ -2,11 +2,11 @@
 
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import GmailImage from '../../images/Gmail.jpeg';
+import GmailImage from '../images/Gmail.jpeg';
 import cn from '@/utils/cn';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { userRequestedIntegration } from '../../../graphql';
+import { userRequestedIntegration } from '../../graphql';
 import ErrorToast from '@/components/ErrorToast';
 
 export default function Gmail({
@@ -49,7 +49,7 @@ export default function Gmail({
             disabled={click}
             className={cn('disabled:opacity-100')}
           >
-            {click ? 'Requested' : 'Request'}
+            {click ? 'Notified' : 'Notify'}
           </Button>
         </CardTitle>
       </CardHeader>

@@ -6,19 +6,20 @@ import Zapier from './Notyet/Zapier';
 import Todoist from './Notyet/Todoist';
 import { motion } from 'framer-motion';
 import DreamWorkflowForm from './DreamWorkflowForm';
-import Whatsapp from './Notyet/Whatsapp';
+import Whatsapp from './Whatsapp';
 import Sunsama from './Notyet/Sunsama';
 import Obsidian from './Notyet/Obsidian';
 import Monday from './Notyet/Monday';
-import Gmail from './Notyet/Gmail';
+import Gmail from './Gmail';
 import Github from './Notyet/Github';
 import Evernote from './Notyet/Evernote';
 import Craft from './Notyet/Craft';
 import Clickup from './Notyet/Clickup';
+import { IGetNotionAccount } from '../graphql';
 
 export default function Client({
   token,
-  notionInitialState,
+  getNotionAccount,
   clickupInitialState,
   craftInitialState,
   evernoteInitialState,
@@ -32,7 +33,7 @@ export default function Client({
   zapierInitialState,
 }: {
   token: string;
-  notionInitialState: boolean;
+  getNotionAccount: IGetNotionAccount | null;
   clickupInitialState: boolean;
   craftInitialState: boolean;
   evernoteInitialState: boolean;
@@ -53,10 +54,15 @@ export default function Client({
       </header>
 
       <section className="my-10 space-y-2">
+        <Notion token={token} getNotionAccount={getNotionAccount} />
+      </section>
+
+      <section className="my-10 space-y-2">
         <p className="dark:text-gray-700 text-gray-100 font-medium">
           Coming soon
         </p>
-        <Notion token={token} initialState={notionInitialState} />
+        <Whatsapp token={token} initialState={whatsappInitialState} />
+        <Gmail token={token} initialState={gmailInitialState} />
       </section>
 
       <section className="space-y-8 mt-20 pb-20">
@@ -71,11 +77,9 @@ export default function Client({
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
             <Zapier token={token} initialState={zapierInitialState} />
             <Todoist token={token} initialState={todoistInitialState} />
-            <Whatsapp token={token} initialState={whatsappInitialState} />
             <Sunsama token={token} initialState={sunsamaInitialState} />
             <Obsidian token={token} initialState={obsidianInitialState} />
             <Monday token={token} initialState={mondayInitialState} />
-            <Gmail token={token} initialState={gmailInitialState} />
             <Github token={token} initialState={githubInitialState} />
             <Evernote token={token} initialState={evernoteInitialState} />
             <Craft token={token} initialState={craftInitialState} />

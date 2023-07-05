@@ -53,18 +53,46 @@ export default function DialogSettings({
     sequence = sequence.filter((v) => v.value !== 'type-of-prompt');
   }
 
+  let outputLanguageExist: boolean = false;
+  let writingStyleExist: boolean = false;
+  let typeOfPromptExist: boolean = false;
+
+  for (let i = 0; i < sequence.length; i++) {
+    const element = sequence[i];
+
+    if (element.value === 'output-language') {
+      outputLanguageExist = true;
+    }
+
+    if (element.value === 'writing-style') {
+      writingStyleExist = true;
+    }
+
+    if (element.value === 'type-of-prompt') {
+      typeOfPromptExist = true;
+    }
+  }
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentSequence, setCurrentSequence] = useState(
     sequence[currentIndex]
   );
 
-  const [outputLanguage, setOutputLanguage] = useState('');
-  const [writingStyle, setWritingStyle] = useState('Default');
+  const [outputLanguage, setOutputLanguage] = useState<string>(
+    outputLanguageExist ? '' : (contentSettings.outputLanguage as string)
+  );
+  const [writingStyle, setWritingStyle] = useState(
+    writingStyleExist ? '' : contentSettings.writingStyle
+  );
   const [typeOfPromptId, setTypeOfPromptId] = useState(
-    '646a2fc687e737835670b7b3'
+    typeOfPromptExist
+      ? '646a2fc687e737835670b7b3'
+      : contentSettings.typeOfPromptId
   );
 
-  const [outputLanguageDb, setOutputLanguageDb] = useState('');
+  const [outputLanguageDb, setOutputLanguageDb] = useState<string>(
+    outputLanguageExist ? '' : contentSettings.outputLanguage
+  );
 
   const [savedOutputLanguage, setSavedOutputLanguage] = useState(false);
   const [savedWritingStyle, setSavedWritingStyle] = useState(false);

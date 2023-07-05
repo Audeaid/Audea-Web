@@ -2,11 +2,11 @@
 
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import WhatsappImage from '../../images/Whatsapp.png';
+import WhatsappImage from '../images/Whatsapp.png';
 import cn from '@/utils/cn';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { userRequestedIntegration } from '../../../graphql';
+import { userRequestedIntegration } from '../../graphql';
 import ErrorToast from '@/components/ErrorToast';
 
 export default function Whatsapp({
@@ -49,7 +49,7 @@ export default function Whatsapp({
             disabled={click}
             className={cn('disabled:opacity-100')}
           >
-            {click ? 'Requested' : 'Request'}
+            {click ? 'Notified' : 'Notify'}
           </Button>
         </CardTitle>
       </CardHeader>

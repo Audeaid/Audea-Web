@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import Client from './lib';
 import { signJwt } from '@/utils/jwt';
-import { getIntegrationRequest } from './graphql';
+import { getIntegrationRequest, getNotionAccount } from './graphql';
 import { generateUrl } from '@/utils/url';
 import { Suspense } from 'react';
 import LoadingPage from '@/components/LoadingPage';
@@ -15,7 +15,9 @@ export default async function Page() {
 
     const token = signJwt(clerkUserId);
 
-    const notion = await getIntegrationRequest(token, 'NOTION');
+    const notion = await getNotionAccount(token);
+
+    // integration
     const zapier = await getIntegrationRequest(token, 'ZAPIER');
     const todoist = await getIntegrationRequest(token, 'TODOIST');
     const whatsapp = await getIntegrationRequest(token, 'WHATSAPP');
@@ -32,7 +34,7 @@ export default async function Page() {
       <Suspense fallback={<LoadingPage />}>
         <Client
           token={token}
-          notionInitialState={notion ? notion.requested : false}
+          getNotionAccount={notion}
           clickupInitialState={clickup ? clickup.requested : false}
           craftInitialState={craft ? craft.requested : false}
           evernoteInitialState={evernote ? evernote.requested : false}

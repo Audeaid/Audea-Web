@@ -67,7 +67,7 @@
     "graphql-ws": "^5.13.1",
     "install": "^0.13.0",
     "isomorphic-ws": "^5.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "8.5.1",
     "lottie-web": "^5.11.0",
     "lucide-react": "^0.233.0",
     "moment": "^2.29.4",

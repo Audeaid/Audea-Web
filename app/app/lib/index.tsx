@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import LoadingContent from '$components/LoadingContent';
 import {
   createNewContent,
+  generateNotionPage,
+  getNotionAccount,
+  getNotionTitleName,
   getS3PresignedPost,
   getTypeOfPrompt,
   publicGetGptResponse,
@@ -145,6 +148,9 @@ export default function Client({
                           file.type,
                           file.name.substring(file.name.lastIndexOf('.'))
                         );
+
+                        if (!url) throw new Error('Error getting the url');
+
                         const location = await uploadVoiceNoteToS3(file, url);
 
                         await updateContent({
@@ -218,6 +224,34 @@ export default function Client({
                           writingStyle: null,
                           outputLanguage: null,
                         });
+
+                        // Parsing the response
+                        setCondition('Get integration preferences...');
+
+                        const notion = await getNotionAccount(token);
+
+                        if (notion !== null) {
+                          if (notion.primaryDatabase !== null) {
+                            if (notion.automaticPost) {
+                              setCondition('Posting note to Notion...');
+
+                              setCondition(
+                                'Notion: getting the title property name...'
+                              );
+                              const { response: titleProperties } =
+                                await getNotionTitleName(token);
+
+                              setCondition(
+                                'Notion: getting the title property name...'
+                              );
+                              await generateNotionPage(
+                                token,
+                                response.id,
+                                titleProperties
+                              );
+                            }
+                          }
+                        }
 
                         router.push(`/app/saved/${response.id}`);
                       } catch (error) {

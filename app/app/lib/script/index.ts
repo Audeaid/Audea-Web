@@ -5,3 +5,6 @@ export * from './publicGetTranscriptFromWhisper';
 export * from './updateContent';
 export * from './uploadVoiceNoteToS3';
 export * from './getS3PresignedPost';
+export * from './getNotionAccount';
+export * from './getNotionTitleName';
+export * from './generateNotionPage';
