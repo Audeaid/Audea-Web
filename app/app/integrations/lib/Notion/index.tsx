@@ -263,9 +263,13 @@ export default function Notion({
                             id="automatic"
                             name="automatic"
                             checked={automaticChecked}
-                            onChange={() =>
-                              setAutomaticChecked(!automaticChecked)
-                            }
+                            onCheckedChange={(v) => {
+                              if (v) {
+                                setAutomaticChecked(true);
+                              } else {
+                                setAutomaticChecked(false);
+                              }
+                            }}
                           />
                           <label
                             htmlFor="automatic"
