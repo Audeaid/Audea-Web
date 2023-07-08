@@ -4,10 +4,6 @@ import { gql } from '@apollo/client';
 export interface IGetNotionAccount {
   __typename: 'NotionAccount';
   accessToken: string;
-  workspaceName: string;
-  workspaceIcon: string | null;
-  automaticPost: boolean;
-  primaryDatabase: string | null;
 }
 
 export const getNotionAccount = (
@@ -17,10 +13,6 @@ export const getNotionAccount = (
     query GetNotionAccount {
       getNotionAccount {
         accessToken
-        workspaceName
-        workspaceIcon
-        automaticPost
-        primaryDatabase
       }
     }
   `;

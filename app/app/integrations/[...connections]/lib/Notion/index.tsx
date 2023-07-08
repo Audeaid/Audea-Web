@@ -28,6 +28,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import cn from '@/utils/cn';
 import toast from 'react-hot-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function Notion({
   code,
@@ -41,7 +42,7 @@ export default function Notion({
   const [success, setSuccess] = useState<boolean | null>(null);
 
   const [workspaceName, setWorkspaceName] = useState('');
-  const [workspacePicUrl, setWorkspacePicUrl] = useState('');
+  const [workspacePicUrl, setWorkspacePicUrl] = useState<string | null>(null);
 
   const [notionDatabase, setNotionDatabase] = useState<
     ISeeAllNotionDatabase[] | null
@@ -129,14 +130,10 @@ export default function Notion({
                   <section className="flex flex-col gap-2 mb-8">
                     <p>Workspace:</p>
                     <section className="flex items-center gap-2">
-                      <Image
-                        src={workspacePicUrl}
-                        alt={`${workspaceName} picture`}
-                        height={25}
-                        width={25}
-                        quality={100}
-                        draggable={false}
-                      />
+                      <Avatar>
+                        <AvatarImage src={workspacePicUrl ?? undefined} />
+                        <AvatarFallback>{workspaceName[0]}</AvatarFallback>
+                      </Avatar>
                       <p>{workspaceName}</p>
                     </section>
                   </section>

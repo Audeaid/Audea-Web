@@ -12,10 +12,14 @@ export default function Client({
   content,
   token,
   id,
+  initialNotionPageUrl,
+  notionAccountConnected,
 }: {
   content: IGetOneContent;
   token: string;
   id: string;
+  initialNotionPageUrl: string | null;
+  notionAccountConnected: boolean;
 }) {
   const router = useRouter();
 
@@ -55,6 +59,8 @@ export default function Client({
           typeOfPromptId={content.typeOfPromptId}
           outputLanguage={content.outputLanguage}
           writingStyle={content.writingStyle}
+          initialNotionPageUrl={initialNotionPageUrl}
+          notionAccountConnected={notionAccountConnected}
         />
 
         {(() => {

@@ -1,4 +1,8 @@
-import { getOneContent } from './graphql';
+import {
+  getGeneratedNotionPage,
+  getNotionAccount,
+  getOneContent,
+} from './graphql';
 import Client from './lib';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs';
@@ -19,9 +23,30 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     const content = await getOneContent(token, id);
 
+    let initialNotionPageUrl: string | null = null;
+
+    let notionAccountConnected = false;
+
+    const notionAccount = await getNotionAccount(token);
+
+    if (notionAccount !== null) {
+      notionAccountConnected = true;
+      const generatedNotionPage = await getGeneratedNotionPage(token, id);
+
+      initialNotionPageUrl = generatedNotionPage
+        ? generatedNotionPage.url
+        : null;
+    }
+
     return (
       <Suspense fallback={<LoadingPage />}>
-        <Client content={content} token={token} id={id} />
+        <Client
+          content={content}
+          token={token}
+          id={id}
+          initialNotionPageUrl={initialNotionPageUrl}
+          notionAccountConnected={notionAccountConnected}
+        />
       </Suspense>
     );
   } catch (error) {

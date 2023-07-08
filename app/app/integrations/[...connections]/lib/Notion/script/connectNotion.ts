@@ -4,7 +4,7 @@ import { gql } from '@apollo/client';
 export interface IConnectNotion {
   __typename: 'NotionAccount';
   workspaceName: string;
-  workspaceIcon: string;
+  workspaceIcon: string | null;
 }
 
 export const connectNotion = (

@@ -16,6 +16,12 @@ import { Trash2 } from 'lucide-react';
 import ViewTranscript from './ViewTranscript';
 import { useState } from 'react';
 import DeleteNote from './DeleteNote';
+import NotionImage from '@/app/app/integrations/lib/images/Notion.png';
+import Image from 'next/image';
+import { toast } from 'react-hot-toast';
+import { getNotionTitleName } from '@/app/app/lib/script';
+import ErrorToast from '@/components/ErrorToast';
+import { generateNotionPage } from './script';
 
 export default function Title({
   token,
@@ -27,6 +33,8 @@ export default function Title({
   typeOfPromptId,
   outputLanguage,
   writingStyle,
+  initialNotionPageUrl,
+  notionAccountConnected,
 }: {
   token: string;
   title: string;
@@ -37,9 +45,15 @@ export default function Title({
   typeOfPromptId: string;
   outputLanguage: string;
   writingStyle: string;
+  initialNotionPageUrl: string | null;
+  notionAccountConnected: boolean;
 }) {
   const [viewTranscriptOpen, setViewTranscriptOpen] = useState(false);
   const [deleteNoteOpen, setDeleteNoteOpen] = useState(false);
+
+  const [notionPageUrl, setNotionPageUrl] = useState<string | null>(
+    initialNotionPageUrl
+  );
 
   return (
     <header className="flex flex-col gap-4">
@@ -75,6 +89,86 @@ export default function Title({
               <Search className="mr-2 w-4 h-4" />
               View transcript
             </DropdownMenuItem>
+
+            {(() => {
+              if (notionAccountConnected) {
+                if (notionPageUrl) {
+                  return (
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setViewTranscriptOpen(true);
+                      }}
+                    >
+                      <a
+                        className="flex items-center gap-2"
+                        href={notionPageUrl}
+                        target="_blank"
+                      >
+                        <Image
+                          src={NotionImage}
+                          alt={'Notion icon'}
+                          width={16}
+                          height={16}
+                          draggable={false}
+                        />
+                        See Notion page
+                      </a>
+                    </DropdownMenuItem>
+                  );
+                } else {
+                  return (
+                    <DropdownMenuItem
+                      onClick={() => {
+                        toast
+                          .promise(getNotionTitleName(token), {
+                            loading: 'Get title property of your Notion...',
+                            success: 'Success getting your title property!',
+                            error: 'We could not find your title property!',
+                          })
+                          .then((data) => {
+                            const titleName = data.response;
+
+                            toast
+                              .promise(
+                                generateNotionPage(token, contentId, titleName),
+                                {
+                                  loading: 'Exporting your note to Notion...',
+                                  success:
+                                    'Success exporting your note to Notion!',
+                                  error: 'Error exporting your note to Notion!',
+                                }
+                              )
+                              .then((data) => {
+                                const url = data.url;
+
+                                setNotionPageUrl(url);
+                              })
+                              .catch((e) => {
+                                ErrorToast(
+                                  'get title property of your notion',
+                                  e
+                                );
+                              });
+                          })
+                          .catch((e) => {
+                            ErrorToast('get title property of your notion', e);
+                          });
+                      }}
+                      className={cn('flex items-center gap-2')}
+                    >
+                      <Image
+                        src={NotionImage}
+                        alt={'Notion icon'}
+                        width={16}
+                        height={16}
+                        draggable={false}
+                      />
+                      Export to Notion
+                    </DropdownMenuItem>
+                  );
+                }
+              }
+            })()}
 
             <DropdownMenuItem
               className={cn(

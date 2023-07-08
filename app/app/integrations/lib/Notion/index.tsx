@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRouter } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function Notion({
   token,
@@ -154,14 +155,15 @@ export default function Notion({
               <section className="flex flex-col gap-2 mb-8">
                 <p>Workspace:</p>
                 <section className="flex items-center gap-2">
-                  <Image
-                    src={getNotionAccount.workspaceIcon}
-                    alt={`${getNotionAccount.workspaceName} picture`}
-                    height={25}
-                    width={25}
-                    quality={100}
-                    draggable={false}
-                  />
+                  <Avatar>
+                    <AvatarImage
+                      src={getNotionAccount.workspaceIcon ?? undefined}
+                    />
+                    <AvatarFallback>
+                      {getNotionAccount.workspaceName[0]}
+                    </AvatarFallback>
+                  </Avatar>
+
                   <p>{getNotionAccount.workspaceName}</p>
                 </section>
               </section>
