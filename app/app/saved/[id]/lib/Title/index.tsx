@@ -94,11 +94,7 @@ export default function Title({
               if (notionAccountConnected) {
                 if (notionPageUrl) {
                   return (
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setViewTranscriptOpen(true);
-                      }}
-                    >
+                    <DropdownMenuItem>
                       <a
                         className="flex items-center gap-2"
                         href={notionPageUrl}
