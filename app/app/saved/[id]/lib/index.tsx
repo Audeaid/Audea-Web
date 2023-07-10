@@ -1,6 +1,6 @@
 'use client';
 
-import { IGetOneContent } from '../graphql';
+import { IGetOneContent, IGetSharedContentByContentId } from '../graphql';
 import ErrorShouldDelete from './ErrorShouldDelete';
 import { useRouter } from 'next/navigation';
 import GenerateContent from './GenerateContent';
@@ -14,12 +14,14 @@ export default function Client({
   id,
   initialNotionPageUrl,
   notionAccountConnected,
+  sharedContent,
 }: {
   content: IGetOneContent;
   token: string;
   id: string;
   initialNotionPageUrl: string | null;
   notionAccountConnected: boolean;
+  sharedContent: IGetSharedContentByContentId | null;
 }) {
   const router = useRouter();
 
@@ -61,6 +63,7 @@ export default function Client({
           writingStyle={content.writingStyle}
           initialNotionPageUrl={initialNotionPageUrl}
           notionAccountConnected={notionAccountConnected}
+          sharedContent={sharedContent}
         />
 
         {(() => {

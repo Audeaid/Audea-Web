@@ -2,6 +2,7 @@ import {
   getGeneratedNotionPage,
   getNotionAccount,
   getOneContent,
+  getSharedContentByContentId,
 } from './graphql';
 import Client from './lib';
 import { redirect } from 'next/navigation';
@@ -38,6 +39,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         : null;
     }
 
+    const sharedContent = await getSharedContentByContentId(token, id);
+
     return (
       <Suspense fallback={<LoadingPage />}>
         <Client
@@ -46,6 +49,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           id={id}
           initialNotionPageUrl={initialNotionPageUrl}
           notionAccountConnected={notionAccountConnected}
+          sharedContent={sharedContent}
         />
       </Suspense>
     );

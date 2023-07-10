@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Download, Search } from 'lucide-react';
+import { ChevronDown, Download, Globe, Search } from 'lucide-react';
 import cn from '@/utils/cn';
 import { Trash2 } from 'lucide-react';
 import ViewTranscript from './ViewTranscript';
@@ -22,6 +22,8 @@ import { toast } from 'react-hot-toast';
 import { getNotionTitleName } from '@/app/app/lib/script';
 import ErrorToast from '@/components/ErrorToast';
 import { generateNotionPage } from './script';
+import ShareToPublic from './ShareToPublic';
+import { IGetSharedContentByContentId } from '../../graphql';
 
 export default function Title({
   token,
@@ -35,6 +37,7 @@ export default function Title({
   writingStyle,
   initialNotionPageUrl,
   notionAccountConnected,
+  sharedContent,
 }: {
   token: string;
   title: string;
@@ -47,9 +50,11 @@ export default function Title({
   writingStyle: string;
   initialNotionPageUrl: string | null;
   notionAccountConnected: boolean;
+  sharedContent: IGetSharedContentByContentId | null;
 }) {
   const [viewTranscriptOpen, setViewTranscriptOpen] = useState(false);
   const [deleteNoteOpen, setDeleteNoteOpen] = useState(false);
+  const [shareToPublicOpen, setShareToPublicOpen] = useState(false);
 
   const [notionPageUrl, setNotionPageUrl] = useState<string | null>(
     initialNotionPageUrl
@@ -167,6 +172,15 @@ export default function Title({
             })()}
 
             <DropdownMenuItem
+              onClick={() => {
+                setShareToPublicOpen(true);
+              }}
+            >
+              <Globe className="mr-2 w-4 h-4" />
+              Share note to public
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
               className={cn(
                 'text-destructive focus:bg-destructive focus:text-destructive-foreground'
               )}
@@ -197,6 +211,14 @@ export default function Title({
         open={deleteNoteOpen}
         setOpen={setDeleteNoteOpen}
         title={title}
+        contentId={contentId}
+      />
+
+      <ShareToPublic
+        token={token}
+        open={shareToPublicOpen}
+        setOpen={setShareToPublicOpen}
+        sharedContent={sharedContent}
         contentId={contentId}
       />
     </header>
