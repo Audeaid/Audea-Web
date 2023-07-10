@@ -293,15 +293,19 @@ export default function ShareToPublic({
                     Unpublish
                   </Button>
 
-                  <Button type="button" className={cn('w-full bg-sky-500')}>
-                    <a
+                  <a
+                    href={`https://audea.id/@${username}/${generatedId}`}
+                    target="_blank"
+                    className="w-full h-fit"
+                  >
+                    <Button
+                      type="button"
+                      className={cn('w-full bg-sky-500')}
                       tabIndex={-1}
-                      href={`https://audea.id/@${username}/${generatedId}`}
-                      target="_blank"
                     >
                       View site
-                    </a>
-                  </Button>
+                    </Button>
+                  </a>
                 </section>
               </section>
             );
