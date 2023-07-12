@@ -11,6 +11,8 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Audea',
 
+  description: 'Transform your messy thoughts into structured notes.',
+
   viewport: {
     width: 'device-width',
     initialScale: 1,
