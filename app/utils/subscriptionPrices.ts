@@ -2,7 +2,7 @@ export interface ISubscriptionPrices {
   id: string;
   displayNamePricing: string;
   displayNameInvoice: string;
-  db: 'MONTHLY' | 'YEARLY' | 'LIFETIME';
+  db: 'MONTHLY' | 'YEARLY' | 'LIFETIME60';
   pricePricing: string;
 }
 
@@ -34,7 +34,7 @@ export const subscriptionPrices: ISubscriptionPrices[] = [
         : 'price_1NMBhfCqUvWtrfobZioSuAdP',
     displayNamePricing: 'Lifetime',
     displayNameInvoice: 'Lifetime plan subscription.',
-    db: 'LIFETIME',
+    db: 'LIFETIME60',
     pricePricing: '$60',
   },
 ];

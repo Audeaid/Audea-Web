@@ -4,12 +4,12 @@ import { gql } from '@apollo/client';
 export interface IPurchasedSubscription {
   __typename: 'UserSubscription';
   endDate: string;
-  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME';
+  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME60';
 }
 
 export const purchasedSubscription = (
   token: string,
-  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME'
+  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME60'
 ): Promise<IPurchasedSubscription> => {
   const mutation = gql`
     mutation PurchasedSubscription($type: SubscriptionTypeEnum!) {

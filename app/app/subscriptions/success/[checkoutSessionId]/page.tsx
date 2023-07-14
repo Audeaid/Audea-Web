@@ -124,7 +124,7 @@ export default async function Page({
                 {(() => {
                   if (response.type === 'MONTHLY') return '1 month';
                   else if (response.type === 'YEARLY') return '1 year';
-                  else if (response.type === 'LIFETIME') return 'lifetime';
+                  else if (response.type === 'LIFETIME60') return 'lifetime';
                   else return '';
                 })()}{' '}
                 purchased of Audea.
