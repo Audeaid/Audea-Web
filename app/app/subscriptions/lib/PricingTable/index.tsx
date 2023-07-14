@@ -33,7 +33,7 @@ export default function PricingTable({
               <CardTitle>{v.displayNamePricing}</CardTitle>
               <CardDescription>
                 {(() => {
-                  if (v.db === 'LIFETIME') return 'Limited time only';
+                  if (v.db === 'LIFETIME60') return 'Limited time only';
                   else if (v.db === 'YEARLY') return 'Free 2 months';
                   else return '';
                 })()}
