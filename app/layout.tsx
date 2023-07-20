@@ -293,7 +293,7 @@ export default function RootLayout({
         {/* Our custom provider */}
         <ViewportProvider>
           <DarkModeProvider>
-            <html lang="en" suppressHydrationWarning={true}>
+            <html lang="en">
               <body className={inter.className}>{children}</body>
             </html>
           </DarkModeProvider>
