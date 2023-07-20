@@ -13,7 +13,7 @@ import WebSocket from 'isomorphic-ws';
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === 'production'
-      ? 'https://audea-server.herokuapp.com/graphql'
+      ? 'https://audea-server-production.up.railway.app/graphql'
       : 'http://localhost:8080/graphql',
 });
 
@@ -22,7 +22,7 @@ const wsLink = () => {
     createClient({
       url:
         process.env.NODE_ENV === 'production'
-          ? 'wss://audea-server.herokuapp.com/graphql'
+          ? 'wss://audea-server-production.up.railway.app/graphql'
           : 'ws://localhost:8080/graphql',
       webSocketImpl: WebSocket,
     })
