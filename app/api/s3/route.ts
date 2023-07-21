@@ -13,11 +13,11 @@ export async function POST(request: NextRequest) {
     if (!fileExtension) throw new Error('fileExtension is missing');
 
     const fileParams = {
-      Bucket: 'audea-voice-note',
+      Bucket: 'audea-us',
       Key: `${contentId}${fileExtension}`,
       Expires: 600,
       ContentType: fileType,
-      ACL: 'public-read',
+      // ACL: 'public-read',
     };
 
     const url = await s3.getSignedUrlPromise('putObject', fileParams);
