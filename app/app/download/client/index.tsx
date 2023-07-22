@@ -6,57 +6,27 @@ import { gql } from '@apollo/client'
 import { faAndroid, faApple, faLinux, faWindows } from '@fortawesome/free-brands-svg-icons'
 import PlatformCard from './PlatformCard'
 
-interface Props {
-  token: string
-  initialIOSCount: number
-  isCheckedIOS: boolean
-
-  initialIPadOSCount: number
-  isCheckedIPadOS: boolean
-
-  initialMacOSCount: number
-  isCheckedMacOS: boolean
-
-  initialAndroidCount: number
-  isCheckedAndroid: boolean
-
-  initialAndroidTabletCount: number
-  isCheckedAndroidTablet: boolean
-
-  initialWindowsCount: number
-  isCheckedWindows: boolean
-
-  initialLinuxCount: number
-  isCheckedLinux: boolean
+interface PlatformProps {
+  initialCount: number
+  isChecked: boolean
 }
 
-export default function Client({
-  token,
-  initialIOSCount,
-  isCheckedIOS,
+interface Props {
+  token: string
+  ios: PlatformProps
+  ipados: PlatformProps
+  macos: PlatformProps
+  windows: PlatformProps
+  android: PlatformProps
+  androidTablet: PlatformProps
+  linux: PlatformProps
+}
 
-  initialIPadOSCount,
-  isCheckedIPadOS,
-
-  initialMacOSCount,
-  isCheckedMacOS,
-
-  initialAndroidCount,
-  isCheckedAndroid,
-
-  initialAndroidTabletCount,
-  isCheckedAndroidTablet,
-
-  initialWindowsCount,
-  isCheckedWindows,
-
-  initialLinuxCount,
-  isCheckedLinux,
-}: Props) {
+export default function Client({ token, ios, ipados, macos, windows, android, androidTablet, linux }: Props) {
   const platforms = [
     {
-      initialCount: initialIOSCount,
-      isChecked: isCheckedIOS,
+      initialCount: ios.initialCount,
+      isChecked: ios.isChecked,
       subscriptionQuery: gql`
         subscription IOSVoteSubscription {
           iOSVoteSubscription {
@@ -74,8 +44,8 @@ export default function Client({
     },
 
     {
-      initialCount: initialAndroidCount,
-      isChecked: isCheckedAndroid,
+      initialCount: android.initialCount,
+      isChecked: android.isChecked,
       subscriptionQuery: gql`
         subscription AndroidVoteSubscription {
           androidVoteSubscription {
@@ -93,8 +63,8 @@ export default function Client({
     },
 
     {
-      initialCount: initialMacOSCount,
-      isChecked: isCheckedMacOS,
+      initialCount: macos.initialCount,
+      isChecked: macos.isChecked,
       subscriptionQuery: gql`
         subscription MacOSVoteSubscription {
           macOSVoteSubscription {
@@ -112,8 +82,8 @@ export default function Client({
     },
 
     {
-      initialCount: initialWindowsCount,
-      isChecked: isCheckedWindows,
+      initialCount: windows.initialCount,
+      isChecked: windows.isChecked,
       subscriptionQuery: gql`
         subscription WindowsVoteSubscription {
           windowsVoteSubscription {
@@ -131,8 +101,8 @@ export default function Client({
     },
 
     {
-      initialCount: initialIPadOSCount,
-      isChecked: isCheckedIPadOS,
+      initialCount: ipados.initialCount,
+      isChecked: ipados.isChecked,
       subscriptionQuery: gql`
         subscription IPadOSVoteSubscription {
           iPadOSVoteSubscription {
@@ -150,8 +120,8 @@ export default function Client({
     },
 
     {
-      initialCount: initialAndroidTabletCount,
-      isChecked: isCheckedAndroidTablet,
+      initialCount: androidTablet.initialCount,
+      isChecked: androidTablet.isChecked,
       subscriptionQuery: gql`
         subscription AndroidTabletVoteSubscription {
           androidTabletVoteSubscription {
@@ -169,8 +139,8 @@ export default function Client({
     },
 
     {
-      initialCount: initialLinuxCount,
-      isChecked: isCheckedLinux,
+      initialCount: linux.initialCount,
+      isChecked: linux.isChecked,
       subscriptionQuery: gql`
         subscription LinuxVoteSubscription {
           linuxVoteSubscription {

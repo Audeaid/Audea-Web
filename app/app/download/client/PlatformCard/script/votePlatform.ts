@@ -6,7 +6,7 @@ interface IVotePlatform {
   count: number
 }
 
-export const votePlatform = (token: string, platform: string, vote: boolean): Promise<IVotePlatform> => {
+export function votePlatform(token: string, platform: string, vote: boolean): Promise<IVotePlatform> {
   const mutation = gql`
     mutation VotePlatform($platform: PlatformVoteEnum!, $vote: Boolean!) {
       votePlatform(platform: $platform, vote: $vote) {

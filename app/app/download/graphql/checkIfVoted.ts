@@ -6,7 +6,7 @@ export interface ICheckIfVoted {
   voted: boolean
 }
 
-export const checkIfVoted = async (token: string, platform: string): Promise<ICheckIfVoted> => {
+export function checkIfVoted(token: string, platform: string): Promise<ICheckIfVoted> {
   const query = gql`
     query CheckIfAlreadyVotedPlatform($platform: PlatformVoteEnum!) {
       checkIfAlreadyVotedPlatform(platform: $platform) {

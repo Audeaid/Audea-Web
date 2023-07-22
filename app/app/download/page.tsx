@@ -40,20 +40,13 @@ export default async function Page() {
       <Suspense fallback={<LoadingPage />}>
         <Client
           token={token}
-          initialIOSCount={iOSVote.count}
-          isCheckedIOS={iOSIsVoted.voted}
-          initialIPadOSCount={iPadOSVote.count}
-          isCheckedIPadOS={iPadOSIsVoted.voted}
-          initialMacOSCount={macOSVote.count}
-          isCheckedMacOS={macOSIsVoted.voted}
-          initialAndroidCount={androidVote.count}
-          isCheckedAndroid={androidIsVoted.voted}
-          initialAndroidTabletCount={androidTabletVote.count}
-          isCheckedAndroidTablet={androidTabletIsVoted.voted}
-          initialWindowsCount={windowsVote.count}
-          isCheckedWindows={windowsIsVoted.voted}
-          initialLinuxCount={linuxVote.count}
-          isCheckedLinux={linuxIsVoted.voted}
+          ios={{ initialCount: iOSVote.count, isChecked: iOSIsVoted.voted }}
+          ipados={{ initialCount: iPadOSVote.count, isChecked: iPadOSIsVoted.voted }}
+          macos={{ initialCount: macOSVote.count, isChecked: macOSIsVoted.voted }}
+          windows={{ initialCount: windowsVote.count, isChecked: windowsIsVoted.voted }}
+          android={{ initialCount: androidVote.count, isChecked: androidIsVoted.voted }}
+          androidTablet={{ initialCount: androidTabletVote.count, isChecked: androidTabletIsVoted.voted }}
+          linux={{ initialCount: linuxVote.count, isChecked: linuxIsVoted.voted }}
         />
       </Suspense>
     )

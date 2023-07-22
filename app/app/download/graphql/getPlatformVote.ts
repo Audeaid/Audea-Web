@@ -6,7 +6,7 @@ export interface IGetPlatformVote {
   count: number
 }
 
-export const getPlatformVote = async (token: string, platform: string): Promise<IGetPlatformVote> => {
+export function getPlatformVote(token: string, platform: string): Promise<IGetPlatformVote> {
   const query = gql`
     query GetPlatformVote($platform: PlatformVoteEnum!) {
       getPlatformVote(platform: $platform) {

@@ -10,7 +10,7 @@ interface Props {
   handleChange: ChangeEventHandler<HTMLInputElement>
 }
 
-const UpvoteButton = ({ checked, animate, handleChange }: Props) => {
+export default function UpvoteButton({ checked, animate, handleChange }: Props) {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -97,5 +97,3 @@ const UpvoteButton = ({ checked, animate, handleChange }: Props) => {
     </div>
   )
 }
-
-export default UpvoteButton

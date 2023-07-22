@@ -1,6 +1,6 @@
 'use client'
 
-import UpvoteButton from '../../lib/UpvoteButton'
+import UpvoteButton from '../UpvoteButton'
 import { DocumentNode, useSubscription } from '@apollo/client'
 import toast from 'react-hot-toast'
 import { ForwardRefComponent, HTMLMotionProps, motion } from 'framer-motion'
@@ -36,7 +36,7 @@ interface Props extends Omit<ForwardRefComponent<HTMLDivElement, HTMLMotionProps
   platform: string
 }
 
-const PlatformCard = ({
+export default function PlatformCard({
   token,
   initialCount,
   isChecked,
@@ -48,7 +48,7 @@ const PlatformCard = ({
   priority,
   platform,
   ...props
-}: Props) => {
+}: Props) {
   const [count, setCount] = useState(initialCount)
 
   const [checked, setChecked] = useState(isChecked)
@@ -150,5 +150,3 @@ const PlatformCard = ({
     </motion.div>
   )
 }
-
-export default PlatformCard
