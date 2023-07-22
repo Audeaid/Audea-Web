@@ -20,9 +20,9 @@ const meta: Metadata = {
   applicationName: 'Audea',
   referrer: 'origin-when-cross-origin',
   keywords: ['Audea', 'Audea Web', 'Audea Web App'],
-  authors: [{ name: 'Furqon Wilogo', url: 'https://fdwilogo.com' }],
-  creator: 'Furqon Wilogo',
-  publisher: 'Furqon Wilogo',
+  authors: [{ name: 'Durrrian', url: 'https://durrrian.com' }],
+  creator: 'Durrrian',
+  publisher: 'Durrrian',
   formatDetection: {
     email: false,
     address: false,
@@ -246,7 +246,7 @@ const meta: Metadata = {
     siteName: 'Audea',
     images: [
       {
-        url: 'https://app.audea.id/meta.jpg',
+        url: '/meta.jpg',
         width: 1200,
         height: 630,
       },
@@ -262,7 +262,7 @@ const meta: Metadata = {
     siteId: '1467726470533754880',
     creator: '@Audea_app',
     creatorId: '1467726470533754880',
-    images: ['https://app.audea.id/meta.jpg'],
+    images: ['/meta.jpg'],
   },
 
   icons: {
