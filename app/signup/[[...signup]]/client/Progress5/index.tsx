@@ -22,7 +22,15 @@ interface IProgress5 {
   referralJwt: string | null
 }
 
-const Progress5 = ({ email, clerkId, firstName, lastName, router, handleClerk, referralJwt }: IProgress5) => {
+export default function Progress5({
+  email,
+  clerkId,
+  firstName,
+  lastName,
+  router,
+  handleClerk,
+  referralJwt,
+}: IProgress5) {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)
 
@@ -134,5 +142,3 @@ const Progress5 = ({ email, clerkId, firstName, lastName, router, handleClerk, r
     </motion.section>
   )
 }
-
-export default Progress5

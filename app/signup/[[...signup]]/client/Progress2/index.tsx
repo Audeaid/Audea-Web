@@ -22,7 +22,7 @@ interface IProgress2 {
   setProgress: Dispatch<SetStateAction<number>>
 }
 
-const Progress2 = ({ setPasswordForm, setProgress }: IProgress2) => {
+export default function Progress2({ setPasswordForm, setProgress }: IProgress2) {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
@@ -173,5 +173,3 @@ const Progress2 = ({ setPasswordForm, setProgress }: IProgress2) => {
     </motion.section>
   )
 }
-
-export default Progress2

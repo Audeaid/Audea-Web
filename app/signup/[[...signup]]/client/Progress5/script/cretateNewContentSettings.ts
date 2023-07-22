@@ -6,7 +6,7 @@ interface ICreateNewContentSettings {
   id: string
 }
 
-export async function createNewContentSettings(token: string) {
+export const createNewContentSettings = (token: string): Promise<ICreateNewContentSettings> => {
   const mutation = gql`
     mutation CreateNewContentSettings {
       createNewContentSettings {
@@ -15,20 +15,30 @@ export async function createNewContentSettings(token: string) {
     }
   `
 
-  try {
-    const { data } = await client.mutate({
-      mutation,
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors } = await client.mutate({
+          mutation,
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        })
 
-    const response = data.createNewContentSettings as ICreateNewContentSettings
+        const response = data.createNewContentSettings as ICreateNewContentSettings
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }

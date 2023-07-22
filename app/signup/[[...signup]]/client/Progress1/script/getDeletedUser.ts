@@ -6,7 +6,7 @@ interface IGetDeletedUser {
   response: string
 }
 
-export const getDeletedUser = async ({ email }: { email: string }) => {
+export const getDeletedUser = ({ email }: { email: string }): Promise<IGetDeletedUser> => {
   const query = gql`
     query GetDeletedUser($email: String!) {
       getDeletedUser(email: $email) {
@@ -15,19 +15,31 @@ export const getDeletedUser = async ({ email }: { email: string }) => {
     }
   `
 
-  try {
-    const { data } = await client.query({
-      query,
-      variables: {
-        email,
-      },
-      fetchPolicy: 'network-only',
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors, error } = await client.query({
+          query,
+          variables: {
+            email,
+          },
+          fetchPolicy: 'network-only',
+        })
 
-    const response = data.getDeletedUser as IGetDeletedUser
+        const response = data.getDeletedUser as IGetDeletedUser
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }

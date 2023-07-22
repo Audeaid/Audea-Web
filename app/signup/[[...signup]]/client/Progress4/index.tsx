@@ -13,7 +13,7 @@ interface IProgress4 {
   handleClerkSubmit: (_code: string) => void
 }
 
-const Progress4 = ({ email, handleClerkSubmit }: IProgress4) => {
+export default function Progress4({ email, handleClerkSubmit }: IProgress4) {
   const [otp, setOtp] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -79,5 +79,3 @@ const Progress4 = ({ email, handleClerkSubmit }: IProgress4) => {
     </motion.section>
   )
 }
-
-export default Progress4

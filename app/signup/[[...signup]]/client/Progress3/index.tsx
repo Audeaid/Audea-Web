@@ -17,7 +17,13 @@ interface IProgress3 {
   initialLastName: string | null
 }
 
-const Progress3 = ({ setFirstName, setLastName, handleClerkSubmit, initialFirstName, initialLastName }: IProgress3) => {
+export default function Progress3({
+  setFirstName,
+  setLastName,
+  handleClerkSubmit,
+  initialFirstName,
+  initialLastName,
+}: IProgress3) {
   const [firstNameHere, setFirstNameHere] = useState(initialFirstName ?? 'Ada')
   const [lastNameHere, setLastNameHere] = useState(initialLastName ?? 'Lovelace')
 
@@ -124,5 +130,3 @@ const Progress3 = ({ setFirstName, setLastName, handleClerkSubmit, initialFirstN
     </motion.section>
   )
 }
-
-export default Progress3

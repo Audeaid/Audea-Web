@@ -11,7 +11,7 @@ interface Prop {
   name: string
 }
 
-export const sendNewUserEmail = async ({ email, name }: Prop) => {
+export const sendNewUserEmail = ({ email, name }: Prop): Promise<ISendNewUserEmail> => {
   const query = gql`
     query SendNewUserEmail($email: String!, $name: String!) {
       sendNewUserEmail(email: $email, name: $name) {
@@ -20,20 +20,32 @@ export const sendNewUserEmail = async ({ email, name }: Prop) => {
     }
   `
 
-  try {
-    const { data } = await client.query({
-      query,
-      variables: {
-        email,
-        name,
-      },
-      fetchPolicy: 'network-only',
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors, error } = await client.query({
+          query,
+          variables: {
+            email,
+            name,
+          },
+          fetchPolicy: 'network-only',
+        })
 
-    const response = data.sendNewUserEmail as ISendNewUserEmail
+        const response = data.sendNewUserEmail as ISendNewUserEmail
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }

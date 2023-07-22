@@ -15,7 +15,13 @@ interface Prop {
   referralJwt: string | null
 }
 
-export const createUserFromClerk = async ({ email, clerkId, firstName, lastName, referralJwt }: Prop) => {
+export const createUserFromClerk = ({
+  email,
+  clerkId,
+  firstName,
+  lastName,
+  referralJwt,
+}: Prop): Promise<ICreateUserFromClerk> => {
   const mutation = gql`
     mutation CreateUserFromClerk(
       $email: String!
@@ -37,16 +43,26 @@ export const createUserFromClerk = async ({ email, clerkId, firstName, lastName,
     }
   `
 
-  try {
-    const { data } = await client.mutate({
-      mutation,
-      variables: { email, clerkId, firstName, lastName, referralJwt },
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors } = await client.mutate({
+          mutation,
+          variables: { email, clerkId, firstName, lastName, referralJwt },
+        })
 
-    const response = data.createUserFromClerk as ICreateUserFromClerk
+        const response = data.createUserFromClerk as ICreateUserFromClerk
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }

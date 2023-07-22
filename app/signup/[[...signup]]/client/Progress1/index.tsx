@@ -18,7 +18,7 @@ interface IProgress1 {
   referralJwt: string | null
 }
 
-const Progress1 = ({ setEmail, setProgress, initialValue, referralJwt }: IProgress1) => {
+export default function Progress1({ setEmail, setProgress, initialValue, referralJwt }: IProgress1) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [value, setValue] = useState(initialValue ?? '')
@@ -143,5 +143,3 @@ const Progress1 = ({ setEmail, setProgress, initialValue, referralJwt }: IProgre
     </motion.section>
   )
 }
-
-export default Progress1

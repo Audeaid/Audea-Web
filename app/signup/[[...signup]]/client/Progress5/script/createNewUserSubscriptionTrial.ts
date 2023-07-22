@@ -6,7 +6,7 @@ interface ICreateNewUserSubscriptionTrial {
   id: string
 }
 
-export async function createNewUserSubscriptionTrial(token: string) {
+export const createNewUserSubscriptionTrial = (token: string): Promise<ICreateNewUserSubscriptionTrial> => {
   const mutation = gql`
     mutation CreateNewUserSubscription($type: SubscriptionTypeEnum!) {
       createNewUserSubscription(type: $type) {
@@ -15,23 +15,33 @@ export async function createNewUserSubscriptionTrial(token: string) {
     }
   `
 
-  try {
-    const { data } = await client.mutate({
-      mutation,
-      variables: {
-        type: 'EARLYADOPTER',
-      },
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors } = await client.mutate({
+          mutation,
+          variables: {
+            type: 'EARLYADOPTER',
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        })
 
-    const response = data.createNewUserSubscription as ICreateNewUserSubscriptionTrial
+        const response = data.createNewUserSubscription as ICreateNewUserSubscriptionTrial
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }
