@@ -1,7 +1,7 @@
 'use client';
 
-import { outputLanguageList } from '@/app/utils/outputLanguage';
-import { prompt } from '@/app/utils/typeOfPrompt';
+import { outputLanguageList } from '@/app/data/outputLanguage';
+import { prompt } from '@/app/data/typeOfPrompt';
 import { Separator } from '@/components/ui/separator';
 
 export default function Footer({

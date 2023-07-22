@@ -4,7 +4,7 @@ import { signJwt } from '@/utils/jwt';
 import { generateUrl } from '@/utils/url';
 import axios from 'axios';
 import Stripe from 'stripe';
-import { subscriptionPrices } from '@/app/utils/subscriptionPrices';
+import { subscriptionPrices } from '@/app/data/subscriptionPrices';
 import {
   createPaidObject,
   getPaidObject,

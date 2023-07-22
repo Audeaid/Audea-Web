@@ -6,7 +6,7 @@
  */
 
 export const capitalizeEveryWord = (str: string): string => {
-  const firstLetter = str.charAt(0).toUpperCase();
-  const restOfWord = str.slice(1).toLowerCase();
-  return firstLetter + restOfWord;
-};
+  const firstLetter = str.charAt(0).toUpperCase()
+  const restOfWord = str.slice(1).toLowerCase()
+  return firstLetter + restOfWord
+}

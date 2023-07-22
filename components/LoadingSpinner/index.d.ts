@@ -1,3 +1,3 @@
 export interface ILoadingSpinner {
-  size: number;
+  size: number
 }

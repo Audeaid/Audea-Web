@@ -1,29 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetPlatformVote {
-  __typename: 'PlatformVote';
-  count: number;
+  __typename: 'PlatformVote'
+  count: number
 }
 
-export const getPlatformVote = (
-  token: string,
-  platform: string
-): Promise<IGetPlatformVote> => {
+export const getPlatformVote = async (token: string, platform: string): Promise<IGetPlatformVote> => {
   const query = gql`
     query GetPlatformVote($platform: PlatformVoteEnum!) {
       getPlatformVote(platform: $platform) {
         count
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getPlatformVote },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: {
             platform,
@@ -34,12 +29,22 @@ export const getPlatformVote = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getPlatformVote);
+        const response = data.getPlatformVote as IGetPlatformVote
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

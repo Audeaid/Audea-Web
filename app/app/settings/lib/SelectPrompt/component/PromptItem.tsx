@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 import { useMutationObserver } from '@/hooks/useMutationObserver';
 import { CommandItem } from '@/components/ui/command';
 import cn from '@/utils/cn';
-import { Prompt } from '../../../../../utils/typeOfPrompt';
+import { Prompt } from '../../../../../data/typeOfPrompt';
 import { useRef } from 'react';
 
 export interface ModelItemProps {

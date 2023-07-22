@@ -1,7 +1,7 @@
 'use client';
 
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { Prompt, prompt } from '@/app/utils/typeOfPrompt';
+import { Prompt, prompt } from '@/app/data/typeOfPrompt';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {

@@ -1,33 +1,32 @@
-'use client';
+'use client'
 
-import { UserProfile, useClerk } from '@clerk/nextjs';
-import { useEffect } from 'react';
+import { UserProfile, useClerk } from '@clerk/nextjs'
+import { useEffect } from 'react'
 
 export default function Client() {
-  const { loaded } = useClerk();
+  const { loaded } = useClerk()
 
   useEffect(() => {
     if (loaded) {
       setTimeout(() => {
-        const paragraphs = document.getElementsByTagName('p');
+        const paragraphs = document.getElementsByTagName('p')
         for (let i = 0; i < paragraphs.length; i++) {
-          paragraphs[i].id = 'clerkKontolGuaGabisaStylingNgentot';
+          paragraphs[i].id = 'clerkKontolGuaGabisaStylingNgentot'
         }
-      }, 2000);
+      }, 2000)
     }
-  }, [loaded]);
+  }, [loaded])
 
   return (
     <UserProfile
-      path="/app/accounts"
-      routing="path"
+      path='/app/accounts'
+      routing='path'
       appearance={{
         elements: {
           card: 'border-0 shadow-none rounded-none',
           navbar: 'hidden',
           scrollBox: 'text-foreground bg-background rounded-none',
-          pageScrollBox:
-            'text-foreground bg-background rounded-none pt-0 px-0 pb-4',
+          pageScrollBox: 'text-foreground bg-background rounded-none pt-0 px-0 pb-4',
           page: 'text-foreground bg-background',
           profilePage: 'text-foreground',
           header: 'text-foreground',
@@ -53,5 +52,5 @@ export default function Client() {
         },
       }}
     />
-  );
+  )
 }

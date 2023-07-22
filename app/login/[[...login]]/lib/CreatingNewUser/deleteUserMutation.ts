@@ -1,44 +1,33 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 interface IDeleteUserMutation {
-  __typename: 'ResponseMessage';
-  response: string;
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export const deleteUserMutation = (
-  id: string
-): Promise<IDeleteUserMutation> => {
+export const deleteUserMutation = async (id: string) => {
   const mutation = gql`
-    mutation DeleteUserIfRegistrationFailed(
-      $deleteUserIfRegistrationFailedId: String!
-      $secret: String!
-    ) {
-      deleteUserIfRegistrationFailed(
-        id: $deleteUserIfRegistrationFailedId
-        secret: $secret
-      ) {
+    mutation DeleteUserIfRegistrationFailed($deleteUserIfRegistrationFailedId: String!, $secret: String!) {
+      deleteUserIfRegistrationFailed(id: $deleteUserIfRegistrationFailedId, secret: $secret) {
         response
       }
     }
-  `;
+  `
 
-  return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        const {
-          data: { deleteUserIfRegistrationFailed },
-        } = await client.mutate({
-          mutation,
-          variables: {
-            id,
-            secret: process.env.NEXT_PUBLIC_DELETE_USER_SECRET!,
-          },
-        });
-        resolve(deleteUserIfRegistrationFailed);
-      } catch (e) {
-        reject(e);
-      }
-    })();
-  });
-};
+  try {
+    const { data } = await client.mutate({
+      mutation,
+      variables: {
+        id,
+        secret: process.env.NEXT_PUBLIC_DELETE_USER_SECRET!,
+      },
+    })
+
+    const response = data.deleteUserIfRegistrationFailed as IDeleteUserMutation
+
+    return response
+  } catch (e) {
+    console.error(e)
+  }
+}

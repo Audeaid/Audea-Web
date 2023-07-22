@@ -10,8 +10,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { outputLanguageList } from '@/app/utils/outputLanguage';
-import { inputLanguage } from '@/app/utils/inputLanguage';
+import { outputLanguageList } from '@/app/data/outputLanguage';
+import { inputLanguage } from '@/app/data/inputLanguage';
 
 export default function Bahasa() {
   const lastUpdateDate = moment('2023-07-03'); // ubah di sini setelah memperbarui

@@ -1,1 +1,1 @@
-export * from './searchUserByClerkId';
+export * from './searchUserByClerkId'

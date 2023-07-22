@@ -1,29 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface ICheckIfVoted {
-  __typename: 'PlatformVoteUser';
-  voted: boolean;
+  __typename: 'PlatformVoteUser'
+  voted: boolean
 }
 
-export const checkIfVoted = (
-  token: string,
-  platform: string
-): Promise<ICheckIfVoted> => {
+export const checkIfVoted = async (token: string, platform: string): Promise<ICheckIfVoted> => {
   const query = gql`
     query CheckIfAlreadyVotedPlatform($platform: PlatformVoteEnum!) {
       checkIfAlreadyVotedPlatform(platform: $platform) {
         voted
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { checkIfAlreadyVotedPlatform },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: {
             platform,
@@ -34,12 +29,23 @@ export const checkIfVoted = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(checkIfAlreadyVotedPlatform);
+        const response = data.checkIfAlreadyVotedPlatform as ICheckIfVoted
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        console.error(e)
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

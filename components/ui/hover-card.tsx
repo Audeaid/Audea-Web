@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import cn from '@/utils/cn';
-import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
-import { forwardRef } from 'react';
+import cn from '@/utils/cn'
+import * as HoverCardPrimitive from '@radix-ui/react-hover-card'
+import { forwardRef } from 'react'
 
-const HoverCard = HoverCardPrimitive.Root;
+const HoverCard = HoverCardPrimitive.Root
 
-const HoverCardTrigger = HoverCardPrimitive.Trigger;
+const HoverCardTrigger = HoverCardPrimitive.Trigger
 
 const HoverCardContent = forwardRef<
   React.ElementRef<typeof HoverCardPrimitive.Content>,
@@ -18,11 +18,11 @@ const HoverCardContent = forwardRef<
     sideOffset={sideOffset}
     className={cn(
       'z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in zoom-in-90',
-      className
+      className,
     )}
     {...props}
   />
-));
-HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
+))
+HoverCardContent.displayName = HoverCardPrimitive.Content.displayName
 
-export { HoverCard, HoverCardTrigger, HoverCardContent };
+export { HoverCard, HoverCardTrigger, HoverCardContent }

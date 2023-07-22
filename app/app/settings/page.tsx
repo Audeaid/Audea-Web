@@ -1,46 +1,38 @@
-import { redirect } from 'next/navigation';
-import {
-  IGetContentSettings,
-  createNewContentSettings,
-  getContentSettings,
-} from './graphql';
-import Client from './lib';
-import { auth } from '@clerk/nextjs';
-import { signJwt } from '@/utils/jwt';
-import { generateUrl } from '@/utils/url';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/LoadingPage';
+import { redirect } from 'next/navigation'
+import { IGetContentSettings, createNewContentSettings, getContentSettings } from './graphql'
+import Client from './lib'
+import { auth } from '@clerk/nextjs'
+import { signJwt } from '@/utils/jwt'
+import { generateUrl } from '@/utils/url'
+import { Suspense } from 'react'
+import LoadingPage from '@/lib/LoadingPage'
 
 export default async function Page() {
   try {
-    const { userId: clerkUserId } = auth();
+    const { userId: clerkUserId } = auth()
 
-    if (!clerkUserId) return redirect('/login');
+    if (!clerkUserId) return redirect('/login')
 
-    const token = signJwt(clerkUserId);
+    const token = signJwt(clerkUserId)
 
-    const response = await getContentSettings(token);
+    const response = await getContentSettings(token)
 
-    let contentSettings: IGetContentSettings;
+    let contentSettings: IGetContentSettings
 
     if (!response) {
-      contentSettings = await createNewContentSettings(token);
+      contentSettings = await createNewContentSettings(token)
     } else {
-      contentSettings = response;
+      contentSettings = response
     }
 
     return (
       <Suspense fallback={<LoadingPage />}>
         <Client contentSettings={contentSettings} token={token} />
       </Suspense>
-    );
+    )
   } catch (error) {
-    const e = JSON.stringify(error);
-    const url = generateUrl(
-      `/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent(
-        '/app/settings'
-      )}`
-    );
-    return redirect(url.href);
+    const e = JSON.stringify(error)
+    const url = generateUrl(`/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent('/app/settings')}`)
+    return redirect(url.href)
   }
 }

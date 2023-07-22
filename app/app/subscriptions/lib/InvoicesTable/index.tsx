@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { DownloadCloud } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { subscriptionPrices } from '@/app/utils/subscriptionPrices';
+import { subscriptionPrices } from '@/app/data/subscriptionPrices';
 import cn from '@/utils/cn';
 
 export default function InvoicesTable({

@@ -6,9 +6,9 @@
  */
 
 export const splitPhoneNumber = (phoneNumber: string): string => {
-  let number = phoneNumber.replace(/\D/g, ''); // Remove non-digit characters
+  let number = phoneNumber.replace(/\D/g, '') // Remove non-digit characters
   if (number.startsWith('+')) {
-    number = number.substring(1); // Remove leading plus sign
+    number = number.substring(1) // Remove leading plus sign
   }
-  return number;
-};
+  return number
+}

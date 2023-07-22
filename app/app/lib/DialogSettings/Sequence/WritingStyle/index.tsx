@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
-import { presets } from '@/app/utils/presets';
+import { presets } from '@/app/data/presets';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ChevronsUpDown, Megaphone } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';

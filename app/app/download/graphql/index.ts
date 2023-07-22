@@ -1,2 +1,2 @@
-export * from './getPlatformVote';
-export * from './checkIfVoted';
+export * from './getPlatformVote'
+export * from './checkIfVoted'

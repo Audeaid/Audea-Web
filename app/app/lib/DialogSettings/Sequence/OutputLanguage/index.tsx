@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/popover';
 import cn from '@/utils/cn';
 import { useState } from 'react';
-import { outputLanguageList } from '@/app/utils/outputLanguage';
+import { outputLanguageList } from '@/app/data/outputLanguage';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Megaphone } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
