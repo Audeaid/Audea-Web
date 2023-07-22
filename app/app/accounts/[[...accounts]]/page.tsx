@@ -13,11 +13,11 @@ export default function Page({ params }: { params: { accounts: string } }) {
     if (!clerkUserId) return redirect('/login')
 
     return (
-      <section className='w-fit h-fit flex items-center justify-start mx-auto text-foreground sm:px-2'>
-        <Suspense fallback={<LoadingPage />}>
+      <Suspense fallback={<LoadingPage />}>
+        <section className='w-fit h-fit flex items-center justify-start mx-auto text-foreground sm:px-2'>
           <Client />
-        </Suspense>
-      </section>
+        </section>
+      </Suspense>
     )
   } catch (error) {
     const e = JSON.stringify(error)
