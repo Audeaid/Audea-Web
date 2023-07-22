@@ -6,7 +6,7 @@ export interface IExtendTrial {
   id: string
 }
 
-export const extendTrial = async (token: string) => {
+export const extendTrial = (token: string): Promise<IExtendTrial> => {
   const mutation = gql`
     mutation ExtendTrialSubscription {
       extendTrialSubscription {
@@ -15,20 +15,30 @@ export const extendTrial = async (token: string) => {
     }
   `
 
-  try {
-    const { data } = await client.mutate({
-      mutation,
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors } = await client.mutate({
+          mutation,
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        })
 
-    const response = data.extendTrialSubscription as IExtendTrial
+        const response = data.extendTrialSubscription as IExtendTrial
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }

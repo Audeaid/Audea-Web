@@ -17,7 +17,7 @@ export interface IGetAllContent {
   outputLanguage: string | null
 }
 
-export const getAllContent = async (token: string): Promise<IGetAllContent[] | null | undefined> => {
+export const getAllContent = (token: string): Promise<IGetAllContent[] | null> => {
   const query = gql`
     query GetAllContent {
       getAllContent {
@@ -35,21 +35,33 @@ export const getAllContent = async (token: string): Promise<IGetAllContent[] | n
     }
   `
 
-  try {
-    const { data } = await client.query({
-      query,
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-      fetchPolicy: 'network-only',
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors, error } = await client.query({
+          query,
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+          fetchPolicy: 'network-only',
+        })
 
-    const response = data.getAllContent as IGetAllContent[] | null
+        const response = data.getAllContent as IGetAllContent[] | null
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }
