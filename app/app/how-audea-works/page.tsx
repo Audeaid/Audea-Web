@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
-import Client from './lib'
-import { generateUrl } from '@/utils/url'
+import Client from './client'
+import { generateUrl } from '@/helper'
 import { Suspense } from 'react'
 import LoadingPage from '@/lib/LoadingPage'
 
