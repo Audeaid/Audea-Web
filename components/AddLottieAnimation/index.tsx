@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { LottiePlayer } from 'lottie-web'
 import type { IAddLottieAnimation } from './index.d'
 
-const AddLottieAnimation = ({ animationConfig, ...props }: IAddLottieAnimation) => {
+export default function AddLottieAnimation({ animationConfig, ...props }: IAddLottieAnimation) {
   const ref = useRef<HTMLDivElement>(null)
   const [lottie, setLottie] = useState<LottiePlayer | null>(null)
 
@@ -26,5 +26,3 @@ const AddLottieAnimation = ({ animationConfig, ...props }: IAddLottieAnimation) 
 
   return <div ref={ref} {...props} />
 }
-
-export default AddLottieAnimation

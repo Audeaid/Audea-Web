@@ -31,12 +31,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'
-import EmailDialog from './EmailDialog'
-import WhatsappDialog from './WhatsappDialog'
+import EmailDialog from '../../lib/EmailDialog'
+import WhatsappDialog from '../../lib/WhatsappDialog'
 import { useUser } from '@clerk/nextjs'
 import { useClerk } from '@clerk/clerk-react'
-import ReportAnIssue from './ReportAnIssue'
-import Alert from './Alert'
+import ReportAnIssue from '../../lib/ReportAnIssue'
 import toast from 'react-hot-toast'
 import { hoursBeforeOpen, isOutsideWorkingHours } from '@/helper'
 import cn from '@/utils/cn'
@@ -209,7 +208,6 @@ const MenuDropdown = ({ router, token }: Props) => {
                 }}
               >
                 <MessageCircle className='mr-2 h-4 w-4' />
-                <Alert />
                 <span>Chat with us</span>
               </DropdownMenuItem>
               <ReportAnIssue token={token} />

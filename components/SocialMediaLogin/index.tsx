@@ -9,7 +9,14 @@ import Image from 'next/image'
 import { useSignIn, useSignUp } from '@clerk/nextjs'
 import { OAuthStrategy } from '@clerk/nextjs/dist/types/server'
 
-const SocialMediaLogin = ({ disabled, children, type, referralId, signInOrSignUp, ...props }: ISocialMediaLogin) => {
+export default function SocialMediaLogin({
+  disabled,
+  children,
+  type,
+  referralId,
+  signInOrSignUp,
+  ...props
+}: ISocialMediaLogin) {
   const { signIn } = useSignIn()
 
   const { signUp } = useSignUp()
@@ -56,8 +63,6 @@ const SocialMediaLogin = ({ disabled, children, type, referralId, signInOrSignUp
     </motion.button>
   )
 }
-
-export default SocialMediaLogin
 
 const RenderSocialImage = ({ type }: { type: ISocialMediaLogin['type'] }) => {
   const src = () => {

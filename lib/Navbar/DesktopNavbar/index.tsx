@@ -1,7 +1,7 @@
 'use client'
 
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'
-import DarkModeSwitch from '../DarkModeSwitch'
+import DarkModeSwitch from '../lib/DarkModeSwitch'
 import MenuDropdown from './MenuDropdown'
 import Navigation from './Navigation'
 

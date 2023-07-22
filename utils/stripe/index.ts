@@ -4,7 +4,7 @@ import * as stripeNode from 'stripe'
 
 let stripePromise: Promise<Stripe | null>
 
-export const stripeClient = () => {
+export function stripeClient() {
   if (!stripePromise) {
     stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
   }

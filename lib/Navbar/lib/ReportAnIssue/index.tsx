@@ -19,7 +19,7 @@ interface Props {
   token: string
 }
 
-const ReportAnIssue = ({ token }: Props) => {
+export default function ReportAnIssue({ token }: Props) {
   const [issueSubmitted, setIssueSubmitted] = useState(false)
 
   return (
@@ -142,5 +142,3 @@ const ReportAnIssue = ({ token }: Props) => {
     </DropdownMenuDialogItem>
   )
 }
-
-export default ReportAnIssue

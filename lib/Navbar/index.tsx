@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import DesktopNavbar from './DesktopNavbar'
 import MobileNavbar from './MobileNavbar'
 
-const Navbar = ({ token }: { token: string }) => {
+export default function Navbar({ token }: { token: string }) {
   const router = useRouter()
 
   const { isMobile } = useContext(ViewportContext)
@@ -17,5 +17,3 @@ const Navbar = ({ token }: { token: string }) => {
     return <DesktopNavbar router={router} token={token} />
   }
 }
-
-export default Navbar

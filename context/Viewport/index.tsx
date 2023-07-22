@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, createContext, useEffect, useState } from 'react'
+import { ReactElement, ReactNode, createContext, useEffect, useState } from 'react'
 
 interface ViewportContextType {
   isMobile: boolean
@@ -14,7 +14,7 @@ interface IViewportProvider {
   children: React.ReactNode
 }
 
-export const ViewportProvider: React.FC<IViewportProvider> = ({ children }: { children: ReactNode }) => {
+export function ViewportProvider({ children }: { children: ReactNode }): ReactElement<IViewportProvider> {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {

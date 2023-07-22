@@ -1,4 +1,4 @@
-export const loadTidio = () => {
+export function loadTidio() {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script')
     script.src = '//code.tidio.co/qaqhmzyxhfsct6xkbaxicly6mv91mxsq.js '

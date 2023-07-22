@@ -17,7 +17,7 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
 }
 
-const InstallButton = () => {
+export default function InstallButton() {
   const [ready, setReady] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [supported, setSupported] = useState(false)
@@ -121,5 +121,3 @@ const InstallButton = () => {
     </>
   )
 }
-
-export default InstallButton

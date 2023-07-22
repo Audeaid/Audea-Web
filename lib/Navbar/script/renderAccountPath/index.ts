@@ -1,4 +1,4 @@
-export const renderAccountPath = (pathname: string) => {
+export function renderAccountPath(pathname: string) {
   switch (pathname) {
     case 'profile':
       return 'Update profile'

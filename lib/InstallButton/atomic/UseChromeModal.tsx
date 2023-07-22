@@ -11,13 +11,13 @@ import {
 } from '@/components/ui/alert-dialog'
 import cn from '@/utils/cn'
 
-export const UseChromeModal = ({
+export function UseChromeModal({
   isOpen,
   setIsOpen,
 }: {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
-}) => {
+}) {
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent className={cn('select-none')}>

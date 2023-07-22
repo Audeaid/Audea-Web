@@ -1,16 +1,23 @@
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
-export interface IGetTitle {
-  __typename: 'Content'
-  title: string | null
+export interface ISendUserEmail {
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export function getTitle(token: string, contentId: string): Promise<IGetTitle> {
+interface Props {
+  token: string
+  email: string
+  firstName: string
+  lastName: string
+}
+
+export function sendUserEmail({ token, email, firstName, lastName }: Props): Promise<ISendUserEmail> {
   const query = gql`
-    query GetOneContent($contentId: String!) {
-      getOneContent(contentId: $contentId) {
-        title
+    query SendInvitationEmailFromUser($email: String!, $firstName: String!, $lastName: String!) {
+      sendInvitationEmailFromUser(email: $email, firstName: $firstName, lastName: $lastName) {
+        response
       }
     }
   `
@@ -21,7 +28,9 @@ export function getTitle(token: string, contentId: string): Promise<IGetTitle> {
         const { data, errors, error } = await client.query({
           query,
           variables: {
-            contentId,
+            email,
+            firstName,
+            lastName,
           },
           context: {
             headers: {
@@ -31,7 +40,7 @@ export function getTitle(token: string, contentId: string): Promise<IGetTitle> {
           fetchPolicy: 'network-only',
         })
 
-        const response = data.getOneContent as IGetTitle
+        const response = data.sendInvitationEmailFromUser as ISendUserEmail
 
         if (errors) {
           reject(errors)

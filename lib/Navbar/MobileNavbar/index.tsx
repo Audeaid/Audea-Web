@@ -7,11 +7,11 @@ import { getTitle, renderAccountPath, renderNamePath } from '../script'
 import { useEffect, useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import MobileSheet from './MobileSheet'
-import DarkModeSwitch from '../DarkModeSwitch'
+import DarkModeSwitch from '../lib/DarkModeSwitch'
 import { Button } from '@/components/ui/button'
 import cn from '@/utils/cn'
 
-const MobileNavbar = ({ router, token }: { router: AppRouterInstance; token: string }) => {
+export default function MobileNavbar({ router, token }: { router: AppRouterInstance; token: string }) {
   const [Icon, setIcon] = useState<LucideIcon>(Home)
   const [name, setName] = useState('')
 
@@ -101,5 +101,3 @@ const MobileNavbar = ({ router, token }: { router: AppRouterInstance; token: str
     </nav>
   )
 }
-
-export default MobileNavbar

@@ -12,7 +12,7 @@ interface Props {
   token: string
 }
 
-const Navigation = ({ router, token }: Props) => {
+export default function Navigation({ router, token }: Props) {
   const [title, setTitle] = useState('')
   const pathname = usePathname()
 
@@ -144,5 +144,3 @@ const Navigation = ({ router, token }: Props) => {
     </div>
   )
 }
-
-export default Navigation

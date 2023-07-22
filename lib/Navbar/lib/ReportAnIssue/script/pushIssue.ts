@@ -1,16 +1,24 @@
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
-export interface IGetTitle {
-  __typename: 'Content'
-  title: string | null
+export interface IPushIssue {
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export function getTitle(token: string, contentId: string): Promise<IGetTitle> {
+interface Props {
+  token: string
+  area: string
+  severityLevel: string
+  subject: string
+  description: string
+}
+
+export function pushIssue({ token, area, severityLevel, subject, description }: Props): Promise<IPushIssue> {
   const query = gql`
-    query GetOneContent($contentId: String!) {
-      getOneContent(contentId: $contentId) {
-        title
+    query PushSupportTicket($area: String!, $severityLevel: String!, $subject: String!, $description: String!) {
+      pushSupportTicket(area: $area, severityLevel: $severityLevel, subject: $subject, description: $description) {
+        response
       }
     }
   `
@@ -21,7 +29,10 @@ export function getTitle(token: string, contentId: string): Promise<IGetTitle> {
         const { data, errors, error } = await client.query({
           query,
           variables: {
-            contentId,
+            area,
+            severityLevel,
+            subject,
+            description,
           },
           context: {
             headers: {
@@ -31,7 +42,7 @@ export function getTitle(token: string, contentId: string): Promise<IGetTitle> {
           fetchPolicy: 'network-only',
         })
 
-        const response = data.getOneContent as IGetTitle
+        const response = data.pushSupportTicket as IPushIssue
 
         if (errors) {
           reject(errors)

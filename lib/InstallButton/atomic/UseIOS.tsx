@@ -10,7 +10,7 @@ import cn from '@/utils/cn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 
-export const UseIOS = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+export function UseIOS({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const ref = useRef<SheetRef>()
 
   return (

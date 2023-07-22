@@ -3,7 +3,7 @@
  * @returns boolean: true if it is outside working hour
  */
 
-export const isOutsideWorkingHours = () => {
+export function isOutsideWorkingHours() {
   const currentTime = new Date()
   const currentHours = currentTime.getHours()
   const currentOffset = currentTime.getTimezoneOffset() / 60

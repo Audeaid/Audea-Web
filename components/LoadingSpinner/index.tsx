@@ -3,7 +3,7 @@
 import type { ILoadingSpinner } from './index.d'
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-const LoadingSpinner = ({ size }: ILoadingSpinner) => {
+export default function LoadingSpinner({ size }: ILoadingSpinner) {
   return (
     <div role='status'>
       <svg
@@ -26,5 +26,3 @@ const LoadingSpinner = ({ size }: ILoadingSpinner) => {
     </div>
   )
 }
-
-export default LoadingSpinner

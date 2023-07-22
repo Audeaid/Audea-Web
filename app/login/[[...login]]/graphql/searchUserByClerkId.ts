@@ -6,7 +6,7 @@ export interface ISearchUserByClerkId {
   id: string
 }
 
-export const searchUserByClerkId = async (clerkUserId: string) => {
+export function searchUserByClerkId(clerkUserId: string): Promise<ISearchUserByClerkId | null> {
   const query = gql`
     query SearchUserByClerkId($clerkUserId: String!) {
       searchUserByClerkId(clerkUserId: $clerkUserId) {
@@ -15,19 +15,31 @@ export const searchUserByClerkId = async (clerkUserId: string) => {
     }
   `
 
-  try {
-    const { data } = await client.query({
-      query,
-      variables: {
-        clerkUserId,
-      },
-      fetchPolicy: 'network-only',
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, errors, error } = await client.query({
+          query,
+          variables: {
+            clerkUserId,
+          },
+          fetchPolicy: 'network-only',
+        })
 
-    const response = data.searchUserByClerkId as ISearchUserByClerkId | null
+        const response = data.searchUserByClerkId as ISearchUserByClerkId | null
 
-    return response
-  } catch (e) {
-    console.error(e)
-  }
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }

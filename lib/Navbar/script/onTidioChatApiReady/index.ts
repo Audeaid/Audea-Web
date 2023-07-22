@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
 
-export const onTidioChatApiReady = () => {
+export function onTidioChatApiReady() {
   window.tidioChatApi.on('close', function () {
     window.tidioChatApi.hide()
   })

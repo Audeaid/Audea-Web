@@ -5,7 +5,7 @@
 
 import moment from 'moment'
 
-export const hoursBeforeOpen = () => {
+export function hoursBeforeOpen() {
   const currentTime = moment().utcOffset('+07:00')
   const endOfWorkingHours = moment().utcOffset('+07:00').set({ hour: 17, minute: 0, second: 0 })
 

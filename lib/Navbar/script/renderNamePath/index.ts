@@ -1,6 +1,6 @@
 import { Boxes, CreditCard, Download, FileHeart, Settings, User, Video } from 'lucide-react'
 
-export const renderNamePath = (pathname: string) => {
+export function renderNamePath(pathname: string) {
   switch (pathname) {
     case 'accounts':
       return {

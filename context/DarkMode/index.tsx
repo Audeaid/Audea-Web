@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useState, useEffect, useLayoutEffect, ReactNode } from 'react'
+import { createContext, useState, useEffect, useLayoutEffect, ReactNode, ReactElement } from 'react'
 import { useSubscription, useQuery, useMutation, gql } from '@apollo/client'
 import { useAuth } from '@clerk/nextjs'
 import signJwt from '@/utils/jwt'
@@ -48,7 +48,7 @@ const DARK_MODE_GET_QUERY = gql`
 
 export const DarkModeContext = createContext<IDarkModeContext | undefined>(undefined)
 
-export const DarkModeProvider: React.FC<IDarkModeProvider> = ({ children }: { children: ReactNode }) => {
+export function DarkModeProvider({ children }: { children: ReactNode }): ReactElement<IDarkModeProvider> {
   const { userId: clerkUserId } = useAuth()
   const [darkMode, setDarkMode] = useState<boolean>(false)
   const [token, setToken] = useState(clerkUserId ? signJwt(clerkUserId) : '')

@@ -21,7 +21,7 @@ interface Props {
   token: string
 }
 
-const EmailDialog = ({ token }: Props) => {
+export default function EmailDialog({ token }: Props) {
   const [emailExist, setEmailExist] = useState(false)
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
@@ -133,5 +133,3 @@ const EmailDialog = ({ token }: Props) => {
     </DropdownMenuDialogItem>
   )
 }
-
-export default EmailDialog

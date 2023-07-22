@@ -23,21 +23,20 @@ import {
 } from 'lucide-react'
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'
 import { Separator } from '@/components/ui/separator'
-import EmailDialog from '../../DesktopNavbar/MenuDropdown/EmailDialog'
+import EmailDialog from '../../lib/EmailDialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import WhatsappDialog from '../../DesktopNavbar/MenuDropdown/WhatsappDialog'
-import Alert from '../../DesktopNavbar/MenuDropdown/Alert'
+import WhatsappDialog from '../../lib/WhatsappDialog'
 import { hoursBeforeOpen, isOutsideWorkingHours } from '@/helper'
 import toast from 'react-hot-toast'
 import { useClerk, useUser } from '@clerk/nextjs'
 import { Skeleton } from '@/components/ui/skeleton'
-import ReportAnIssue from '../../DesktopNavbar/MenuDropdown/ReportAnIssue'
+import ReportAnIssue from '../../lib/ReportAnIssue'
 import { loadTidio, onTidioChatApiReady } from '../../script'
 import ErrorToast from '@/components/ErrorToast'
 import { useState } from 'react'
 import ErrorSafariContentBlocker from '@/lib/ErrorSafariContentBlocker'
 
-const MobileSheet = ({ router, token }: { router: AppRouterInstance; token: string }) => {
+export default function MobileSheet({ router, token }: { router: AppRouterInstance; token: string }) {
   const { isLoaded, isSignedIn, user } = useUser()
   const { signOut } = useClerk()
   const [chatIsLoaded, setChatIsLoaded] = useState(false)
@@ -232,7 +231,6 @@ const MobileSheet = ({ router, token }: { router: AppRouterInstance; token: stri
                 }}
               >
                 <MessageCircle className='mr-2 h-4 w-4' />
-                <Alert />
                 <span>Chat with us</span>
               </DropdownMenuItem>
               <ReportAnIssue token={token} />
@@ -291,5 +289,3 @@ const MobileSheet = ({ router, token }: { router: AppRouterInstance; token: stri
     </Sheet>
   )
 }
-
-export default MobileSheet

@@ -5,7 +5,7 @@ import cn from '@/utils/cn'
 import { useContext } from 'react'
 import { Toaster } from 'react-hot-toast'
 
-const Toast = () => {
+export default function Toast() {
   const { isMobile } = useContext(ViewportContext)
 
   return (
@@ -20,5 +20,3 @@ const Toast = () => {
     />
   )
 }
-
-export default Toast

@@ -28,7 +28,7 @@ interface Props {
   token: string
 }
 
-const WhatsappDialog = ({ token }: Props) => {
+export default function WhatsappDialog({ token }: Props) {
   const [state, dispatch] = useReducer(
     (state: State, action: Action): State => {
       switch (action.type) {
@@ -164,5 +164,3 @@ const WhatsappDialog = ({ token }: Props) => {
     </DropdownMenuDialogItem>
   )
 }
-
-export default WhatsappDialog
