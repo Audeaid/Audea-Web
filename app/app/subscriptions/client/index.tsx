@@ -9,17 +9,14 @@ import { motion } from 'framer-motion'
 import PricingTable from './PricingTable'
 import SubscribeNowButton from '@/app/notallowed/client/SubscribeNowButton'
 
-export default function Client({
-  stripeCustomerId,
-  clerkUserId,
-  currentSubscription,
-  invoices,
-}: {
+interface Props {
   stripeCustomerId: string
   clerkUserId: string
   currentSubscription: ICheckSubscription
   invoices: Stripe.Invoice[]
-}) {
+}
+
+export default function Client({ stripeCustomerId, clerkUserId, currentSubscription, invoices }: Props) {
   const endDate = new Date(currentSubscription.endDate)
   const endDateMoment = moment(endDate)
 

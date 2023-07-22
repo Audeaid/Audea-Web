@@ -1,16 +1,14 @@
-import client from '@/utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface ICheckSubscription {
-  __typename: 'UserSubscription';
-  endDate: string;
-  startDate: string;
-  type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'YEARLY' | 'EARLYADOPTER';
+  __typename: 'UserSubscription'
+  endDate: string
+  startDate: string
+  type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'YEARLY' | 'EARLYADOPTER'
 }
 
-export const checkSubscription = (
-  token: string
-): Promise<ICheckSubscription> => {
+export function checkSubscription(token: string): Promise<ICheckSubscription> {
   const query = gql`
     query GetUserSubscription {
       getUserSubscription {
@@ -19,14 +17,12 @@ export const checkSubscription = (
         type
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getUserSubscription },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           context: {
             headers: {
@@ -34,12 +30,22 @@ export const checkSubscription = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getUserSubscription);
+        const response = data.getUserSubscription as ICheckSubscription
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

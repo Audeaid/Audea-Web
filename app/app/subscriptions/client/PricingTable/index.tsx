@@ -3,20 +3,19 @@
 import { subscriptionPrices } from '@/app/data/subscriptionPrices'
 import Stripe from 'stripe'
 import axios, { AxiosRequestConfig } from 'axios'
-import { generateUrl } from '@/utils/url'
+import { generateUrl } from '@/helper'
 import { stripeClient } from '@/utils/stripe'
 import { Button } from '@/components/ui/button'
 import cn from '@/utils/cn'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import ErrorToast from '@/components/ErrorToast'
 
-export default function PricingTable({
-  stripeCustomerId,
-  clerkUserId,
-}: {
+interface Props {
   stripeCustomerId: string
   clerkUserId: string
-}) {
+}
+
+export default function PricingTable({ stripeCustomerId, clerkUserId }: Props) {
   return (
     <section className='flex items-center justify-center gap-6 flex-wrap'>
       {subscriptionPrices.map((v) => {
@@ -39,7 +38,7 @@ export default function PricingTable({
               <Button
                 onClick={async () => {
                   try {
-                    const options: AxiosRequestConfig<any> = {
+                    const options: AxiosRequestConfig<unknown> = {
                       method: 'POST',
                       url: generateUrl('/api/stripe/checkout-sessions').href,
                       headers: {
@@ -61,7 +60,7 @@ export default function PricingTable({
                       sessionId: data.id,
                     })
                   } catch (error) {
-                    ErrorToast('preparing checkout page', error)
+                    ErrorToast({ action: 'preparing checkout page', error })
                   }
                 }}
                 type='button'

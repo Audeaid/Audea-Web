@@ -1,25 +1,20 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
-import { IGetPaidObject } from './getPaidObject';
+import { gql } from '@apollo/client'
+import { IGetPaidObject } from './getPaidObject'
+import client from '@/utils/graphql'
 
-export const createPaidObject = (
-  token: string,
-  sessionId: string
-): Promise<IGetPaidObject> => {
+export function createPaidObject(token: string, sessionId: string): Promise<IGetPaidObject> {
   const mutation = gql`
     mutation CreatePaidObject($sessionId: String!) {
       createPaidObject(sessionId: $sessionId) {
         redeem
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { createPaidObject },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             sessionId,
@@ -29,12 +24,20 @@ export const createPaidObject = (
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(createPaidObject);
+        const response = data.createPaidObject as IGetPaidObject
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

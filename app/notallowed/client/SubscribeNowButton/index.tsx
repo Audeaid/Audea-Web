@@ -8,7 +8,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import PricingTable from '@/app/app/subscriptions/lib/PricingTable'
+import PricingTable from '@/app/app/subscriptions/client/PricingTable'
 
 interface ISubscribeNowButton {
   subscriptionType: ICheckSubscription['type']

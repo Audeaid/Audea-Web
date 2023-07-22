@@ -1,28 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetStripeCustomer {
-  __typename: 'StripeCustomer';
-  stripeCustomerId: string;
+  __typename: 'StripeCustomer'
+  stripeCustomerId: string
 }
 
-export const getStripeCustomer = (
-  token: string
-): Promise<IGetStripeCustomer | null> => {
+export function getStripeCustomer(token: string): Promise<IGetStripeCustomer | null> {
   const query = gql`
     query GetStripeCustomer {
       getStripeCustomer {
         stripeCustomerId
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getStripeCustomer },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
 
           context: {
@@ -31,12 +27,22 @@ export const getStripeCustomer = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getStripeCustomer);
+        const response = data.getStripeCustomer as IGetStripeCustomer | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

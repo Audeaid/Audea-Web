@@ -1,16 +1,16 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IPurchasedSubscription {
-  __typename: 'UserSubscription';
-  endDate: string;
-  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME60';
+  __typename: 'UserSubscription'
+  endDate: string
+  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME60'
 }
 
-export const purchasedSubscription = (
+export function purchasedSubscription(
   token: string,
-  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME60'
-): Promise<IPurchasedSubscription> => {
+  type: 'MONTHLY' | 'YEARLY' | 'LIFETIME60',
+): Promise<IPurchasedSubscription> {
   const mutation = gql`
     mutation PurchasedSubscription($type: SubscriptionTypeEnum!) {
       purchasedSubscription(type: $type) {
@@ -18,14 +18,12 @@ export const purchasedSubscription = (
         type
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { purchasedSubscription },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             type,
@@ -35,12 +33,20 @@ export const purchasedSubscription = (
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(purchasedSubscription);
+        const response = data.purchasedSubscription as IPurchasedSubscription
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

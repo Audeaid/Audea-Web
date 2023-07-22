@@ -1,25 +1,17 @@
-'use client';
+'use client'
 
-import Stripe from 'stripe';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { DownloadCloud } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { subscriptionPrices } from '@/app/data/subscriptionPrices';
-import cn from '@/utils/cn';
+import Stripe from 'stripe'
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { DownloadCloud } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { subscriptionPrices } from '@/app/data/subscriptionPrices'
+import cn from '@/utils/cn'
 
-export default function InvoicesTable({
-  invoices,
-}: {
-  invoices: Stripe.Invoice[];
-}) {
+interface Props {
+  invoices: Stripe.Invoice[]
+}
+
+export default function InvoicesTable({ invoices }: Props) {
   return (
     <Table className={cn('z-10')}>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -29,14 +21,14 @@ export default function InvoicesTable({
           <TableHead>Invoice</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Description</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead className='text-right'>Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {invoices.map((invoice) => (
           <TableRow key={invoice.id}>
             <TableCell>
-              <a href={invoice.hosted_invoice_url ?? ''} target="_blank">
+              <a href={invoice.hosted_invoice_url ?? ''} target='_blank' rel='noreferrer'>
                 <DownloadCloud />
               </a>
             </TableCell>
@@ -45,17 +37,13 @@ export default function InvoicesTable({
               {invoice.status === 'paid' ? (
                 <Badge>{invoice.status}</Badge>
               ) : (
-                <Badge variant="destructive">{invoice.status}</Badge>
+                <Badge variant='destructive'>{invoice.status}</Badge>
               )}
             </TableCell>
             <TableCell>
-              {
-                subscriptionPrices.find(
-                  (v) => v.id === invoice.lines.data[0].price?.id
-                )?.displayNameInvoice
-              }
+              {subscriptionPrices.find((v) => v.id === invoice.lines.data[0].price?.id)?.displayNameInvoice}
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className='text-right'>
               {new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
@@ -65,5 +53,5 @@ export default function InvoicesTable({
         ))}
       </TableBody>
     </Table>
-  );
+  )
 }
