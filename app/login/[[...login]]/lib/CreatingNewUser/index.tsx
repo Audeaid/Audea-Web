@@ -7,27 +7,22 @@ import {
   sendNewUserEmail,
 } from '@/app/signup/[[...signup]]/client/Progress5/script'
 import AddLottieAnimation from '@/components/AddLottieAnimation'
-
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { deleteUserMutation } from './deleteUserMutation'
+import { deleteUserMutation } from './script'
 import axios from 'axios'
 import signJwt from '@/utils/jwt'
 
-export default function CreatingNewUser({
-  email,
-  clerkId,
-  firstName,
-  lastName,
-  referralJwt,
-}: {
+interface Props {
   email: string
   clerkId: string
   firstName: string
   lastName: string
   referralJwt: string | null
-}) {
+}
+
+export default function CreatingNewUser({ email, clerkId, firstName, lastName, referralJwt }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)
