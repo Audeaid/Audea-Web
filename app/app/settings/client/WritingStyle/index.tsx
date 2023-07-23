@@ -15,7 +15,12 @@ import toast from 'react-hot-toast'
 import { updateContentSettings } from '../script'
 import ErrorToast from '@/components/ErrorToast'
 
-export default function WritingStyle({ token, initialValue }: { token: string; initialValue: string }) {
+interface Props {
+  token: string
+  initialValue: string
+}
+
+export default function WritingStyle({ token, initialValue }: Props) {
   const [value, setValue] = useState(initialValue === 'ASK' || initialValue === 'Default' ? initialValue : 'custom')
 
   const [customValue, setCustomValue] = useState(
@@ -59,8 +64,8 @@ export default function WritingStyle({ token, initialValue }: { token: string; i
                       error: 'Error saving your settings!',
                     },
                   )
-                  .catch((e) => {
-                    ErrorToast('saving writing style', e)
+                  .catch((error) => {
+                    ErrorToast({ action: 'saving writing style', error })
                   })
               }}
             >
@@ -134,8 +139,8 @@ export default function WritingStyle({ token, initialValue }: { token: string; i
                       error: 'Error saving your settings!',
                     },
                   )
-                  .catch((e) => {
-                    ErrorToast('saving writing style', e)
+                  .catch((error) => {
+                    ErrorToast({ action: 'saving writing style', error })
                   })
               }
             }}

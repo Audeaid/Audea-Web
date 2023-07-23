@@ -1,22 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 interface IUpdateContentSettings {
-  __typename: 'ContentSettings';
-  id: string;
+  __typename: 'ContentSettings'
+  id: string
 }
 
-export const updateContentSettings = ({
+interface Props {
+  token: string
+  writingStyle: string | null
+  outputLanguage: string | null
+  typeOfPromptId: string | null
+}
+
+export function updateContentSettings({
   token,
   writingStyle,
   outputLanguage,
   typeOfPromptId,
-}: {
-  token: string;
-  writingStyle: string | null;
-  outputLanguage: string | null;
-  typeOfPromptId: string | null;
-}): Promise<IUpdateContentSettings> => {
+}: Props): Promise<IUpdateContentSettings> {
   const mutation = gql`
     mutation UpdateContentSettings(
       $writingStyle: String
@@ -31,14 +33,12 @@ export const updateContentSettings = ({
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { updateContentSettings },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             writingStyle,
@@ -50,12 +50,20 @@ export const updateContentSettings = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(updateContentSettings);
+        const response = data.getPlatformVote as IUpdateContentSettings
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

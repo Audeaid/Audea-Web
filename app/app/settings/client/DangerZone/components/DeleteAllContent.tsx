@@ -19,7 +19,11 @@ import ErrorToast from '@/components/ErrorToast'
 import { useUser } from '@clerk/nextjs'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export default function DeleteAllContent({ token }: { token: string }) {
+interface Props {
+  token: string
+}
+
+export default function DeleteAllContent({ token }: Props) {
   const [value, setValue] = useState('')
   const router = useRouter()
 
@@ -70,8 +74,8 @@ export default function DeleteAllContent({ token }: { token: string }) {
                   success: 'All contents deleted!',
                   error: 'Error deleting your content!',
                 })
-                .catch((e) => {
-                  ErrorToast('deleting your content', e)
+                .catch((error) => {
+                  ErrorToast({ action: 'deleting your content', error })
                 })
 
               router.push('/app')

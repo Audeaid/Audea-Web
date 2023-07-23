@@ -1,16 +1,18 @@
-import { gql } from '@apollo/client'
-import { IContentSettings } from './createNewContentSettings'
 import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
-export function getContentSettings(token: string): Promise<IContentSettings | null> {
+export interface IGetTypeOfPrompt {
+  __typename: 'TypeOfPrompt'
+  id: string
+  displayName: string
+}
+
+export function getTypeOfPrompt(token: string): Promise<IGetTypeOfPrompt[]> {
   const query = gql`
-    query GetContentSettings {
-      getContentSettings {
+    query GetAllTypeOfPrompt {
+      getAllTypeOfPrompt {
+        displayName
         id
-        lastUpdate
-        outputLanguage
-        typeOfPromptId
-        writingStyle
       }
     }
   `
@@ -28,7 +30,7 @@ export function getContentSettings(token: string): Promise<IContentSettings | nu
           fetchPolicy: 'network-only',
         })
 
-        const response = data.getContentSettings as IContentSettings | null
+        const response = data.getAllTypeOfPrompt as IGetTypeOfPrompt[]
 
         if (errors) {
           reject(errors)

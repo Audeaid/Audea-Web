@@ -12,7 +12,12 @@ import toast from 'react-hot-toast'
 import ErrorToast from '@/components/ErrorToast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
-export default function OutputLanguage({ token, initialValue }: { token: string; initialValue: string }) {
+interface Props {
+  token: string
+  initialValue: string
+}
+
+export default function OutputLanguage({ token, initialValue }: Props) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(outputLanguageListWithAsk.find(({ db }) => initialValue === db)?.value ?? '')
 
@@ -66,8 +71,8 @@ export default function OutputLanguage({ token, initialValue }: { token: string;
                             error: 'Error saving your settings!',
                           },
                         )
-                        .catch((e) => {
-                          ErrorToast('saving output language', e)
+                        .catch((error) => {
+                          ErrorToast({ action: 'saving output language', error })
                         })
                     }}
                   >
