@@ -1,4 +1,4 @@
-import { IWhisperResponse } from '@/app/api/whisper/route'
+import { IWhisperResponse } from '@/utils/openai'
 import axios from 'axios'
 
 export function getTranscriptViaWhisperFromUrl(voiceNoteUrl: string): Promise<IWhisperResponse> {

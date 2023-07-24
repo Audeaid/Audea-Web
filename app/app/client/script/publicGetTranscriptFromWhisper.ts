@@ -1,4 +1,4 @@
-import { IWhisperResponse } from '@/app/api/whisper/route'
+import { IWhisperResponse } from '@/utils/openai'
 
 export function publicGetTranscriptFromWhisper(file: File): Promise<IWhisperResponse> {
   return new Promise((resolve, reject) => {

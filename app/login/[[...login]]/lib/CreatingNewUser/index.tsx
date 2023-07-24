@@ -67,7 +67,7 @@ export default function CreatingNewUser({ email, clerkId, firstName, lastName, r
         setLoading(false)
         setSuccess(false)
 
-        await axios.post('/api/deleteClerkUser', { clerkUserId: clerkId })
+        await axios.post('/api/clerk/deleteClerkUser', { clerkUserId: clerkId })
 
         if (userDbId) {
           await deleteUserMutation(userDbId)

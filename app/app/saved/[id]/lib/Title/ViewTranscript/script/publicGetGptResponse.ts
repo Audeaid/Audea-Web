@@ -1,5 +1,4 @@
-import { IGPTResponse } from '@/app/api/gpt/route'
-import openai from '@/utils/openai'
+import openai, { IGPTResponse } from '@/utils/openai'
 
 export const publicGetGptResponse = (systemPrompt: string, userPrompt: string): Promise<IGPTResponse> => {
   return new Promise((resolve, reject) => {

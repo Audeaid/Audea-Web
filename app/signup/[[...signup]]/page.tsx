@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 import Client from './client'
 import { auth } from '@clerk/nextjs'
-
 import { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {

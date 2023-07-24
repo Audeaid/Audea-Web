@@ -32,7 +32,7 @@ export const addUsername = ({ token, username, clerkUserId }: Props): Promise<un
           },
         })
 
-        const axiosResponse = await axios.post('/api/addUsernameToClerk', {
+        const axiosResponse = await axios.post('/api/clerk/addUsernameToClerk', {
           clerkUserId,
           username,
         })
