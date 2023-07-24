@@ -1,32 +1,16 @@
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
-export interface IGetContentSettings {
-  __typename: 'ContentSettings'
-  outputLanguage:
-    | 'TRANSCRIPT'
-    | 'ENGLISH'
-    | 'BAHASAINDONESIA'
-    | 'CHINESE'
-    | 'HINDI'
-    | 'JAPANESE'
-    | 'SPANISH'
-    | 'FRENCH'
-    | 'RUSSIAN'
-    | 'URDU'
-    | 'ARABIC'
-    | 'ASK'
-  writingStyle: string
-  typeOfPromptId: string
+export interface IGetNotionTitleName {
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export function getContentSettings(token: string): Promise<IGetContentSettings | null> {
+export function getNotionTitleName(token: string): Promise<IGetNotionTitleName> {
   const query = gql`
-    query GetContentSettings {
-      getContentSettings {
-        outputLanguage
-        writingStyle
-        typeOfPromptId
+    query GetNotionTitleName {
+      getNotionTitleName {
+        response
       }
     }
   `
@@ -44,7 +28,7 @@ export function getContentSettings(token: string): Promise<IGetContentSettings |
           fetchPolicy: 'network-only',
         })
 
-        const response = data.getContentSettings as IGetContentSettings | null
+        const response = data.getNotionTitleName as IGetNotionTitleName
 
         if (errors) {
           reject(errors)

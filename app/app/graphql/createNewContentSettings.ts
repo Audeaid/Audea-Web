@@ -1,8 +1,8 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface ICreateNewContentSettings {
-  __typename: 'ContentSettings';
+  __typename: 'ContentSettings'
   outputLanguage:
     | 'TRANSCRIPT'
     | 'ENGLISH'
@@ -15,14 +15,12 @@ export interface ICreateNewContentSettings {
     | 'RUSSIAN'
     | 'URDU'
     | 'ARABIC'
-    | 'ASK';
-  writingStyle: string;
-  typeOfPromptId: string;
+    | 'ASK'
+  writingStyle: string
+  typeOfPromptId: string
 }
 
-export const createNewContentSettings = (
-  token: string
-): Promise<ICreateNewContentSettings> => {
+export function createNewContentSettings(token: string): Promise<ICreateNewContentSettings> {
   const mutation = gql`
     mutation CreateNewContentSettings {
       createNewContentSettings {
@@ -31,26 +29,32 @@ export const createNewContentSettings = (
         typeOfPromptId
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { createNewContentSettings },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           context: {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(createNewContentSettings);
+        const response = data.createNewContentSettings as ICreateNewContentSettings
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { IGetContentSettings, createNewContentSettings, getAllContent, getContentSettings } from './graphql'
-import Client from './lib'
+import Client from './client'
 import { auth } from '@clerk/nextjs'
 import signJwt from '@/utils/jwt'
 import { Suspense } from 'react'

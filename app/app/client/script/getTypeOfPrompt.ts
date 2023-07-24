@@ -1,32 +1,16 @@
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
-export interface IGetContentSettings {
-  __typename: 'ContentSettings'
-  outputLanguage:
-    | 'TRANSCRIPT'
-    | 'ENGLISH'
-    | 'BAHASAINDONESIA'
-    | 'CHINESE'
-    | 'HINDI'
-    | 'JAPANESE'
-    | 'SPANISH'
-    | 'FRENCH'
-    | 'RUSSIAN'
-    | 'URDU'
-    | 'ARABIC'
-    | 'ASK'
-  writingStyle: string
-  typeOfPromptId: string
+export interface IGetTypeOfPrompt {
+  __typename: 'TypeOfPrompt'
+  systemPrompt: string
 }
 
-export function getContentSettings(token: string): Promise<IGetContentSettings | null> {
+export function getTypeOfPrompt(token: string, typeOfPromptId: string): Promise<IGetTypeOfPrompt | null> {
   const query = gql`
-    query GetContentSettings {
-      getContentSettings {
-        outputLanguage
-        writingStyle
-        typeOfPromptId
+    query GetTypeOfPromptFromId($typeOfPromptId: String!) {
+      getTypeOfPromptFromId(typeOfPromptId: $typeOfPromptId) {
+        systemPrompt
       }
     }
   `
@@ -36,6 +20,9 @@ export function getContentSettings(token: string): Promise<IGetContentSettings |
       try {
         const { data, errors, error } = await client.query({
           query,
+          variables: {
+            typeOfPromptId,
+          },
           context: {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -44,7 +31,7 @@ export function getContentSettings(token: string): Promise<IGetContentSettings |
           fetchPolicy: 'network-only',
         })
 
-        const response = data.getContentSettings as IGetContentSettings | null
+        const response = data.getTypeOfPromptFromId as IGetTypeOfPrompt | null
 
         if (errors) {
           reject(errors)
