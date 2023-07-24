@@ -1,55 +1,42 @@
-import { redirect } from 'next/navigation';
-import {
-  IGetContentSettings,
-  createNewContentSettings,
-  getAllContent,
-  getContentSettings,
-} from './graphql';
-import Client from './lib';
-import { auth } from '@clerk/nextjs';
-import { signJwt } from '@/utils/jwt';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/LoadingPage';
-import { generateUrl } from '@/utils/url';
+import { redirect } from 'next/navigation'
+import { IGetContentSettings, createNewContentSettings, getAllContent, getContentSettings } from './graphql'
+import Client from './client'
+import { auth } from '@clerk/nextjs'
+import signJwt from '@/utils/jwt'
+import { Suspense } from 'react'
+import LoadingPage from '@/lib/LoadingPage'
+import { generateUrl } from '@/helper'
 
 export default async function Page() {
   try {
-    const { userId: clerkUserId } = auth();
+    const { userId: clerkUserId } = auth()
 
-    if (!clerkUserId) return redirect('/login');
+    if (!clerkUserId) return redirect('/login')
 
-    const token = signJwt(clerkUserId);
+    const token = signJwt(clerkUserId)
 
-    const content = await getAllContent(token);
-    let hasContent: boolean = false;
-    if (content !== null) hasContent = true;
+    const content = await getAllContent(token)
+    let hasContent: boolean = false
+    if (content !== null) hasContent = true
 
-    const response = await getContentSettings(token);
+    const response = await getContentSettings(token)
 
-    let contentSettings: IGetContentSettings;
+    let contentSettings: IGetContentSettings
 
     if (!response) {
-      contentSettings = await createNewContentSettings(token);
+      contentSettings = await createNewContentSettings(token)
     } else {
-      contentSettings = response;
+      contentSettings = response
     }
 
     return (
       <Suspense fallback={<LoadingPage />}>
-        <Client
-          token={token}
-          hasContent={hasContent}
-          contentSettings={contentSettings}
-        />
+        <Client token={token} hasContent={hasContent} contentSettings={contentSettings} />
       </Suspense>
-    );
+    )
   } catch (error) {
-    const e = JSON.stringify(error);
-    const url = generateUrl(
-      `/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent(
-        '/app'
-      )}`
-    );
-    return redirect(url.href);
+    const e = JSON.stringify(error)
+    const url = generateUrl(`/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent('/app')}`)
+    return redirect(url.href)
   }
 }

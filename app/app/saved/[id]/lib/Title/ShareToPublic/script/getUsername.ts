@@ -1,18 +1,18 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 interface IGetUsername {
-  __typename: 'User';
-  username: string | null;
-  firstName: string;
-  lastName: string;
+  __typename: 'User'
+  username: string | null
+  firstName: string
+  lastName: string
 }
 
-export const getUsername = ({
-  token,
-}: {
-  token: string;
-}): Promise<IGetUsername> => {
+interface Props {
+  token: string
+}
+
+export function getUsername({ token }: Props): Promise<IGetUsername> {
   const query = gql`
     query GetUserInfo {
       getUserInfo {
@@ -21,14 +21,12 @@ export const getUsername = ({
         lastName
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getUserInfo },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           context: {
             headers: {
@@ -36,12 +34,22 @@ export const getUsername = ({
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getUserInfo);
+        const response = data.getUserInfo as IGetUsername
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

@@ -1,22 +1,28 @@
-'use client';
+'use client'
 
-import {
-  getTranscriptViaWhisperFromUrl,
-  getTypeOfPrompt,
-  publicGetGptResponse,
-  updateContent,
-} from './script';
-import LoadingContent from '@/components/LoadingContent';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import AddLottieAnimation from '@/components/AddLottieAnimation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
-import { motion } from 'framer-motion';
-import ErrorToast from '@/components/ErrorToast';
-import { Button } from '@/components/ui/button';
+import { getTranscriptViaWhisperFromUrl, getTypeOfPrompt, publicGetGptResponse, updateContent } from './script'
+import LoadingContent from '@/components/LoadingContent'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import AddLottieAnimation from '@/components/AddLottieAnimation'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons'
+import { motion } from 'framer-motion'
+import ErrorToast from '@/components/ErrorToast'
+import { Button } from '@/components/ui/button'
 
-const GenerateContent = ({
+interface Props {
+  token: string
+  contentId: string
+  voiceNoteUrl: string
+  typeOfPromptId: string
+  transcript: string | null
+  gptGenerated: string | null
+  writingStyle: string
+  outputLanguage: string
+}
+
+export default function GenerateContent({
   token,
   contentId,
   voiceNoteUrl,
@@ -25,29 +31,20 @@ const GenerateContent = ({
   gptGenerated,
   writingStyle,
   outputLanguage,
-}: {
-  token: string;
-  contentId: string;
-  voiceNoteUrl: string;
-  typeOfPromptId: string;
-  transcript: string | null;
-  gptGenerated: string | null;
-  writingStyle: string;
-  outputLanguage: string;
-}) => {
-  const router = useRouter();
-  const [condition, setCondition] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
+}: Props) {
+  const router = useRouter()
+  const [condition, setCondition] = useState('')
+  const [isUploading, setIsUploading] = useState(false)
   const handleClick = async () => {
     if (transcript === null && gptGenerated === null) {
-      setIsUploading(true);
+      setIsUploading(true)
 
       try {
-        setCondition('Getting the transcript...');
-        const typeOfPrompt = await getTypeOfPrompt(token, typeOfPromptId);
-        if (!typeOfPrompt) throw new Error('typeOfPrompt is null');
+        setCondition('Getting the transcript...')
+        const typeOfPrompt = await getTypeOfPrompt(token, typeOfPromptId)
+        if (!typeOfPrompt) throw new Error('typeOfPrompt is null')
 
-        const whisperData = await getTranscriptViaWhisperFromUrl(voiceNoteUrl);
+        const whisperData = await getTranscriptViaWhisperFromUrl(voiceNoteUrl)
         await updateContent({
           token,
           contentId,
@@ -58,32 +55,25 @@ const GenerateContent = ({
           typeOfPromptId: null,
           outputLanguage: null,
           writingStyle: null,
-        });
+        })
 
-        setCondition('Transcript is being analyzed by AI...');
-        const systemPrompt = typeOfPrompt.systemPrompt;
+        setCondition('Transcript is being analyzed by AI...')
+        const systemPrompt = typeOfPrompt.systemPrompt
         const userPrompt = `Audio transcription:
         ${whisperData.text}
-        Output language: ${
-          outputLanguage === 'TRANSCRIPT'
-            ? 'Same as transcript'
-            : outputLanguage
-        }
-        Writing style: ${writingStyle}`;
+        Output language: ${outputLanguage === 'TRANSCRIPT' ? 'Same as transcript' : outputLanguage}
+        Writing style: ${writingStyle}`
 
-        const gptResponse = await publicGetGptResponse(
-          systemPrompt,
-          userPrompt
-        );
+        const gptResponse = await publicGetGptResponse(systemPrompt, userPrompt)
 
-        const actualGptResponse = gptResponse.choices[0].message.content;
-        const jsonGptResponse = JSON.parse(actualGptResponse);
+        const actualGptResponse = gptResponse.choices[0].message.content
+        const jsonGptResponse = JSON.parse(actualGptResponse)
 
-        let title = '';
+        let title = ''
         for (const obj of jsonGptResponse) {
           if (obj.type === 'title') {
-            title = obj.content;
-            break;
+            title = obj.content
+            break
           }
         }
 
@@ -97,46 +87,39 @@ const GenerateContent = ({
           typeOfPromptId: null,
           outputLanguage: null,
           writingStyle: null,
-        });
+        })
 
-        router.push(`/app/saved/${response.id}`);
+        router.push(`/app/saved/${response.id}`)
       } catch (error) {
-        ErrorToast('generating content', error);
-        setIsUploading(false);
+        ErrorToast({ action: 'generating content', error })
+        setIsUploading(false)
       }
     }
 
     if (gptGenerated === null && transcript !== null) {
-      setIsUploading(true);
+      setIsUploading(true)
 
       try {
-        setCondition('Transcript is being analyzed by AI...');
-        const typeOfPrompt = await getTypeOfPrompt(token, typeOfPromptId);
-        if (!typeOfPrompt) throw new Error('typeOfPrompt is null');
+        setCondition('Transcript is being analyzed by AI...')
+        const typeOfPrompt = await getTypeOfPrompt(token, typeOfPromptId)
+        if (!typeOfPrompt) throw new Error('typeOfPrompt is null')
 
-        const systemPrompt = typeOfPrompt.systemPrompt;
+        const systemPrompt = typeOfPrompt.systemPrompt
         const userPrompt = `Audio transcription:
         ${transcript}
-        Output language: ${
-          outputLanguage === 'TRANSCRIPT'
-            ? 'Same as transcript'
-            : outputLanguage
-        }
-        Writing style: ${writingStyle}`;
+        Output language: ${outputLanguage === 'TRANSCRIPT' ? 'Same as transcript' : outputLanguage}
+        Writing style: ${writingStyle}`
 
-        const gptResponse = await publicGetGptResponse(
-          systemPrompt,
-          userPrompt
-        );
+        const gptResponse = await publicGetGptResponse(systemPrompt, userPrompt)
 
-        const actualGptResponse = gptResponse.choices[0].message.content;
-        const jsonGptResponse = JSON.parse(actualGptResponse);
+        const actualGptResponse = gptResponse.choices[0].message.content
+        const jsonGptResponse = JSON.parse(actualGptResponse)
 
-        let title = '';
+        let title = ''
         for (const obj of jsonGptResponse) {
           if (obj.type === 'title') {
-            title = obj.content;
-            break;
+            title = obj.content
+            break
           }
         }
 
@@ -150,15 +133,15 @@ const GenerateContent = ({
           typeOfPromptId: null,
           outputLanguage: null,
           writingStyle: null,
-        });
+        })
 
-        router.push(`/app/saved/${response.id}`);
+        router.push(`/app/saved/${response.id}`)
       } catch (error) {
-        ErrorToast('generating content', error);
-        setIsUploading(false);
+        ErrorToast({ action: 'generating content', error })
+        setIsUploading(false)
       }
     }
-  };
+  }
 
   return (
     <>
@@ -166,35 +149,29 @@ const GenerateContent = ({
         <LoadingContent condition={condition} />
       ) : (
         <motion.section
-          className="flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none"
+          className='flex flex-col gap-4 w-fit mx-auto items-center justify-center select-none'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <div className="max-w-[500px] w-fit">
+          <div className='max-w-[500px] w-fit'>
             <AddLottieAnimation
-              path={'/lottie/46864-lovely-cats.json'}
-              loop={true}
+              animationConfig={{ path: '/lottie/46864-lovely-cats.json', loop: true, autoplay: true }}
             />
           </div>
-          <section className="mt-[-5rem] flex flex-col gap-8 items-center justify-center">
-            <section className="flex flex-col gap-2">
-              <p className="font-bold text-xl max-w-[600px] text-center">
-                Sorry, it seems like there is an error while generating your
-                transcript and or content.
+          <section className='mt-[-5rem] flex flex-col gap-8 items-center justify-center'>
+            <section className='flex flex-col gap-2'>
+              <p className='font-bold text-xl max-w-[600px] text-center'>
+                Sorry, it seems like there is an error while generating your transcript and or content.
               </p>
-              <p className="text-center font-light">
-                Please click the button below to retry.
-              </p>
+              <p className='text-center font-light'>Please click the button below to retry.</p>
             </section>
-            <Button onClick={handleClick} type="button">
-              <FontAwesomeIcon icon={faArrowRotateRight} className="mr-2" />
+            <Button onClick={handleClick} type='button'>
+              <FontAwesomeIcon icon={faArrowRotateRight} className='mr-2' />
               Retry generating content
             </Button>
           </section>
         </motion.section>
       )}
     </>
-  );
-};
-
-export default GenerateContent;
+  )
+}

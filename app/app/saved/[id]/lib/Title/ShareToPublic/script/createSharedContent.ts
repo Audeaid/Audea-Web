@@ -1,19 +1,18 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 interface ICreateSharedContent {
-  __typename: 'SharedContent';
-  username: string;
-  generatedId: string;
+  __typename: 'SharedContent'
+  username: string
+  generatedId: string
 }
 
-export const createSharedContent = ({
-  token,
-  contentId,
-}: {
-  token: string;
-  contentId: string;
-}): Promise<ICreateSharedContent> => {
+interface Props {
+  token: string
+  contentId: string
+}
+
+export function createSharedContent({ token, contentId }: Props): Promise<ICreateSharedContent> {
   const mutation = gql`
     mutation CreateSharedContent($contentId: String!) {
       createSharedContent(contentId: $contentId) {
@@ -21,14 +20,12 @@ export const createSharedContent = ({
         generatedId
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { createSharedContent },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             contentId,
@@ -38,12 +35,20 @@ export const createSharedContent = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(createSharedContent);
+        const response = data.createSharedContent as ICreateSharedContent
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

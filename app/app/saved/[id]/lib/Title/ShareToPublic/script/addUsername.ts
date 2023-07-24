@@ -1,30 +1,26 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
-import axios from 'axios';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
+import axios from 'axios'
 
-export const addUsername = ({
-  token,
-  username,
-  clerkUserId,
-}: {
-  token: string;
-  username: string;
-  clerkUserId: string;
-}): Promise<any> => {
+interface Props {
+  token: string
+  username: string
+  clerkUserId: string
+}
+
+export const addUsername = ({ token, username, clerkUserId }: Props): Promise<unknown> => {
   const mutation = gql`
     mutation AddUsername($username: String!) {
       addUsername(username: $username) {
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { addUsername },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             username,
@@ -34,20 +30,23 @@ export const addUsername = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        const { data: axiosResponse } = await axios.post(
-          '/api/addUsernameToClerk',
-          {
-            clerkUserId,
-            username,
-          }
-        );
+        const axiosResponse = await axios.post('/api/clerk/addUsernameToClerk', {
+          clerkUserId,
+          username,
+        })
 
-        resolve({ graphQLResponse: addUsername, axiosResponse });
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve({ graphQLResponse: data, axiosResponse })
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

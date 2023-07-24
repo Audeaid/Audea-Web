@@ -1,45 +1,42 @@
-import {
-  getGeneratedNotionPage,
-  getNotionAccount,
-  getOneContent,
-  getSharedContentByContentId,
-} from './graphql';
-import Client from './lib';
-import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs';
-import { signJwt } from '@/utils/jwt';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/LoadingPage';
-import { generateUrl } from '@/utils/url';
+import { getGeneratedNotionPage, getNotionAccount, getOneContent, getSharedContentByContentId } from './graphql'
+import Client from './lib'
+import { redirect } from 'next/navigation'
+import { auth } from '@clerk/nextjs'
+import signJwt from '@/utils/jwt'
+import { Suspense } from 'react'
+import LoadingPage from '@/lib/LoadingPage'
+import { generateUrl } from '@/helper'
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const id = params.id;
+interface Props {
+  params: { id: string }
+}
+
+export default async function Page({ params }: Props) {
+  const id = params.id
 
   try {
-    const { userId: clerkUserId } = auth();
+    const { userId: clerkUserId } = auth()
 
-    if (!clerkUserId) return redirect('/login');
+    if (!clerkUserId) return redirect('/login')
 
-    const token = signJwt(clerkUserId);
+    const token = signJwt(clerkUserId)
 
-    const content = await getOneContent(token, id);
+    const content = await getOneContent(token, id)
 
-    let initialNotionPageUrl: string | null = null;
+    let initialNotionPageUrl: string | null = null
 
-    let notionAccountConnected = false;
+    let notionAccountConnected = false
 
-    const notionAccount = await getNotionAccount(token);
+    const notionAccount = await getNotionAccount(token)
 
     if (notionAccount !== null) {
-      notionAccountConnected = true;
-      const generatedNotionPage = await getGeneratedNotionPage(token, id);
+      notionAccountConnected = true
+      const generatedNotionPage = await getGeneratedNotionPage(token, id)
 
-      initialNotionPageUrl = generatedNotionPage
-        ? generatedNotionPage.url
-        : null;
+      initialNotionPageUrl = generatedNotionPage ? generatedNotionPage.url : null
     }
 
-    const sharedContent = await getSharedContentByContentId(token, id);
+    const sharedContent = await getSharedContentByContentId(token, id)
 
     return (
       <Suspense fallback={<LoadingPage />}>
@@ -52,14 +49,10 @@ export default async function Page({ params }: { params: { id: string } }) {
           sharedContent={sharedContent}
         />
       </Suspense>
-    );
+    )
   } catch (error) {
-    const e = JSON.stringify(error);
-    const url = generateUrl(
-      `/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent(
-        `/app/saved/${id}`
-      )}`
-    );
-    return redirect(url.href);
+    const e = JSON.stringify(error)
+    const url = generateUrl(`/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent(`/app/saved/${id}`)}`)
+    return redirect(url.href)
   }
 }

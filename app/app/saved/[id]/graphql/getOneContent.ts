@@ -1,23 +1,20 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetOneContent {
-  __typename: 'Content';
-  id: string;
-  title: string | null;
-  createdAt: string;
-  gptGenerated: string | null;
-  transcript: string | null;
-  typeOfPromptId: string | null;
-  voiceNoteUrl: string | null;
-  writingStyle: string | null;
-  outputLanguage: string | null;
+  __typename: 'Content'
+  id: string
+  title: string | null
+  createdAt: string
+  gptGenerated: string | null
+  transcript: string | null
+  typeOfPromptId: string | null
+  voiceNoteUrl: string | null
+  writingStyle: string | null
+  outputLanguage: string | null
 }
 
-export const getOneContent = (
-  token: string,
-  contentId: string
-): Promise<IGetOneContent> => {
+export function getOneContent(token: string, contentId: string): Promise<IGetOneContent> {
   const query = gql`
     query GetOneContent($contentId: String!) {
       getOneContent(contentId: $contentId) {
@@ -33,14 +30,12 @@ export const getOneContent = (
         writingStyle
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getOneContent },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: {
             contentId,
@@ -51,12 +46,22 @@ export const getOneContent = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getOneContent);
+        const response = data.getOneContent as IGetOneContent
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

@@ -1,1 +1,1 @@
-export * from './deleteOneNote';
+export * from './deleteOneNote'

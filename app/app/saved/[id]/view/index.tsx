@@ -1,2 +1,2 @@
-export * from './BulletPointsWithSummary';
-export * from './SummariseMyThoughts';
+export * from './BulletPointsWithSummary'
+export * from './SummariseMyThoughts'

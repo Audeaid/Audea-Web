@@ -1,32 +1,29 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 interface IDeleteSharedContent {
-  __typename: 'SharedContent';
-  id: string;
+  __typename: 'SharedContent'
+  id: string
 }
 
-export const deleteSharedContent = ({
-  token,
-  contentId,
-}: {
-  token: string;
-  contentId: string;
-}): Promise<IDeleteSharedContent> => {
+interface Props {
+  token: string
+  contentId: string
+}
+
+export function deleteSharedContent({ token, contentId }: Props): Promise<IDeleteSharedContent> {
   const mutation = gql`
     mutation DeleteSharedContent($contentId: String!) {
       deleteSharedContent(contentId: $contentId) {
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { deleteSharedContent },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             contentId,
@@ -36,12 +33,20 @@ export const deleteSharedContent = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(deleteSharedContent);
+        const response = data.deleteSharedContent as IDeleteSharedContent
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

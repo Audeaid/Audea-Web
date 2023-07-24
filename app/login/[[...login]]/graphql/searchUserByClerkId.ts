@@ -1,39 +1,45 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface ISearchUserByClerkId {
-  __typename: 'User';
-  id: string;
+  __typename: 'User'
+  id: string
 }
 
-export const searchUserByClerkId = (
-  clerkUserId: string
-): Promise<ISearchUserByClerkId | null> => {
+export function searchUserByClerkId(clerkUserId: string): Promise<ISearchUserByClerkId | null> {
   const query = gql`
     query SearchUserByClerkId($clerkUserId: String!) {
       searchUserByClerkId(clerkUserId: $clerkUserId) {
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { searchUserByClerkId },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: {
             clerkUserId,
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(searchUserByClerkId);
+        const response = data.searchUserByClerkId as ISearchUserByClerkId | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

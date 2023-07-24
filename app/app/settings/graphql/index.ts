@@ -1,2 +1,2 @@
-export * from './getContentSettings';
-export * from './createNewContentSettings';
+export * from './getContentSettings'
+export * from './createNewContentSettings'

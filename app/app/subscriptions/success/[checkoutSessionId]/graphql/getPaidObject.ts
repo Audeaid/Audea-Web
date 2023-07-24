@@ -1,29 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetPaidObject {
-  __typename: 'StripePaidObject';
-  redeem: boolean;
+  __typename: 'StripePaidObject'
+  redeem: boolean
 }
 
-export const getPaidObject = (
-  token: string,
-  sessionId: string
-): Promise<IGetPaidObject | null> => {
+export function getPaidObject(token: string, sessionId: string): Promise<IGetPaidObject | null> {
   const query = gql`
     query GetPaidObject($sessionId: String!) {
       getPaidObject(sessionId: $sessionId) {
         redeem
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getPaidObject },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: {
             sessionId,
@@ -34,12 +29,22 @@ export const getPaidObject = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getPaidObject);
+        const response = data.getPaidObject as IGetPaidObject | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

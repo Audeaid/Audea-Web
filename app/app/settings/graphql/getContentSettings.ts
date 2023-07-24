@@ -1,30 +1,8 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
+import { IContentSettings } from './createNewContentSettings'
+import client from '@/utils/graphql'
 
-export interface IGetContentSettings {
-  __typename: 'ContentSettings';
-  id: string;
-  lastUpdate: string;
-  outputLanguage:
-    | 'TRANSCRIPT'
-    | 'ENGLISH'
-    | 'BAHASAINDONESIA'
-    | 'CHINESE'
-    | 'HINDI'
-    | 'JAPANESE'
-    | 'SPANISH'
-    | 'FRENCH'
-    | 'RUSSIAN'
-    | 'URDU'
-    | 'ARABIC'
-    | 'ASK';
-  typeOfPromptId: string;
-  writingStyle: string;
-}
-
-export const getContentSettings = (
-  token: string
-): Promise<IGetContentSettings | null> => {
+export function getContentSettings(token: string): Promise<IContentSettings | null> {
   const query = gql`
     query GetContentSettings {
       getContentSettings {
@@ -35,14 +13,12 @@ export const getContentSettings = (
         writingStyle
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getContentSettings },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           context: {
             headers: {
@@ -50,12 +26,22 @@ export const getContentSettings = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getContentSettings);
+        const response = data.getContentSettings as IContentSettings | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

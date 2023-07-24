@@ -1,12 +1,21 @@
-'use client';
+'use client'
 
-import { IGetOneContent, IGetSharedContentByContentId } from '../graphql';
-import ErrorShouldDelete from './ErrorShouldDelete';
-import { useRouter } from 'next/navigation';
-import GenerateContent from './GenerateContent';
-import { BulletPointsWithSummary, SummariseMyThoughts } from '../view';
-import Title from './Title';
-import Footer from './Footer';
+import { IGetOneContent, IGetSharedContentByContentId } from '../graphql'
+import ErrorShouldDelete from './ErrorShouldDelete'
+import { useRouter } from 'next/navigation'
+import GenerateContent from './GenerateContent'
+import { BulletPointsWithSummary, SummariseMyThoughts } from '../view'
+import Title from './Title'
+import Footer from './Footer'
+
+interface Props {
+  content: IGetOneContent
+  token: string
+  id: string
+  initialNotionPageUrl: string | null
+  notionAccountConnected: boolean
+  sharedContent: IGetSharedContentByContentId | null
+}
 
 export default function Client({
   content,
@@ -15,15 +24,8 @@ export default function Client({
   initialNotionPageUrl,
   notionAccountConnected,
   sharedContent,
-}: {
-  content: IGetOneContent;
-  token: string;
-  id: string;
-  initialNotionPageUrl: string | null;
-  notionAccountConnected: boolean;
-  sharedContent: IGetSharedContentByContentId | null;
-}) {
-  const router = useRouter();
+}: Props) {
+  const router = useRouter()
 
   if (
     content.typeOfPromptId === null ||
@@ -31,7 +33,7 @@ export default function Client({
     content.outputLanguage === null ||
     content.writingStyle === null
   ) {
-    return <ErrorShouldDelete token={token} contentId={id} router={router} />;
+    return <ErrorShouldDelete token={token} contentId={id} router={router} />
   } else if (content.transcript === null || content.gptGenerated === null) {
     return (
       <GenerateContent
@@ -44,13 +46,14 @@ export default function Client({
         writingStyle={content.writingStyle}
         outputLanguage={content.outputLanguage}
       />
-    );
+    )
   } else {
     // content goes here
-    const parseContent: any[] = JSON.parse(content.gptGenerated);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parseContent: any[] = JSON.parse(content.gptGenerated)
 
     return (
-      <section className="flex flex-col gap-20">
+      <section className='flex flex-col gap-20'>
         <Title
           title={content.title ?? 'No title'}
           createdAt={content.createdAt}
@@ -73,16 +76,13 @@ export default function Client({
                 content={parseContent}
                 dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
               />
-            );
+            )
           } else if (content.typeOfPromptId === '64a3da8642064a96db90e15e') {
             return (
-              <SummariseMyThoughts
-                content={parseContent}
-                dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
-              />
-            );
+              <SummariseMyThoughts content={parseContent} dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'} />
+            )
           } else {
-            return <></>;
+            return <></>
           }
         })()}
 
@@ -92,6 +92,6 @@ export default function Client({
           writingStyle={content.writingStyle}
         />
       </section>
-    );
+    )
   }
 }

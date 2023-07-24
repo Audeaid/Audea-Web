@@ -1,34 +1,34 @@
-import { auth } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
-import Client from './lib';
-import { signJwt } from '@/utils/jwt';
-import { getIntegrationRequest, getNotionAccount } from './graphql';
-import { generateUrl } from '@/utils/url';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/LoadingPage';
+import { auth } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
+import Client from './client'
+import signJwt from '@/utils/jwt'
+import { getIntegrationRequest, getNotionAccount } from './graphql'
+import { generateUrl } from '@/helper'
+import { Suspense } from 'react'
+import LoadingPage from '@/lib/LoadingPage'
 
 export default async function Page() {
   try {
-    const { userId: clerkUserId } = auth();
+    const { userId: clerkUserId } = auth()
 
-    if (!clerkUserId) return redirect('/login');
+    if (!clerkUserId) return redirect('/login')
 
-    const token = signJwt(clerkUserId);
+    const token = signJwt(clerkUserId)
 
-    const notion = await getNotionAccount(token);
+    const notion = await getNotionAccount(token)
 
     // integration
-    const zapier = await getIntegrationRequest(token, 'ZAPIER');
-    const todoist = await getIntegrationRequest(token, 'TODOIST');
-    const whatsapp = await getIntegrationRequest(token, 'WHATSAPP');
-    const sunsama = await getIntegrationRequest(token, 'SUNSAMA');
-    const obsidian = await getIntegrationRequest(token, 'OBSIDIAN');
-    const monday = await getIntegrationRequest(token, 'MONDAY');
-    const gmail = await getIntegrationRequest(token, 'GMAIL');
-    const github = await getIntegrationRequest(token, 'GITHUB');
-    const evernote = await getIntegrationRequest(token, 'EVERNOTE');
-    const craft = await getIntegrationRequest(token, 'CRAFT');
-    const clickup = await getIntegrationRequest(token, 'CLICKUP');
+    const zapier = await getIntegrationRequest(token, 'ZAPIER')
+    const todoist = await getIntegrationRequest(token, 'TODOIST')
+    const whatsapp = await getIntegrationRequest(token, 'WHATSAPP')
+    const sunsama = await getIntegrationRequest(token, 'SUNSAMA')
+    const obsidian = await getIntegrationRequest(token, 'OBSIDIAN')
+    const monday = await getIntegrationRequest(token, 'MONDAY')
+    const gmail = await getIntegrationRequest(token, 'GMAIL')
+    const github = await getIntegrationRequest(token, 'GITHUB')
+    const evernote = await getIntegrationRequest(token, 'EVERNOTE')
+    const craft = await getIntegrationRequest(token, 'CRAFT')
+    const clickup = await getIntegrationRequest(token, 'CLICKUP')
 
     return (
       <Suspense fallback={<LoadingPage />}>
@@ -48,14 +48,10 @@ export default async function Page() {
           zapierInitialState={zapier ? zapier.requested : false}
         />
       </Suspense>
-    );
+    )
   } catch (error) {
-    const e = JSON.stringify(error);
-    const url = generateUrl(
-      `/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent(
-        '/app/integrations'
-      )}`
-    );
-    return redirect(url.href);
+    const e = JSON.stringify(error)
+    const url = generateUrl(`/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent('/app/integrations')}`)
+    return redirect(url.href)
   }
 }

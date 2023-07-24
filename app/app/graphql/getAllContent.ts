@@ -1,28 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetAllContent {
-  __typename: 'Content';
-  id: string;
+  __typename: 'Content'
+  id: string
 }
 
-export const getAllContent = (
-  token: string
-): Promise<IGetAllContent[] | null> => {
+export function getAllContent(token: string): Promise<IGetAllContent[] | null> {
   const query = gql`
     query GetAllContent {
       getAllContent {
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getAllContent },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           context: {
             headers: {
@@ -30,12 +26,22 @@ export const getAllContent = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getAllContent);
+        const response = data.getAllContent as IGetAllContent[] | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

@@ -1,42 +1,38 @@
-'use client';
+'use client'
 
-import { createContext, useEffect, useState } from 'react';
+import { ReactElement, ReactNode, createContext, useEffect, useState } from 'react'
 
 interface ViewportContextType {
-  isMobile: boolean;
+  isMobile: boolean
 }
 
 export const ViewportContext = createContext<ViewportContextType>({
   isMobile: false,
-});
+})
 
 interface IViewportProvider {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
-export const ViewportProvider: React.FC<IViewportProvider> = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(false);
+export function ViewportProvider({ children }: { children: ReactNode }): ReactElement<IViewportProvider> {
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Change the breakpoint as per your requirements
-    };
+      setIsMobile(window.innerWidth < 768) // Change the breakpoint as per your requirements
+    }
 
     // Initial check on component mount
-    handleResize();
+    handleResize()
 
     // Event listener for window resize
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
     // Cleanup the event listener on component unmount
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
-  return (
-    <ViewportContext.Provider value={{ isMobile }}>
-      {children}
-    </ViewportContext.Provider>
-  );
-};
+  return <ViewportContext.Provider value={{ isMobile }}>{children}</ViewportContext.Provider>
+}

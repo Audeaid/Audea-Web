@@ -1,29 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IUserRequestedIntegration {
-  __typename: 'RequestedIntegration';
-  requested: boolean;
+  __typename: 'RequestedIntegration'
+  requested: boolean
 }
 
-export const userRequestedIntegration = (
-  token: string,
-  integration: string
-): Promise<IUserRequestedIntegration> => {
+export function userRequestedIntegration(token: string, integration: string): Promise<IUserRequestedIntegration> {
   const mutation = gql`
     mutation UserRequestIntegration($integration: IntegrationsEnum!) {
       userRequestIntegration(integration: $integration) {
         requested
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { userRequestIntegration },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             integration,
@@ -33,12 +28,20 @@ export const userRequestedIntegration = (
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(userRequestIntegration);
+        const response = data.userRequestIntegration as IUserRequestedIntegration
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

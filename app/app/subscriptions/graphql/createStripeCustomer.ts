@@ -1,36 +1,40 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
-import { IGetStripeCustomer } from './getStripeCustomer';
+import { gql } from '@apollo/client'
+import { IGetStripeCustomer } from './getStripeCustomer'
+import client from '@/utils/graphql'
 
-export const createStripeCustomer = (
-  token: string
-): Promise<IGetStripeCustomer> => {
+export function createStripeCustomer(token: string): Promise<IGetStripeCustomer> {
   const mutation = gql`
     mutation CreateStripeCustomer {
       createStripeCustomer {
         stripeCustomerId
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { createStripeCustomer },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           context: {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(createStripeCustomer);
+        const response = data.createStripeCustomer as IGetStripeCustomer
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

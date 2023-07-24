@@ -1,53 +1,45 @@
-'use client';
+'use client'
 
-import { motion } from 'framer-motion';
-import type { ISocialMediaLogin } from './index.d';
-import Google from './logo/google.svg';
-import Microsoft from './logo/microsoft.svg';
-import Apple from './logo/apple.svg';
-import Image from 'next/image';
-import { useSignIn, useSignUp } from '@clerk/nextjs';
-import { OAuthStrategy } from '@clerk/nextjs/dist/types/server';
+import { motion } from 'framer-motion'
+import type { ISocialMediaLogin } from './index.d'
+import Google from './logo/google.svg'
+import Microsoft from './logo/microsoft.svg'
+import Apple from './logo/apple.svg'
+import Image from 'next/image'
+import { useSignIn, useSignUp } from '@clerk/nextjs'
+import { OAuthStrategy } from '@clerk/nextjs/dist/types/server'
 
-const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
+export default function SocialMediaLogin({
   disabled,
   children,
   type,
   referralId,
   signInOrSignUp,
   ...props
-}) => {
-  const { signIn } = useSignIn();
+}: ISocialMediaLogin) {
+  const { signIn } = useSignIn()
 
-  const { signUp } = useSignUp();
+  const { signUp } = useSignUp()
 
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn?.authenticateWithRedirect({
       strategy,
-      redirectUrl: referralId
-        ? `/login/sso-callback?referralId=${referralId}`
-        : '/login/sso-callback',
-      redirectUrlComplete: referralId
-        ? `/login/check-user?referralId=${referralId}`
-        : '/login/check-user',
-    });
-  };
+      redirectUrl: referralId ? `/login/sso-callback?referralId=${referralId}` : '/login/sso-callback',
+      redirectUrlComplete: referralId ? `/login/check-user?referralId=${referralId}` : '/login/check-user',
+    })
+  }
 
   const signUpWith = (strategy: OAuthStrategy) => {
     return signUp?.authenticateWithRedirect({
       strategy,
-      redirectUrl: referralId
-        ? `/login/sso-callback?referralId=${referralId}`
-        : '/login/sso-callback',
-      redirectUrlComplete: referralId
-        ? `/login/check-user?referralId=${referralId}`
-        : '/login/check-user',
-    });
-  };
+      redirectUrl: referralId ? `/login/sso-callback?referralId=${referralId}` : '/login/sso-callback',
+      redirectUrlComplete: referralId ? `/login/check-user?referralId=${referralId}` : '/login/check-user',
+    })
+  }
 
   return (
     <motion.button
-      type="button"
+      type='button'
       disabled={disabled}
       animate={{
         opacity: disabled ? 0.5 : 1,
@@ -59,9 +51,9 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
       }`}
       onClick={() => {
         if (signInOrSignUp === 'signIn') {
-          signInWith(renderOauthStrategy(type));
+          signInWith(renderOauthStrategy(type))
         } else {
-          signUpWith(renderOauthStrategy(type));
+          signUpWith(renderOauthStrategy(type))
         }
       }}
       {...props}
@@ -69,44 +61,40 @@ const SocialMediaLogin: React.FC<ISocialMediaLogin> = ({
       <RenderSocialImage type={type} />
       {children}
     </motion.button>
-  );
-};
-
-export default SocialMediaLogin;
+  )
+}
 
 const RenderSocialImage = ({ type }: { type: ISocialMediaLogin['type'] }) => {
   const src = () => {
     switch (type) {
       case 'google':
-        return Google;
+        return Google
 
       case 'apple':
-        return Apple;
+        return Apple
 
       case 'microsoft':
-        return Microsoft;
+        return Microsoft
 
       default:
-        return Google;
+        return Google
     }
-  };
-  return <Image src={src()} alt={`${type} logo`} height={20} />;
-};
+  }
+  return <Image src={src()} alt={`${type} logo`} height={20} />
+}
 
-const renderOauthStrategy = (
-  type: ISocialMediaLogin['type']
-): OAuthStrategy => {
+const renderOauthStrategy = (type: ISocialMediaLogin['type']): OAuthStrategy => {
   switch (type) {
     case 'google':
-      return 'oauth_google';
+      return 'oauth_google'
 
     case 'apple':
-      return 'oauth_apple';
+      return 'oauth_apple'
 
     case 'microsoft':
-      return 'oauth_microsoft';
+      return 'oauth_microsoft'
 
     default:
-      return 'oauth_google';
+      return 'oauth_google'
   }
-};
+}

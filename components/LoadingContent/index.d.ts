@@ -1,3 +1,3 @@
 export interface ILoadingContent {
-  condition: string;
+  condition: string
 }

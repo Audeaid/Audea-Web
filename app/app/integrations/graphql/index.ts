@@ -1,3 +1,3 @@
-export * from './getIntegrationRequest';
-export * from './userRequestedIntegration';
-export * from './getNotionAccount';
+export * from './getIntegrationRequest'
+export * from './userRequestedIntegration'
+export * from './getNotionAccount'

@@ -1,32 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 interface IDeleteOneNote {
-  __typename: 'ResponseMessage';
-  response: string;
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export const deleteOneNote = ({
-  token,
-  contentId,
-}: {
-  token: string;
-  contentId: string;
-}): Promise<IDeleteOneNote> => {
+export function deleteOneNote({ token, contentId }: { token: string; contentId: string }): Promise<IDeleteOneNote> {
   const mutation = gql`
     mutation DeleteContent($contentId: String!) {
       deleteContent(contentId: $contentId) {
         response
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { deleteContent },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             contentId,
@@ -36,12 +28,20 @@ export const deleteOneNote = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(deleteContent);
+        const response = data.deleteContent as IDeleteOneNote
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

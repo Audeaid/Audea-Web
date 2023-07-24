@@ -1,16 +1,16 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetSharedContentByContentId {
-  __typename: 'SharedContent';
-  generatedId: string;
-  username: string;
+  __typename: 'SharedContent'
+  generatedId: string
+  username: string
 }
 
-export const getSharedContentByContentId = (
+export function getSharedContentByContentId(
   token: string,
-  contentId: string
-): Promise<IGetSharedContentByContentId | null> => {
+  contentId: string,
+): Promise<IGetSharedContentByContentId | null> {
   const query = gql`
     query GetSharedContentByContentId($contentId: String!) {
       getSharedContentByContentId(contentId: $contentId) {
@@ -18,14 +18,12 @@ export const getSharedContentByContentId = (
         username
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getSharedContentByContentId },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: { contentId },
           context: {
@@ -34,12 +32,22 @@ export const getSharedContentByContentId = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getSharedContentByContentId);
+        const response = data.getSharedContentByContentId as IGetSharedContentByContentId | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

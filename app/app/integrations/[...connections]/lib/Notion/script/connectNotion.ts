@@ -1,16 +1,13 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IConnectNotion {
-  __typename: 'NotionAccount';
-  workspaceName: string;
-  workspaceIcon: string | null;
+  __typename: 'NotionAccount'
+  workspaceName: string
+  workspaceIcon: string | null
 }
 
-export const connectNotion = (
-  token: string,
-  notionCode: string
-): Promise<IConnectNotion> => {
+export function connectNotion(token: string, notionCode: string): Promise<IConnectNotion> {
   const mutation = gql`
     mutation ConnectNotionAccount($notionCode: String!) {
       connectNotionAccount(notionCode: $notionCode) {
@@ -18,14 +15,12 @@ export const connectNotion = (
         workspaceIcon
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { connectNotionAccount },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             notionCode,
@@ -35,12 +30,20 @@ export const connectNotion = (
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(connectNotionAccount);
+        const response = data.connectNotionAccount as IConnectNotion
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

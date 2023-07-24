@@ -1,21 +1,15 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import cn from '@/utils/cn';
-import { useRouter } from 'next/navigation';
-import { useState, Dispatch, SetStateAction } from 'react';
-import toast from 'react-hot-toast';
-import ErrorToast from '@/components/ErrorToast';
-import { useUser } from '@clerk/nextjs';
-import { deleteOneNote } from './script';
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import cn from '@/utils/cn'
+import { useRouter } from 'next/navigation'
+import { useState, Dispatch, SetStateAction } from 'react'
+import toast from 'react-hot-toast'
+import ErrorToast from '@/components/ErrorToast'
+import { useUser } from '@clerk/nextjs'
+import { deleteOneNote } from './script'
 
 export default function DeleteNote({
   token,
@@ -24,22 +18,22 @@ export default function DeleteNote({
   open,
   setOpen,
 }: {
-  token: string;
-  title: string;
-  contentId: string;
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  token: string
+  title: string
+  contentId: string
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
 }) {
-  const [value, setValue] = useState('');
-  const router = useRouter();
+  const [value, setValue] = useState('')
+  const router = useRouter()
 
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser()
 
   if (!isLoaded || !isSignedIn) {
-    return <></>;
+    return <></>
   }
 
-  const valueToCheck = `Audea/${user.primaryEmailAddress?.emailAddress}`;
+  const valueToCheck = `Audea/${user.primaryEmailAddress?.emailAddress}`
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -49,15 +43,12 @@ export default function DeleteNote({
           <DialogDescription>This action cannot be undone.</DialogDescription>
         </DialogHeader>
 
-        <p>
-          This will also delete the associated Audio files with this content
-          titled &quot;{title}&quot;!
-        </p>
+        <p>This will also delete the associated Audio files with this content titled &quot;{title}&quot;!</p>
 
         <form
-          className="flex flex-col gap-2 mt-10"
+          className='flex flex-col gap-2 mt-10'
           onSubmit={(e) => {
-            e.preventDefault();
+            e.preventDefault()
 
             toast
               .promise(deleteOneNote({ token, contentId }), {
@@ -65,11 +56,11 @@ export default function DeleteNote({
                 success: 'Note deleted!',
                 error: 'Error deleting your note!',
               })
-              .catch((e) => {
-                ErrorToast('deleting your note', e);
-              });
+              .catch((error) => {
+                ErrorToast({ action: 'deleting your note', error })
+              })
 
-            router.push('/app/saved');
+            router.push('/app/saved')
           }}
         >
           <p>
@@ -79,13 +70,13 @@ export default function DeleteNote({
             required={true}
             value={value}
             onChange={(e) => {
-              setValue(e.currentTarget.value);
+              setValue(e.currentTarget.value)
             }}
           />
           <Button
-            variant="destructive"
+            variant='destructive'
             className={cn('w-full text-sm')}
-            type="submit"
+            type='submit'
             disabled={value !== valueToCheck}
           >
             Delete {title}
@@ -93,5 +84,5 @@ export default function DeleteNote({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
