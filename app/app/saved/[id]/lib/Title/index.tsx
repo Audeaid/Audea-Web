@@ -25,6 +25,21 @@ import { generateNotionPage } from './script'
 import ShareToPublic from './ShareToPublic'
 import { IGetSharedContentByContentId } from '../../graphql'
 
+interface Props {
+  token: string
+  title: string
+  createdAt: string
+  voiceNoteUrl: string
+  transcript: string
+  contentId: string
+  typeOfPromptId: string
+  outputLanguage: string
+  writingStyle: string
+  initialNotionPageUrl: string | null
+  notionAccountConnected: boolean
+  sharedContent: IGetSharedContentByContentId | null
+}
+
 export default function Title({
   token,
   title,
@@ -38,20 +53,7 @@ export default function Title({
   initialNotionPageUrl,
   notionAccountConnected,
   sharedContent,
-}: {
-  token: string
-  title: string
-  createdAt: string
-  voiceNoteUrl: string
-  transcript: string
-  contentId: string
-  typeOfPromptId: string
-  outputLanguage: string
-  writingStyle: string
-  initialNotionPageUrl: string | null
-  notionAccountConnected: boolean
-  sharedContent: IGetSharedContentByContentId | null
-}) {
+}: Props) {
   const [viewTranscriptOpen, setViewTranscriptOpen] = useState(false)
   const [deleteNoteOpen, setDeleteNoteOpen] = useState(false)
   const [shareToPublicOpen, setShareToPublicOpen] = useState(false)
@@ -96,7 +98,7 @@ export default function Title({
                 if (notionPageUrl) {
                   return (
                     <DropdownMenuItem>
-                      <a className='flex items-center gap-2' href={notionPageUrl} target='_blank'>
+                      <a className='flex items-center gap-2' href={notionPageUrl} target='_blank' rel='noreferrer'>
                         <Image src={NotionImage} alt={'Notion icon'} width={16} height={16} draggable={false} />
                         See Notion page
                       </a>
@@ -126,12 +128,12 @@ export default function Title({
 
                                 setNotionPageUrl(url)
                               })
-                              .catch((e) => {
-                                ErrorToast('get title property of your notion', e)
+                              .catch((error) => {
+                                ErrorToast({ action: 'get title property of your notion', error })
                               })
                           })
-                          .catch((e) => {
-                            ErrorToast('get title property of your notion', e)
+                          .catch((error) => {
+                            ErrorToast({ action: 'get title property of your notion', error })
                           })
                       }}
                       className={cn('flex items-center gap-2')}

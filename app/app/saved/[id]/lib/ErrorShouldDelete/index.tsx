@@ -13,15 +13,13 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import ErrorToast from '@/components/ErrorToast'
 
-const ErrorShouldDelete = ({
-  token,
-  contentId,
-  router,
-}: {
+interface Props {
   token: string
   contentId: string
   router: AppRouterInstance
-}) => {
+}
+
+export default function ErrorShouldDelete({ token, contentId, router }: Props) {
   const [loading, setLoading] = useState(false)
 
   return (
@@ -31,7 +29,7 @@ const ErrorShouldDelete = ({
       animate={{ opacity: 1 }}
     >
       <div className='max-w-[500px] w-fit'>
-        <AddLottieAnimation path={'/lottie/53034-lost.json'} loop={true} />
+        <AddLottieAnimation animationConfig={{ path: '/lottie/53034-lost.json', loop: true, autoplay: true }} />
       </div>
       <section className='mt-[-5rem] flex flex-col gap-12 items-center justify-center'>
         <section className='flex flex-col gap-6 max-w-[600px]'>
@@ -64,7 +62,7 @@ const ErrorShouldDelete = ({
               setLoading(false)
             } catch (error) {
               setLoading(false)
-              ErrorToast('deleting note', error)
+              ErrorToast({ action: 'deleting note', error })
             }
           }}
           type='button'
@@ -76,5 +74,3 @@ const ErrorShouldDelete = ({
     </motion.section>
   )
 }
-
-export default ErrorShouldDelete

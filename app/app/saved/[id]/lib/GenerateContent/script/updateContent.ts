@@ -1,12 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IUpdateContent {
-  __typename: 'Content';
-  id: string;
+  __typename: 'Content'
+  id: string
 }
 
-export const updateContent = ({
+interface Props {
+  token: string
+  contentId: string
+  title: string | null
+  voiceNoteUrl: string | null
+  transcript: string | null
+  gptGenerated: string | null
+  typeOfPromptId: string | null
+  writingStyle: string | null
+  outputLanguage: string | null
+}
+
+export function updateContent({
   token,
   contentId,
   title,
@@ -16,17 +28,7 @@ export const updateContent = ({
   typeOfPromptId,
   writingStyle,
   outputLanguage,
-}: {
-  token: string;
-  contentId: string;
-  title: string | null;
-  voiceNoteUrl: string | null;
-  transcript: string | null;
-  gptGenerated: string | null;
-  typeOfPromptId: string | null;
-  writingStyle: string | null;
-  outputLanguage: string | null;
-}): Promise<IUpdateContent> => {
+}: Props): Promise<IUpdateContent> {
   const mutation = gql`
     mutation UpdateContent(
       $contentId: String!
@@ -51,14 +53,12 @@ export const updateContent = ({
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { updateContent },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             contentId,
@@ -75,12 +75,20 @@ export const updateContent = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(updateContent);
+        const response = data.updateContent as IUpdateContent
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

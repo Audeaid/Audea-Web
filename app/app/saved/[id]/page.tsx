@@ -2,12 +2,16 @@ import { getGeneratedNotionPage, getNotionAccount, getOneContent, getSharedConte
 import Client from './lib'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
-import { signJwt } from '@/utils/jwt'
+import signJwt from '@/utils/jwt'
 import { Suspense } from 'react'
 import LoadingPage from '@/lib/LoadingPage'
-import { generateUrl } from '@/utils/url'
+import { generateUrl } from '@/helper'
 
-export default async function Page({ params }: { params: { id: string } }) {
+interface Props {
+  params: { id: string }
+}
+
+export default async function Page({ params }: Props) {
   const id = params.id
 
   try {

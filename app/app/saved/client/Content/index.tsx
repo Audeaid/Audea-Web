@@ -10,7 +10,12 @@ import OneContentListView from './OneContentListView'
 import OneContentGalleryView from './OneContentGalleryView'
 import ErrorToast from '@/components/ErrorToast'
 
-const Content = ({ incomingContent, clerkUserId }: { incomingContent: IGetAllContent[]; clerkUserId: string }) => {
+interface Props {
+  incomingContent: IGetAllContent[]
+  clerkUserId: string
+}
+
+export default function Content({ incomingContent, clerkUserId }: Props) {
   const [listView, setListView] = useState(() => {
     if (window) {
       const storedData = window.localStorage.getItem('audea__view')
@@ -73,7 +78,7 @@ const Content = ({ incomingContent, clerkUserId }: { incomingContent: IGetAllCon
 
   useEffect(() => {
     if (subscriptionError) {
-      ErrorToast('getting live updated content', subscriptionError)
+      ErrorToast({ action: 'getting live updated content', error: subscriptionError })
     }
   }, [subscriptionError])
 
@@ -145,5 +150,3 @@ const Content = ({ incomingContent, clerkUserId }: { incomingContent: IGetAllCon
     </motion.section>
   )
 }
-
-export default Content

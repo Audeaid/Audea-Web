@@ -1,18 +1,9 @@
-import { IGPTResponse } from '@/app/api/gpt/route';
-import { Configuration, OpenAIApi } from 'openai';
+import { IGPTResponse } from '@/app/api/gpt/route'
+import openai from '@/utils/openai'
 
-const configuration = new Configuration({
-  apiKey: process.env.NEXT_PUBLIC_OPEN_AI_SECRET as string,
-});
-
-const openai = new OpenAIApi(configuration);
-
-export const publicGetGptResponse = (
-  systemPrompt: string,
-  userPrompt: string
-): Promise<IGPTResponse> => {
+export const publicGetGptResponse = (systemPrompt: string, userPrompt: string): Promise<IGPTResponse> => {
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
         const { data } = await openai.createChatCompletion({
           model: 'gpt-3.5-turbo-0301',
@@ -27,13 +18,15 @@ export const publicGetGptResponse = (
               content: userPrompt,
             },
           ],
-        });
+        })
 
-        resolve(data as unknown as IGPTResponse);
+        resolve(data as unknown as IGPTResponse)
       } catch (error) {
-        console.error(error);
-        reject(error);
+        console.error(error)
+        reject(error)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

@@ -16,19 +16,15 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { deleteSharedContent } from './script/deleteSharedContent'
 import { IGetSharedContentByContentId } from '../../../graphql'
 
-export default function ShareToPublic({
-  token,
-  sharedContent,
-  contentId,
-  open,
-  setOpen,
-}: {
+interface Props {
   token: string
   sharedContent: IGetSharedContentByContentId | null
   contentId: string
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-}) {
+}
+
+export default function ShareToPublic({ token, sharedContent, contentId, open, setOpen }: Props) {
   const [loading, setLoading] = useState(false)
   const [currentAction, setCurrentAction] = useState(sharedContent === null ? 'initial' : 'published')
 
@@ -96,7 +92,7 @@ export default function ShareToPublic({
                       setLoading(false)
                     } catch (error) {
                       setLoading(false)
-                      ErrorToast('getting your username', error)
+                      ErrorToast({ action: 'getting your username', error })
                     }
                   }}
                 >
@@ -151,16 +147,16 @@ export default function ShareToPublic({
                                 setGeneratedId(data.generatedId)
                                 setCurrentAction('published')
                               })
-                              .catch((e) => {
-                                ErrorToast('sharing your note', e)
+                              .catch((error) => {
+                                ErrorToast({ action: 'sharing your note', error })
                               })
                           })
-                          .catch((e) => {
-                            ErrorToast('creating your username', e)
+                          .catch((error) => {
+                            ErrorToast({ action: 'creating your username', error })
                           })
                       }
                     } catch (error) {
-                      ErrorToast('searching for the available username', error)
+                      ErrorToast({ action: 'searching for the available username', error })
                     }
                   })()
                 }}
@@ -255,15 +251,20 @@ export default function ShareToPublic({
                         .then(() => {
                           setCurrentAction('initial')
                         })
-                        .catch((e) => {
-                          ErrorToast('unpublish your note', e)
+                        .catch((error) => {
+                          ErrorToast({ action: 'unpublish your note', error })
                         })
                     }}
                   >
                     Unpublish
                   </Button>
 
-                  <a href={`https://audea.id/@${username}/${generatedId}`} target='_blank' className='w-full h-fit'>
+                  <a
+                    href={`https://audea.id/@${username}/${generatedId}`}
+                    target='_blank'
+                    className='w-full h-fit'
+                    rel='noreferrer'
+                  >
                     <Button type='button' className={cn('w-full bg-sky-500')} tabIndex={-1}>
                       View site
                     </Button>

@@ -1,48 +1,32 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
-interface IUpdateContent {
-  __typename: 'Content';
-  id: string;
+export interface IUpdateContent {
+  __typename: 'Content'
+  id: string
 }
 
-export const updateContent = ({
-  token,
-  contentId,
-  title,
-  transcript,
-  gptGenerated,
-}: {
-  token: string;
-  contentId: string;
-  transcript?: string;
-  title?: string;
-  gptGenerated?: string;
-}): Promise<IUpdateContent> => {
+interface Props {
+  token: string
+  contentId: string
+  title?: string | null
+  transcript?: string | null
+  gptGenerated?: string | null
+}
+
+export function updateContent({ token, contentId, title, transcript, gptGenerated }: Props): Promise<IUpdateContent> {
   const mutation = gql`
-    mutation UpdateContent(
-      $contentId: String!
-      $transcript: String
-      $gptGenerated: String
-      $title: String
-    ) {
-      updateContent(
-        contentId: $contentId
-        transcript: $transcript
-        gptGenerated: $gptGenerated
-        title: $title
-      ) {
+    mutation UpdateContent($contentId: String!, $transcript: String, $gptGenerated: String, $title: String) {
+      updateContent(contentId: $contentId, transcript: $transcript, gptGenerated: $gptGenerated, title: $title) {
         id
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { updateContent },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             contentId,
@@ -55,12 +39,20 @@ export const updateContent = ({
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(updateContent);
+        const response = data.updateContent as IUpdateContent
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

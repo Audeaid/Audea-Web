@@ -1,3 +1,3 @@
-export * from './updateContent';
-export * from './publicGetGptResponse';
-export * from './getTypeOfPrompt';
+export * from './updateContent'
+export * from './publicGetGptResponse'
+export * from './getTypeOfPrompt'

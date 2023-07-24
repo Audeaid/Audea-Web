@@ -1,1 +1,1 @@
-export * from './generateNotionPage';
+export * from './generateNotionPage'

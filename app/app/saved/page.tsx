@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { getAllContent } from './graphql'
-import Client from './lib'
+import Client from './client'
 import { auth } from '@clerk/nextjs'
-import { signJwt } from '@/utils/jwt'
-import { generateUrl } from '@/utils/url'
+import signJwt from '@/utils/jwt'
+import { generateUrl } from '@/helper'
 import { Suspense } from 'react'
 import LoadingPage from '@/lib/LoadingPage'
 

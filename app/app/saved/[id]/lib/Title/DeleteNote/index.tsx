@@ -56,8 +56,8 @@ export default function DeleteNote({
                 success: 'Note deleted!',
                 error: 'Error deleting your note!',
               })
-              .catch((e) => {
-                ErrorToast('deleting your note', e)
+              .catch((error) => {
+                ErrorToast({ action: 'deleting your note', error })
               })
 
             router.push('/app/saved')

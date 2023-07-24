@@ -18,6 +18,17 @@ import { getTypeOfPrompt, publicGetGptResponse, updateContent } from './script'
 import ErrorToast from '@/components/ErrorToast'
 import LoadingContent from '@/components/LoadingContent'
 
+interface Props {
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+  transcript: string
+  token: string
+  contentId: string
+  typeOfPromptId: string
+  outputLanguage: string
+  writingStyle: string
+}
+
 export default function ViewTranscript({
   open,
   setOpen,
@@ -27,16 +38,7 @@ export default function ViewTranscript({
   transcript,
   outputLanguage,
   writingStyle,
-}: {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-  transcript: string
-  token: string
-  contentId: string
-  typeOfPromptId: string
-  outputLanguage: string
-  writingStyle: string
-}) {
+}: Props) {
   const [edit, setEdit] = useState(false)
   const [value, setValue] = useState(transcript)
   const [regeneratingContent, setRegeneratingContent] = useState(false)
@@ -44,7 +46,7 @@ export default function ViewTranscript({
   const [condition, setCondition] = useState('')
 
   useEffect(() => {
-    ;(async () => {
+    const fetchData = async () => {
       if (regeneratingContent) {
         try {
           setCondition('Updating new transcript...')
@@ -88,10 +90,12 @@ export default function ViewTranscript({
           setValue(transcript)
           setEdit(false)
           setOpen(false)
-          ErrorToast('regenerating content', error)
+          ErrorToast({ action: 'regenerating content', error })
         }
       }
-    })()
+    }
+
+    fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [regeneratingContent])
 

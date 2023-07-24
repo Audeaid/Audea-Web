@@ -1,29 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetGeneratedNotionPage {
-  __typename: 'GeneratedNotionPage';
-  url: string;
+  __typename: 'GeneratedNotionPage'
+  url: string
 }
 
-export const getGeneratedNotionPage = (
-  token: string,
-  contentId: string
-): Promise<IGetGeneratedNotionPage | null> => {
+export function getGeneratedNotionPage(token: string, contentId: string): Promise<IGetGeneratedNotionPage | null> {
   const query = gql`
     query GetGeneratedNotionPage($contentId: String!) {
       getGeneratedNotionPage(contentId: $contentId) {
         url
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getGeneratedNotionPage },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: { contentId },
           context: {
@@ -32,12 +27,22 @@ export const getGeneratedNotionPage = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getGeneratedNotionPage);
+        const response = data.getGeneratedNotionPage as IGetGeneratedNotionPage | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

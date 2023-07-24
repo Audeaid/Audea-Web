@@ -11,16 +11,7 @@ import { motion } from 'framer-motion'
 import ErrorToast from '@/components/ErrorToast'
 import { Button } from '@/components/ui/button'
 
-const GenerateContent = ({
-  token,
-  contentId,
-  voiceNoteUrl,
-  typeOfPromptId,
-  transcript,
-  gptGenerated,
-  writingStyle,
-  outputLanguage,
-}: {
+interface Props {
   token: string
   contentId: string
   voiceNoteUrl: string
@@ -29,7 +20,18 @@ const GenerateContent = ({
   gptGenerated: string | null
   writingStyle: string
   outputLanguage: string
-}) => {
+}
+
+export default function GenerateContent({
+  token,
+  contentId,
+  voiceNoteUrl,
+  typeOfPromptId,
+  transcript,
+  gptGenerated,
+  writingStyle,
+  outputLanguage,
+}: Props) {
   const router = useRouter()
   const [condition, setCondition] = useState('')
   const [isUploading, setIsUploading] = useState(false)
@@ -89,7 +91,7 @@ const GenerateContent = ({
 
         router.push(`/app/saved/${response.id}`)
       } catch (error) {
-        ErrorToast('generating content', error)
+        ErrorToast({ action: 'generating content', error })
         setIsUploading(false)
       }
     }
@@ -135,7 +137,7 @@ const GenerateContent = ({
 
         router.push(`/app/saved/${response.id}`)
       } catch (error) {
-        ErrorToast('generating content', error)
+        ErrorToast({ action: 'generating content', error })
         setIsUploading(false)
       }
     }
@@ -152,7 +154,9 @@ const GenerateContent = ({
           animate={{ opacity: 1 }}
         >
           <div className='max-w-[500px] w-fit'>
-            <AddLottieAnimation path={'/lottie/46864-lovely-cats.json'} loop={true} />
+            <AddLottieAnimation
+              animationConfig={{ path: '/lottie/46864-lovely-cats.json', loop: true, autoplay: true }}
+            />
           </div>
           <section className='mt-[-5rem] flex flex-col gap-8 items-center justify-center'>
             <section className='flex flex-col gap-2'>
@@ -171,5 +175,3 @@ const GenerateContent = ({
     </>
   )
 }
-
-export default GenerateContent
