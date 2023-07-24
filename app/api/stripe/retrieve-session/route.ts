@@ -1,19 +1,19 @@
-import { NextResponse } from 'next/server';
-import { stripeServer } from '@/utils/stripe';
+import { NextResponse } from 'next/server'
+import { stripeServer } from '@/utils/stripe'
 
 export async function POST(req: Request) {
-  const data = await req.json();
+  const data = await req.json()
 
-  const sessionId = data.sessionId;
+  const sessionId = data.sessionId
 
-  if (!sessionId) throw new Error('sessionId is missing');
+  if (!sessionId) throw new Error('sessionId is missing')
 
   try {
-    const session = await stripeServer.checkout.sessions.retrieve(sessionId);
+    const session = await stripeServer.checkout.sessions.retrieve(sessionId)
 
-    return NextResponse.json(session);
+    return NextResponse.json(session)
   } catch (err) {
-    console.error(err);
-    return NextResponse.error();
+    console.error(err)
+    return NextResponse.error()
   }
 }
