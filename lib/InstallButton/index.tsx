@@ -1,6 +1,6 @@
 'use client'
 
-import '$styles/animation.css'
+import '@/styles/animation.css'
 import { useEffect, useState } from 'react'
 import { UseChromeModal, UseIOS, UseIpadOS, UseSafariModal } from './atomic'
 import { Button } from '@/components/ui/button'
