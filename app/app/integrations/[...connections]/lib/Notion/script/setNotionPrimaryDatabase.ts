@@ -1,36 +1,28 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface ISetNotionPrimaryDatabase {
-  __typename: 'ResponseMessage';
-  response: string;
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export const setNotionPrimaryDatabase = (
+export function setNotionPrimaryDatabase(
   token: string,
   id: string,
-  automatic: boolean | null | undefined
-): Promise<ISetNotionPrimaryDatabase> => {
+  automatic: boolean | null | undefined,
+): Promise<ISetNotionPrimaryDatabase> {
   const mutation = gql`
-    mutation SetNotionPrimaryDatabase(
-      $setNotionPrimaryDatabaseId: String!
-      $automatic: Boolean
-    ) {
-      setNotionPrimaryDatabase(
-        id: $setNotionPrimaryDatabaseId
-        automatic: $automatic
-      ) {
+    mutation SetNotionPrimaryDatabase($setNotionPrimaryDatabaseId: String!, $automatic: Boolean) {
+      setNotionPrimaryDatabase(id: $setNotionPrimaryDatabaseId, automatic: $automatic) {
         response
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { setNotionPrimaryDatabase },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           variables: {
             setNotionPrimaryDatabaseId: id,
@@ -41,12 +33,20 @@ export const setNotionPrimaryDatabase = (
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(setNotionPrimaryDatabase);
+        const response = data.setNotionPrimaryDatabase as ISetNotionPrimaryDatabase
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

@@ -1,29 +1,24 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetIntegrationRequest {
-  __typename: 'RequestedIntegration';
-  requested: boolean;
+  __typename: 'RequestedIntegration'
+  requested: boolean
 }
 
-export const getIntegrationRequest = (
-  token: string,
-  integration: string
-): Promise<IGetIntegrationRequest | null> => {
+export function getIntegrationRequest(token: string, integration: string): Promise<IGetIntegrationRequest | null> {
   const query = gql`
     query GetIntegrationRequest($integration: IntegrationsEnum!) {
       getIntegrationRequest(integration: $integration) {
         requested
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getIntegrationRequest },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           variables: {
             integration,
@@ -34,12 +29,22 @@ export const getIntegrationRequest = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getIntegrationRequest);
+        const response = data.getIntegrationRequest as IGetIntegrationRequest | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

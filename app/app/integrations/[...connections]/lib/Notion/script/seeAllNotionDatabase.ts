@@ -1,17 +1,15 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface ISeeAllNotionDatabase {
-  __typename: 'NotionDatabase';
-  icon: string | null;
-  id: string;
-  title: string;
-  url: string | null;
+  __typename: 'NotionDatabase'
+  icon: string | null
+  id: string
+  title: string
+  url: string | null
 }
 
-export const seeAllNotionDatabase = (
-  token: string
-): Promise<ISeeAllNotionDatabase[] | null> => {
+export function seeAllNotionDatabase(token: string): Promise<ISeeAllNotionDatabase[] | null> {
   const query = gql`
     query GetAllAllowedNotionDatabase {
       getAllAllowedNotionDatabase {
@@ -21,14 +19,12 @@ export const seeAllNotionDatabase = (
         url
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getAllAllowedNotionDatabase },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           context: {
             headers: {
@@ -36,12 +32,22 @@ export const seeAllNotionDatabase = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getAllAllowedNotionDatabase);
+        const response = data.getAllAllowedNotionDatabase as ISeeAllNotionDatabase[] | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

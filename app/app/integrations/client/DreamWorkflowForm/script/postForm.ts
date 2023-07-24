@@ -1,16 +1,16 @@
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
-export interface IUserRequestedIntegration {
-  __typename: 'RequestedIntegration'
-  requested: boolean
+interface IPostForm {
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export function userRequestedIntegration(token: string, integration: string): Promise<IUserRequestedIntegration> {
+export function postForm(token: string, longText: string): Promise<IPostForm> {
   const mutation = gql`
-    mutation UserRequestIntegration($integration: IntegrationsEnum!) {
-      userRequestIntegration(integration: $integration) {
-        requested
+    mutation DreamWorkflowForm($longText: String!) {
+      dreamWorkflowForm(longText: $longText) {
+        response
       }
     }
   `
@@ -21,7 +21,7 @@ export function userRequestedIntegration(token: string, integration: string): Pr
         const { data, errors } = await client.mutate({
           mutation,
           variables: {
-            integration,
+            longText,
           },
           context: {
             headers: {
@@ -30,7 +30,7 @@ export function userRequestedIntegration(token: string, integration: string): Pr
           },
         })
 
-        const response = data.userRequestIntegration as IUserRequestedIntegration
+        const response = data.dreamWorkflowForm as IPostForm
 
         if (errors) {
           reject(errors)

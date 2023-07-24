@@ -1,34 +1,33 @@
-import { notFound, redirect } from 'next/navigation';
-import Notion from './lib/Notion';
-import { auth } from '@clerk/nextjs';
-import { signJwt } from '@/utils/jwt';
+import { notFound, redirect } from 'next/navigation'
+import Notion from './lib/Notion'
+import { auth } from '@clerk/nextjs'
+import signJwt from '@/utils/jwt'
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: { connections: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const { userId: clerkUserId } = auth();
+interface Props {
+  params: { connections: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
 
-  if (!clerkUserId) return redirect('/login');
+export default async function Page({ params, searchParams }: Props) {
+  const { userId: clerkUserId } = auth()
 
-  const token = signJwt(clerkUserId);
+  if (!clerkUserId) return redirect('/login')
+
+  const token = signJwt(clerkUserId)
 
   if (params.connections) {
     if (params.connections[0] === 'notion') {
-      const code = searchParams.code;
+      const code = searchParams.code
 
       if (code) {
-        return <Notion code={code.toString()} token={token} />;
+        return <Notion code={code.toString()} token={token} />
       } else {
-        return notFound();
+        return notFound()
       }
     } else {
-      return notFound();
+      return notFound()
     }
   } else {
-    return notFound();
+    return notFound()
   }
 }

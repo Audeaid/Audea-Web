@@ -1,18 +1,16 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IGetNotionAccount {
-  __typename: 'NotionAccount';
-  accessToken: string;
-  workspaceName: string;
-  workspaceIcon: string | null;
-  automaticPost: boolean;
-  primaryDatabase: string | null;
+  __typename: 'NotionAccount'
+  accessToken: string
+  workspaceName: string
+  workspaceIcon: string | null
+  automaticPost: boolean
+  primaryDatabase: string | null
 }
 
-export const getNotionAccount = (
-  token: string
-): Promise<IGetNotionAccount | null> => {
+export function getNotionAccount(token: string): Promise<IGetNotionAccount | null> {
   const query = gql`
     query GetNotionAccount {
       getNotionAccount {
@@ -23,14 +21,12 @@ export const getNotionAccount = (
         primaryDatabase
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { getNotionAccount },
-        } = await client.query({
+        const { data, errors, error } = await client.query({
           query,
           context: {
             headers: {
@@ -38,12 +34,22 @@ export const getNotionAccount = (
             },
           },
           fetchPolicy: 'network-only',
-        });
+        })
 
-        resolve(getNotionAccount);
+        const response = data.getNotionAccount as IGetNotionAccount | null
+
+        if (errors) {
+          reject(errors)
+        } else if (error) {
+          reject(error)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}

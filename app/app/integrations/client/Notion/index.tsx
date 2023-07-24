@@ -41,7 +41,7 @@ export default function Notion({
   const [automaticChecked, setAutomaticChecked] = useState(getNotionAccount ? getNotionAccount.automaticPost : false)
 
   useEffect(() => {
-    ;(async () => {
+    const fetchGetNotionAccount = async () => {
       if (getNotionAccount !== null) {
         try {
           setLoading(true)
@@ -51,14 +51,14 @@ export default function Notion({
 
           setLoading(false)
         } catch (error) {
-          console.error(error)
-
           setLoading(false)
 
-          ErrorToast('search all allowed notion database', error)
+          ErrorToast({ action: 'search all allowed notion database', error })
         }
       }
-    })()
+    }
+
+    fetchGetNotionAccount()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -96,8 +96,8 @@ export default function Notion({
                         .then(() => {
                           router.push('/app/integrations')
                         })
-                        .catch((e) => {
-                          ErrorToast('deleting your notion connection', e)
+                        .catch((error) => {
+                          ErrorToast({ action: 'deleting your notion connection', error })
                         })
                     }}
                   >
@@ -168,8 +168,8 @@ export default function Notion({
                               success: 'Your Notion settings saved!',
                               error: 'Error saving your Notion settings!',
                             })
-                            .catch((e) => {
-                              ErrorToast('saving your notion settings', e)
+                            .catch((error) => {
+                              ErrorToast({ action: 'saving your notion settings', error })
                             })
                         }}
                       >
@@ -255,8 +255,8 @@ export default function Notion({
                                 success: 'Notion account deleted!',
                                 error: 'Error deleting your notion connection!',
                               })
-                              .catch((e) => {
-                                ErrorToast('deleting your notion connection', e)
+                              .catch((error) => {
+                                ErrorToast({ action: 'deleting your notion connection', error })
                               })
                           }}
                         >

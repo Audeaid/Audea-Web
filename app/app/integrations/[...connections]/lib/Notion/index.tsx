@@ -24,7 +24,12 @@ import cn from '@/utils/cn'
 import toast from 'react-hot-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-export default function Notion({ code, token }: { code: string; token: string }) {
+interface Props {
+  code: string
+  token: string
+}
+
+export default function Notion({ code, token }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)
@@ -36,7 +41,7 @@ export default function Notion({ code, token }: { code: string; token: string })
   const [loadingNotionDb, setLoadingNotionDb] = useState(true)
 
   useEffect(() => {
-    ;(async () => {
+    const fetchConnectNotion = async () => {
       try {
         setLoading(true)
 
@@ -52,18 +57,20 @@ export default function Notion({ code, token }: { code: string; token: string })
         setLoading(false)
         setSuccess(false)
 
-        ErrorToast('connecting notion', error)
+        ErrorToast({ action: 'connecting notion', error })
 
         setTimeout(() => {
           router.push('/app/integrations')
         }, 5000)
       }
-    })()
+    }
+
+    fetchConnectNotion()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    ;(async () => {
+    const fetchAllNotionDatabase = async () => {
       try {
         if (success) {
           setLoadingNotionDb(true)
@@ -73,10 +80,11 @@ export default function Notion({ code, token }: { code: string; token: string })
         }
       } catch (error) {
         setLoadingNotionDb(false)
-        console.error(error)
-        ErrorToast('see all notion database', error)
+        ErrorToast({ action: 'see all notion database', error })
       }
-    })()
+    }
+
+    fetchAllNotionDatabase()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success])
 
@@ -91,7 +99,13 @@ export default function Notion({ code, token }: { code: string; token: string })
           return (
             <>
               <div className='w-fit h-fit max-w-[300px] max-h-[200px]'>
-                <AddLottieAnimation path='/lottie/9844-loading-40-paperplane.json' loop={true} />
+                <AddLottieAnimation
+                  animationConfig={{
+                    path: '/lottie/9844-loading-40-paperplane.json',
+                    loop: true,
+                    autoplay: true,
+                  }}
+                />
               </div>
               <h3 className='text-xl text-center font-medium'>Connecting your Notion...</h3>
             </>
@@ -156,8 +170,8 @@ export default function Notion({ code, token }: { code: string; token: string })
                                 .then(() => {
                                   router.push('/app/integrations')
                                 })
-                                .catch((e) => {
-                                  ErrorToast('saving your notion settings', e)
+                                .catch((error) => {
+                                  ErrorToast({ action: 'saving your notion settings', error })
                                 })
                             }}
                           >
@@ -227,8 +241,8 @@ export default function Notion({ code, token }: { code: string; token: string })
                                   .then(() => {
                                     router.push('/app/integrations')
                                   })
-                                  .catch((e) => {
-                                    ErrorToast('deleting your notion connection', e)
+                                  .catch((error) => {
+                                    ErrorToast({ action: 'deleting your notion connection', error })
                                   })
                               }}
                             >
@@ -246,7 +260,13 @@ export default function Notion({ code, token }: { code: string; token: string })
             return (
               <>
                 <div className='w-fit h-fit max-w-[200px] max-h-[200px]'>
-                  <AddLottieAnimation path='/lottie/91878-bouncy-fail.json' loop={false} />
+                  <AddLottieAnimation
+                    animationConfig={{
+                      path: '/lottie/91878-bouncy-fail.json',
+                      loop: true,
+                      autoplay: true,
+                    }}
+                  />
                 </div>
                 <h3 className='text-xl text-center font-medium'>Error connecting your Notion! Please try again!</h3>
               </>

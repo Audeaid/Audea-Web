@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
-import Client from './lib'
-import { signJwt } from '@/utils/jwt'
+import Client from './client'
+import signJwt from '@/utils/jwt'
 import { getIntegrationRequest, getNotionAccount } from './graphql'
-import { generateUrl } from '@/utils/url'
+import { generateUrl } from '@/helper'
 import { Suspense } from 'react'
 import LoadingPage from '@/lib/LoadingPage'
 

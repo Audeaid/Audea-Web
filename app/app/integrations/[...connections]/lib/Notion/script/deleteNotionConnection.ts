@@ -1,40 +1,44 @@
-import client from '$utils/graphql';
-import { gql } from '@apollo/client';
+import client from '@/utils/graphql'
+import { gql } from '@apollo/client'
 
 export interface IDeleteNotionConnection {
-  __typename: 'ResponseMessage';
-  response: string;
+  __typename: 'ResponseMessage'
+  response: string
 }
 
-export const deleteNotionConnection = (
-  token: string
-): Promise<IDeleteNotionConnection> => {
+export function deleteNotionConnection(token: string): Promise<IDeleteNotionConnection> {
   const mutation = gql`
     mutation DeletingNotionConnection {
       deletingNotionConnection {
         response
       }
     }
-  `;
+  `
 
   return new Promise((resolve, reject) => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { deletingNotionConnection },
-        } = await client.mutate({
+        const { data, errors } = await client.mutate({
           mutation,
           context: {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
-        });
+        })
 
-        resolve(deletingNotionConnection);
+        const response = data.deletingNotionConnection as IDeleteNotionConnection
+
+        if (errors) {
+          reject(errors)
+        } else {
+          resolve(response)
+        }
       } catch (e) {
-        reject(e);
+        reject(e)
       }
-    })();
-  });
-};
+    }
+
+    fetchData()
+  })
+}
