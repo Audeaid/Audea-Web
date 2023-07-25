@@ -20,6 +20,7 @@ import {
   Video,
   User,
   LogOut,
+  Users,
 } from 'lucide-react'
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'
 import { Separator } from '@/components/ui/separator'
@@ -234,6 +235,13 @@ export default function MobileSheet({ router, token }: { router: AppRouterInstan
                 <span>Chat with us</span>
               </DropdownMenuItem>
               <ReportAnIssue token={token} />
+
+              <SheetClose asChild>
+                <DropdownMenuItem onClick={() => router.push('/app/talk-to-founders')}>
+                  <Users className='mr-2 h-4 w-4' />
+                  <span>Talk to the founders</span>
+                </DropdownMenuItem>
+              </SheetClose>
             </DropdownMenuContent>
           </DropdownMenu>
 

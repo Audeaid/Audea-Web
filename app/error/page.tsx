@@ -1,5 +1,7 @@
+'use client'
+
 import { notFound } from 'next/navigation'
-import Toast from '../../lib/Toast'
+import Toast from '@/lib/Toast'
 import { Clipboard } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import toast from 'react-hot-toast'

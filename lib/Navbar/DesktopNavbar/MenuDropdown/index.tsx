@@ -15,6 +15,7 @@ import {
   CreditCard,
   Download,
   User,
+  Users,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -211,6 +212,10 @@ const MenuDropdown = ({ router, token }: Props) => {
                 <span>Chat with us</span>
               </DropdownMenuItem>
               <ReportAnIssue token={token} />
+              <DropdownMenuItem onClick={() => router.push('/app/talk-to-founders')}>
+                <Users className='mr-2 h-4 w-4' />
+                <span>Talk to the founders</span>
+              </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
