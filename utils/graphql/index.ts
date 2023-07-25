@@ -59,7 +59,7 @@ import { setContext } from '@apollo/client/link/context'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { createClient } from 'graphql-ws'
-import WebSocket from 'isomorphic-ws'
+// import WebSocket from 'isomorphic-ws'
 
 export const middleware = new ApolloClient({
   uri:
@@ -83,7 +83,7 @@ const wsLink = () => {
         process.env.NODE_ENV === 'production'
           ? 'wss://audea-server-production.up.railway.app/graphql'
           : 'ws://localhost:8080/graphql',
-      webSocketImpl: WebSocket,
+      // webSocketImpl: WebSocket,
     }),
   )
 }
