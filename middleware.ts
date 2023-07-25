@@ -10,13 +10,14 @@ export default authMiddleware({
     const stripeApiUrl = /^\/api\/stripe(?:\/|$)/.test(req.nextUrl.pathname) // /api/stripe/[any]
     const loginUrl = /^\/login(?:\/|$)/.test(req.nextUrl.pathname) // /login/[any]
     const signupUrl = /^\/signup(?:\/|$)/.test(req.nextUrl.pathname) // /signup/[any]
+    const errorUrl = /^\/error(?:|$)/.test(req.nextUrl.pathname) // /error?[any]
     const ogUrl = req.nextUrl.pathname === '/og'
     // const baseUrl = req.nextUrl.pathname === '/'
 
     const redirectNotAllowedUrl = new URL('/notallowed', req.url)
     // const redirectLoginUrl = new URL('/login', req.url)
 
-    if (!loginUrl && !signupUrl && !ogUrl) {
+    if (!loginUrl && !signupUrl && !ogUrl && !errorUrl) {
       if (auth.userId) {
         try {
           const subscription = await checkSubscription(process.env.CHECK_SUBSCRIPTION_SECRET as string, auth.userId)
@@ -26,7 +27,9 @@ export default authMiddleware({
           const endDate = subscription.endDate
           const notSubscribed = new Date() >= new Date(endDate)
 
-          if (notSubscribed && !notAllowedUrl && !subscriptionsUrl && !stripeApiUrl) {
+          const doNotRedirectUrl = !notAllowedUrl && !subscriptionsUrl && !stripeApiUrl
+
+          if (notSubscribed && doNotRedirectUrl) {
             return NextResponse.redirect(redirectNotAllowedUrl)
           }
         } catch (error) {
