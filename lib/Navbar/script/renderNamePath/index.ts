@@ -1,4 +1,4 @@
-import { Boxes, CreditCard, Download, FileHeart, Settings, User, Video } from 'lucide-react'
+import { Boxes, CreditCard, Download, FileHeart, Settings, User, Users, Video } from 'lucide-react'
 
 export function renderNamePath(pathname: string) {
   switch (pathname) {
@@ -36,6 +36,12 @@ export function renderNamePath(pathname: string) {
       return {
         icon: Video,
         name: 'How to use Audea',
+      }
+
+    case 'talk-to-founders':
+      return {
+        icon: Users,
+        name: 'Talk to the founders',
       }
 
     case 'subscriptions':
