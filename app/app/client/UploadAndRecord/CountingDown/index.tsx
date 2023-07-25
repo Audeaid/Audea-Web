@@ -4,9 +4,9 @@ interface Props {
   countdown: number | string
 }
 
-export function CountingDown({ countdown }: Props) {
+export default function CountingDown({ countdown }: Props) {
   return (
-    <section className='flex gap-2 font-bold sm:text-3xl text-xl'>
+    <section className='flex gap-2 font-bold sm:text-3xl text-xl w-fit mx-auto py-10'>
       <p className='text-center'>
         Recording{' '}
         <span

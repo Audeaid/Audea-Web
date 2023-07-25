@@ -14,7 +14,7 @@ interface Props {
 export function RenderFileUploader({ currentlyDragging, setCurrentlyDragging, handleDrop, handleFileChange }: Props) {
   return (
     <section
-      className='w-full h-fit border-dashed border-2 border-border rounded-xl py-20 max-w-[800px] mx-auto relative sm:px-0 px-4'
+      className='w-full h-full'
       onDragOver={(event) => {
         event.preventDefault()
         setCurrentlyDragging(true)

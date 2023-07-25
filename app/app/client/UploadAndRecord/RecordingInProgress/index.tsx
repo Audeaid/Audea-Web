@@ -9,11 +9,11 @@ interface Props {
   cancelRecording: MouseEventHandler<HTMLButtonElement>
 }
 
-export function RecordingInProgress({ remainingTime, cancelRecording }: Props) {
+export default function RecordingInProgress({ remainingTime, cancelRecording }: Props) {
   return (
-    <section className='flex flex-col gap-4'>
+    <section className='flex flex-col gap-4 w-fit mx-auto'>
       <p>Recording in progress...</p>
-      <p className='font-bold text-6xl text-center'>
+      <p className='font-bold text-2xl text-center'>
         {Math.floor(remainingTime / 60)}:
         {remainingTime % 60 < 10 && remainingTime % 60 !== 0 ? `0${remainingTime % 60}` : remainingTime % 60}
         {remainingTime % 60 === 0 ? '0' : ''}

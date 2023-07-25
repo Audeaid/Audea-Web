@@ -1,21 +1,10 @@
+import { IOutputLanguageType } from '@/app/data/outputLanguage'
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
 export interface IGetContentSettings {
   __typename: 'ContentSettings'
-  outputLanguage:
-    | 'TRANSCRIPT'
-    | 'ENGLISH'
-    | 'BAHASAINDONESIA'
-    | 'CHINESE'
-    | 'HINDI'
-    | 'JAPANESE'
-    | 'SPANISH'
-    | 'FRENCH'
-    | 'RUSSIAN'
-    | 'URDU'
-    | 'ARABIC'
-    | 'ASK'
+  outputLanguage: IOutputLanguageType
   writingStyle: string
   typeOfPromptId: string
 }

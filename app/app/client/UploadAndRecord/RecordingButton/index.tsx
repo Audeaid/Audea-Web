@@ -9,7 +9,7 @@ interface Props {
   handleClick: MouseEventHandler<HTMLButtonElement>
 }
 
-export function RecordingButton({ type, handleClick }: Props) {
+export default function RecordingButton({ type, handleClick }: Props) {
   if (type === 'Record') {
     return (
       <button

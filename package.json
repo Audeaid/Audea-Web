@@ -46,6 +46,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@stripe/react-stripe-js": "^2.1.1",
     "@stripe/stripe-js": "^1.54.1",
+    "audio-recorder-polyfill": "^0.4.1",
     "autoprefixer": "10.4.14",
     "aws-sdk": "^2.1381.0",
     "axios": "^1.4.0",
@@ -78,6 +79,7 @@
     "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "^1.0.6",
     "utf-8-validate": "^6.0.3",
+    "wavesurfer.js": "^7.0.6",
     "ws": "^8.13.0"
   },
   "devDependencies": {

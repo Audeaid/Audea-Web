@@ -1,3 +1,17 @@
+export type IOutputLanguageType =
+  | 'TRANSCRIPT'
+  | 'ENGLISH'
+  | 'BAHASAINDONESIA'
+  | 'CHINESE'
+  | 'HINDI'
+  | 'JAPANESE'
+  | 'SPANISH'
+  | 'FRENCH'
+  | 'RUSSIAN'
+  | 'URDU'
+  | 'ARABIC'
+  | 'ASK'
+
 export const outputLanguageList = [
   {
     label: 'Same as transcript',
