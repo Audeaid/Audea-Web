@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <ApolloNextClient>
         <ViewportProvider>
           <DarkModeProvider>
-            <html lang='en' suppressHydrationWarning={true}>
+            <html lang='en' suppressHydrationWarning={true} suppressContentEditableWarning={true}>
               <body className={inter.className}>{children}</body>
             </html>
           </DarkModeProvider>

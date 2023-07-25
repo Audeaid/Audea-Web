@@ -9,13 +9,13 @@ export interface IUpdateContent {
 interface Props {
   token: string
   contentId: string
-  title: string | null
-  voiceNoteUrl: string | null
-  transcript: string | null
-  gptGenerated: string | null
-  typeOfPromptId: string | null
-  writingStyle: string | null
-  outputLanguage: string | null
+  title?: string | null
+  voiceNoteUrl?: string | null
+  transcript?: string | null
+  gptGenerated?: string | null
+  typeOfPromptId?: string | null
+  writingStyle?: string | null
+  outputLanguage?: string | null
 }
 
 export function updateContent({

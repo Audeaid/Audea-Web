@@ -1593,6 +1593,11 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
+audio-recorder-polyfill@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/audio-recorder-polyfill/-/audio-recorder-polyfill-0.4.1.tgz#4290eca3d8edf49eb6daba59592aacf357b6e5b7"
+  integrity sha512-SS4qVOzuVwlS/tjQdd0uR+9cCKBTkx4jsAdjM+rMNqoTEWf6bMnBSTfv+FO4Zn9ngxviJOxhkgRWWXsAMqM96Q==
+
 autoprefixer@10.4.14:
   version "10.4.14"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.14.tgz#e28d49902f8e759dd25b153264e862df2705f79d"
@@ -4683,6 +4688,11 @@ uuid@8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.0.0.tgz#bc6ccf91b5ff0ac07bbcdbf1c7c4e150db4dbb6c"
   integrity sha512-jOXGuXZAWdsTH7eZLtyXMqUb9EcWMGZNbL9YcGBJl4MH4nrxHmZJhEHvyLFrkxo+28uLb/NYRcStH48fnD0Vzw==
+
+wavesurfer.js@^7.0.6:
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.6.tgz#e0a214df7497f0503e18fb67959e4bca356c388a"
+  integrity sha512-Pkg0iBnIsgl9k4F938S9/RBEqklt9jPeeo59mmKimbUoxcKr11l7rsu9qHkGJvkl1hhx33lcSz0cA9F/qwFngQ==
 
 webcrypto-core@^1.7.4:
   version "1.7.7"

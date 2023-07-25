@@ -11,6 +11,10 @@ export default authMiddleware({
     const loginUrl = /^\/login(?:\/|$)/.test(req.nextUrl.pathname) // /login/[any]
     const signupUrl = /^\/signup(?:\/|$)/.test(req.nextUrl.pathname) // /signup/[any]
     const ogUrl = req.nextUrl.pathname === '/og'
+    // const baseUrl = req.nextUrl.pathname === '/'
+
+    const redirectNotAllowedUrl = new URL('/notallowed', req.url)
+    // const redirectLoginUrl = new URL('/login', req.url)
 
     if (!loginUrl && !signupUrl && !ogUrl) {
       if (auth.userId) {
@@ -23,8 +27,7 @@ export default authMiddleware({
           const notSubscribed = new Date() >= new Date(endDate)
 
           if (notSubscribed && !notAllowedUrl && !subscriptionsUrl && !stripeApiUrl) {
-            const notAllowedUrl = new URL('/notallowed', req.url)
-            return NextResponse.redirect(notAllowedUrl)
+            return NextResponse.redirect(redirectNotAllowedUrl)
           }
         } catch (error) {
           console.error(error)
@@ -43,7 +46,7 @@ interface ICheckSubscription {
   endDate: string
 }
 
-const checkSubscription = async (secret: string, clerkUserId: string) => {
+const checkSubscription = (secret: string, clerkUserId: string): Promise<ICheckSubscription> => {
   const query = gql`
     query GetUserSubscriptionEDGE($secret: String!, $clerkUserId: String!) {
       getUserSubscriptionEDGE(secret: $secret, clerkUserId: $clerkUserId) {
@@ -52,20 +55,35 @@ const checkSubscription = async (secret: string, clerkUserId: string) => {
     }
   `
 
-  try {
-    const {
-      data: { getUserSubscriptionEDGE },
-    }: { data: { getUserSubscriptionEDGE: ICheckSubscription } } = await middleware.query({
-      query,
-      variables: {
-        secret,
-        clerkUserId,
-      },
-      fetchPolicy: 'network-only',
-    })
+  return new Promise((resolve, reject) => {
+    const fetchData = async () => {
+      try {
+        const { data, error, errors } = await middleware.query({
+          query,
+          variables: {
+            secret,
+            clerkUserId,
+          },
+          fetchPolicy: 'network-only',
+        })
 
-    return getUserSubscriptionEDGE
-  } catch (e) {
-    console.error(e)
-  }
+        const response = data.getUserSubscriptionEDGE as ICheckSubscription
+
+        if (error) {
+          console.error(error)
+          reject(error)
+        } else if (errors) {
+          console.error(errors)
+          reject(errors)
+        } else {
+          resolve(response)
+        }
+      } catch (e) {
+        console.error(e)
+        reject(e)
+      }
+    }
+
+    fetchData()
+  })
 }
