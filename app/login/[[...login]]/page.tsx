@@ -38,7 +38,7 @@ export default async function Page({ params, searchParams }: Prop) {
             }
           })()
 
-          const { data: userData }: { data: User } = await axios.post(generateUrl('/api/clerk/getUserByClerkId').href, {
+          const { data: userData }: { data: User } = await axios.post(generateUrl('/api/clerk/clerkUser').href, {
             clerkUserId,
           })
 
