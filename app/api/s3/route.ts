@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       Key: `${contentId}${fileExtension}`,
       Expires: 600,
       ContentType: fileType,
-      // ACL: 'public-read',
+      ACL: 'public-read',
     }
 
     const url = await s3.getSignedUrlPromise('putObject', fileParams)
