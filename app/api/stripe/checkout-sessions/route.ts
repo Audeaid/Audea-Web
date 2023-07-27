@@ -5,9 +5,9 @@ import Stripe from 'stripe'
 export async function POST(req: NextRequest) {
   const data = await req.json()
 
-  const clerkUserId: string = data.clerkUserId
-  const stripeCustomerId: string = data.stripeCustomerId
-  const stripePriceId: string = data.stripePriceId
+  const clerkUserId: string | null | undefined = data.clerkUserId
+  const stripeCustomerId: string | null | undefined = data.stripeCustomerId
+  const stripePriceId: string | null | undefined = data.stripePriceId
 
   if (!clerkUserId || !stripeCustomerId || !stripePriceId)
     throw new Error('clerkUserId or stripeCustomerId or stripePriceId is missing')

@@ -1,20 +1,30 @@
 'use client'
 
-import { getTranscriptViaWhisperFromUrl, getTypeOfPrompt, publicGetGptResponse, updateContent } from './script'
 import LoadingContent from '@/components/LoadingContent'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AddLottieAnimation from '@/components/AddLottieAnimation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faArrowRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
 import ErrorToast from '@/components/ErrorToast'
 import { Button } from '@/components/ui/button'
+import {
+  getTypeOfPrompt,
+  publicGetGptResponse,
+  publicGetTranscriptFromWhisper,
+  updateContent,
+} from '@/app/app/client/script'
+import { downloadAudioFileFromS3 } from './script'
+import { Download } from 'lucide-react'
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import { deleteContent } from '../ErrorShouldDelete/script'
 
 interface Props {
   token: string
   contentId: string
-  voiceNoteUrl: string
+  s3ObjectName: string
   typeOfPromptId: string
   transcript: string | null
   gptGenerated: string | null
@@ -25,7 +35,7 @@ interface Props {
 export default function GenerateContent({
   token,
   contentId,
-  voiceNoteUrl,
+  s3ObjectName,
   typeOfPromptId,
   transcript,
   gptGenerated,
@@ -37,24 +47,21 @@ export default function GenerateContent({
   const [isUploading, setIsUploading] = useState(false)
   const handleClick = async () => {
     if (transcript === null && gptGenerated === null) {
-      setIsUploading(true)
-
       try {
+        setIsUploading(true)
+
+        setCondition('Downloading your audio file...')
+        const file = await downloadAudioFileFromS3(s3ObjectName)
+
         setCondition('Getting the transcript...')
         const typeOfPrompt = await getTypeOfPrompt(token, typeOfPromptId)
         if (!typeOfPrompt) throw new Error('typeOfPrompt is null')
 
-        const whisperData = await getTranscriptViaWhisperFromUrl(voiceNoteUrl)
+        const whisperData = await publicGetTranscriptFromWhisper(file)
         await updateContent({
           token,
           contentId,
-          title: null,
-          voiceNoteUrl: null,
           transcript: whisperData.text,
-          gptGenerated: null,
-          typeOfPromptId: null,
-          outputLanguage: null,
-          writingStyle: null,
         })
 
         setCondition('Transcript is being analyzed by AI...')
@@ -81,12 +88,7 @@ export default function GenerateContent({
           token,
           contentId,
           title: title,
-          voiceNoteUrl: null,
-          transcript: null,
           gptGenerated: actualGptResponse,
-          typeOfPromptId: null,
-          outputLanguage: null,
-          writingStyle: null,
         })
 
         router.push(`/app/saved/${response.id}`)
@@ -97,9 +99,9 @@ export default function GenerateContent({
     }
 
     if (gptGenerated === null && transcript !== null) {
-      setIsUploading(true)
-
       try {
+        setIsUploading(true)
+
         setCondition('Transcript is being analyzed by AI...')
         const typeOfPrompt = await getTypeOfPrompt(token, typeOfPromptId)
         if (!typeOfPrompt) throw new Error('typeOfPrompt is null')
@@ -127,12 +129,7 @@ export default function GenerateContent({
           token,
           contentId,
           title: title,
-          voiceNoteUrl: null,
-          transcript: null,
           gptGenerated: actualGptResponse,
-          typeOfPromptId: null,
-          outputLanguage: null,
-          writingStyle: null,
         })
 
         router.push(`/app/saved/${response.id}`)
@@ -159,16 +156,102 @@ export default function GenerateContent({
             />
           </div>
           <section className='mt-[-5rem] flex flex-col gap-8 items-center justify-center'>
-            <section className='flex flex-col gap-2'>
-              <p className='font-bold text-xl max-w-[600px] text-center'>
-                Sorry, it seems like there is an error while generating your transcript and or content.
+            <section className='flex flex-col gap-2 text-center'>
+              <p className='font-bold text-xl max-w-[600px] mx-auto'>
+                Sorry, it seems like there is an error while generating your note.
               </p>
-              <p className='text-center font-light'>Please click the button below to retry.</p>
+              <p className='text-center font-light'>
+                We have your audio file
+                {transcript === null
+                  ? ", but we don't have the transcript"
+                  : ' and your transcript, but there is an error generating the note'}
+                . Please click the button below to retry.
+              </p>
             </section>
-            <Button onClick={handleClick} type='button'>
-              <FontAwesomeIcon icon={faArrowRotateRight} className='mr-2' />
-              Retry generating content
-            </Button>
+
+            <section className='flex flex-col gap-4 items-center justify-center'>
+              <Button onClick={handleClick} type='button'>
+                <FontAwesomeIcon icon={faArrowRotateRight} className='mr-2' />
+                Retry generating note
+              </Button>
+
+              <Button
+                variant='secondary'
+                type='button'
+                onClick={() => {
+                  toast
+                    .promise(axios.post('/api/s3/getObject', { s3ObjectName }), {
+                      loading: 'Getting the downloadable url...',
+                      success: 'Success getting the downloadable url!',
+                      error: 'Error getting the downloadable url!',
+                    })
+                    .then(({ data }) => {
+                      toast
+                        .promise(fetch(data), {
+                          loading: 'Fetching the downloadable url...',
+                          success: 'Success fetching the downloadable url!',
+                          error: 'Error fetching the downloadable url!',
+                        })
+                        .then((response) => {
+                          toast
+                            .promise(response.blob(), {
+                              loading: 'Blobing the downloadable url...',
+                              success: 'Success blobing the downloadable url!',
+                              error: 'Error blobing the downloadable url!',
+                            })
+                            .then((blob) => {
+                              const url = URL.createObjectURL(blob)
+                              const downloadLink = document.createElement('a')
+                              downloadLink.href = url
+                              downloadLink.download = s3ObjectName // This attribute triggers the download.
+
+                              // Append the link to the document and immediately click it to download the file.
+                              document.body.appendChild(downloadLink)
+                              downloadLink.click()
+
+                              // Clean up the URL and remove the link after the download is initiated.
+                              URL.revokeObjectURL(url)
+                              document.body.removeChild(downloadLink)
+                            })
+                            .catch((error) => {
+                              ErrorToast({ action: 'blobing the downloadable url', error })
+                            })
+                        })
+                        .catch((error) => {
+                          ErrorToast({ action: 'fetching the downloadable url', error })
+                        })
+                    })
+                    .catch((error) => {
+                      ErrorToast({ action: 'getting the downloadable url', error })
+                    })
+                }}
+              >
+                <Download className='mr-2 w-4 h-4' />
+                Download your audio file
+              </Button>
+
+              <Button
+                onClick={() => {
+                  toast
+                    .promise(deleteContent(token, contentId), {
+                      loading: 'Deleting your note...',
+                      success: 'Success deleting your note!',
+                      error: 'Error deleting your note!',
+                    })
+                    .then(() => {
+                      router.push('/app/saved')
+                    })
+                    .catch((error) => {
+                      ErrorToast({ action: 'deleting your note', error })
+                    })
+                }}
+                type='button'
+                variant='destructive'
+              >
+                <FontAwesomeIcon icon={faArrowLeft} className='mr-2' />
+                Delete this note and go back
+              </Button>
+            </section>
           </section>
         </motion.section>
       )}

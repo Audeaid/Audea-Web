@@ -14,9 +14,9 @@ import { X } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
-import { getTypeOfPrompt, publicGetGptResponse, updateContent } from './script'
 import ErrorToast from '@/components/ErrorToast'
 import LoadingContent from '@/components/LoadingContent'
+import { getTypeOfPrompt, publicGetGptResponse, updateContent } from '@/app/app/client/script'
 
 interface Props {
   open: boolean

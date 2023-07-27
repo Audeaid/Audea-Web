@@ -4,7 +4,7 @@ import { stripeServer } from '@/utils/stripe'
 export async function POST(req: Request) {
   const data = await req.json()
 
-  const sessionId = data.sessionId
+  const sessionId: string | null | undefined = data.sessionId
 
   if (!sessionId) throw new Error('sessionId is missing')
 

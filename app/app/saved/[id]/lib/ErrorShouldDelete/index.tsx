@@ -68,7 +68,7 @@ export default function ErrorShouldDelete({ token, contentId, router }: Props) {
           type='button'
         >
           {loading ? <LoadingSpinner size={4} /> : <FontAwesomeIcon icon={faArrowLeft} className='mr-2' />}
-          Delete this content and go back
+          Delete this note and go back
         </Button>
       </section>
     </motion.section>

@@ -10,7 +10,7 @@ interface Props {
   token: string
   contentId: string
   title?: string | null
-  voiceNoteUrl?: string | null
+  s3ObjectName?: string | null
   transcript?: string | null
   gptGenerated?: string | null
   typeOfPromptId?: string | null
@@ -22,7 +22,7 @@ export function updateContent({
   token,
   contentId,
   title,
-  voiceNoteUrl,
+  s3ObjectName,
   transcript,
   gptGenerated,
   typeOfPromptId,
@@ -33,7 +33,7 @@ export function updateContent({
     mutation UpdateContent(
       $contentId: String!
       $title: String
-      $voiceNoteUrl: String
+      $s3ObjectName: String
       $transcript: String
       $gptGenerated: String
       $typeOfPromptId: String
@@ -43,7 +43,7 @@ export function updateContent({
       updateContent(
         contentId: $contentId
         title: $title
-        voiceNoteUrl: $voiceNoteUrl
+        s3ObjectName: $s3ObjectName
         transcript: $transcript
         gptGenerated: $gptGenerated
         typeOfPromptId: $typeOfPromptId
@@ -63,7 +63,7 @@ export function updateContent({
           variables: {
             contentId,
             title,
-            voiceNoteUrl,
+            s3ObjectName,
             transcript,
             gptGenerated,
             typeOfPromptId,
