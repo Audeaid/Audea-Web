@@ -24,12 +24,13 @@ import ErrorToast from '@/components/ErrorToast'
 import { generateNotionPage } from './script'
 import ShareToPublic from './ShareToPublic'
 import { IGetSharedContentByContentId } from '../../graphql'
+import axios from 'axios'
 
 interface Props {
   token: string
   title: string
   createdAt: string
-  voiceNoteUrl: string
+  s3ObjectName: string
   transcript: string
   contentId: string
   typeOfPromptId: string
@@ -44,7 +45,7 @@ export default function Title({
   token,
   title,
   createdAt,
-  voiceNoteUrl,
+  s3ObjectName,
   transcript,
   contentId,
   typeOfPromptId,
@@ -77,11 +78,57 @@ export default function Title({
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem asChild>
-              <a download={true} href={voiceNoteUrl}>
-                <Download className='mr-2 w-4 h-4' />
-                Download audio
-              </a>
+            <DropdownMenuItem
+              onClick={() => {
+                toast
+                  .promise(axios.post('/api/s3/getObject', { s3ObjectName }), {
+                    loading: 'Getting the downloadable url...',
+                    success: 'Success getting the downloadable url!',
+                    error: 'Error getting the downloadable url!',
+                  })
+                  .then(({ data }) => {
+                    toast
+                      .promise(fetch(data), {
+                        loading: 'Fetching the downloadable url...',
+                        success: 'Success fetching the downloadable url!',
+                        error: 'Error fetching the downloadable url!',
+                      })
+                      .then((response) => {
+                        toast
+                          .promise(response.blob(), {
+                            loading: 'Downloading the audio file...',
+                            success: 'Success downloading the audio file!',
+                            error: 'Error downloading the audio file!',
+                          })
+                          .then((blob) => {
+                            const url = URL.createObjectURL(blob)
+                            const downloadLink = document.createElement('a')
+                            downloadLink.href = url
+                            downloadLink.download = s3ObjectName // This attribute triggers the download.
+
+                            // Append the link to the document and immediately click it to download the file.
+                            document.body.appendChild(downloadLink)
+                            downloadLink.click()
+
+                            // Clean up the URL and remove the link after the download is initiated.
+                            URL.revokeObjectURL(url)
+                            document.body.removeChild(downloadLink)
+                          })
+                          .catch((error) => {
+                            ErrorToast({ action: 'downloading the audio file', error })
+                          })
+                      })
+                      .catch((error) => {
+                        ErrorToast({ action: 'fetching the downloadable url', error })
+                      })
+                  })
+                  .catch((error) => {
+                    ErrorToast({ action: 'getting the downloadable url', error })
+                  })
+              }}
+            >
+              <Download className='mr-2 w-4 h-4' />
+              Download audio
             </DropdownMenuItem>
 
             <DropdownMenuItem

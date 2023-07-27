@@ -9,7 +9,7 @@ export interface IGetOneContent {
   gptGenerated: string | null
   transcript: string | null
   typeOfPromptId: string | null
-  voiceNoteUrl: string | null
+  s3ObjectName: string | null
   writingStyle: string | null
   outputLanguage: string | null
 }
@@ -26,7 +26,7 @@ export function getOneContent(token: string, contentId: string): Promise<IGetOne
         transcript
         typeOfPromptId
         userId
-        voiceNoteUrl
+        s3ObjectName
         writingStyle
       }
     }

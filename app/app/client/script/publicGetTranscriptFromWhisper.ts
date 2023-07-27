@@ -18,7 +18,15 @@ export function publicGetTranscriptFromWhisper(file: File): Promise<IWhisperResp
           body: formData,
         })
 
-        const whisperData: IWhisperResponse = await response.json()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const whisperData: any = await response.json()
+
+        if ('error' in whisperData) {
+          reject(whisperData)
+        } else {
+          const data = whisperData as IWhisperResponse
+          resolve(data)
+        }
 
         resolve(whisperData)
       } catch (error) {

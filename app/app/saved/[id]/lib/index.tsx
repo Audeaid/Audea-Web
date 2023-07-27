@@ -29,7 +29,7 @@ export default function Client({
 
   if (
     content.typeOfPromptId === null ||
-    content.voiceNoteUrl === null ||
+    content.s3ObjectName === null ||
     content.outputLanguage === null ||
     content.writingStyle === null
   ) {
@@ -39,7 +39,7 @@ export default function Client({
       <GenerateContent
         token={token}
         contentId={content.id}
-        voiceNoteUrl={content.voiceNoteUrl}
+        s3ObjectName={content.s3ObjectName}
         typeOfPromptId={content.typeOfPromptId}
         transcript={content.transcript}
         gptGenerated={content.gptGenerated}
@@ -57,7 +57,7 @@ export default function Client({
         <Title
           title={content.title ?? 'No title'}
           createdAt={content.createdAt}
-          voiceNoteUrl={content.voiceNoteUrl}
+          s3ObjectName={content.s3ObjectName}
           transcript={content.transcript}
           token={token}
           contentId={content.id}

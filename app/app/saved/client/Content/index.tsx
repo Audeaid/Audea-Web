@@ -4,7 +4,7 @@ import { IGetAllContent } from '@/app/app/saved/graphql'
 import { faList, faTableCellsLarge } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { gql, useSubscription } from '@apollo/client'
 import OneContentListView from './OneContentListView'
 import OneContentGalleryView from './OneContentGalleryView'
@@ -16,24 +16,17 @@ interface Props {
 }
 
 export default function Content({ incomingContent, clerkUserId }: Props) {
-  const [listView, setListView] = useState(() => {
-    if (window) {
-      const storedData = window.localStorage.getItem('audea__view')
-
-      if (storedData) {
-        if (storedData === 'list') {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        return true
-      }
-    } else {
-      return true
-    }
-  })
+  const [listView, setListView] = useState(true)
   const [contentData, setContentData] = useState(incomingContent)
+
+  useLayoutEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedData = window.localStorage.getItem('audea__view')
+      if (storedData) {
+        setListView(storedData === 'list')
+      }
+    }
+  }, [])
 
   const contentLive = gql`
     subscription ContentSubscription($clerkUserId: String!) {

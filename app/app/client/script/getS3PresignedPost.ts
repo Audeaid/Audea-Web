@@ -9,7 +9,7 @@ export const getS3PresignedPost = (contentId: string, fileType: string, fileExte
         formData.append('fileType', fileType)
         formData.append('fileExtension', fileExtension)
 
-        const { data }: { data: string } = await axios.post('/api/s3', formData)
+        const { data }: { data: string } = await axios.post('/api/s3/putObject', formData)
 
         resolve(data)
       } catch (error) {

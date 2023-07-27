@@ -142,7 +142,7 @@ export default function Client({ hasContent, token, contentSettings }: Props) {
                       await updateContent({
                         token,
                         contentId: content.id,
-                        voiceNoteUrl: location,
+                        s3ObjectName: location,
                       })
 
                       // Get the transcript from whisper
