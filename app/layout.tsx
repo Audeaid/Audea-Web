@@ -7,6 +7,7 @@ import { ViewportProvider } from '@/context/Viewport'
 import { DarkModeProvider } from '@/context/DarkMode'
 import { Metadata } from 'next'
 import meta from '@/app/meta'
+import GTag from './gtag'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DarkModeProvider>
             <html lang='en' suppressHydrationWarning={true} suppressContentEditableWarning={true}>
               <body className={inter.className}>{children}</body>
+
+              <GTag />
             </html>
           </DarkModeProvider>
         </ViewportProvider>
