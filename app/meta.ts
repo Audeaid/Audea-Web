@@ -29,6 +29,8 @@ const meta: Metadata = {
     telephone: false,
   },
 
+  manifest: '/manifest.json',
+
   appleWebApp: {
     title: 'Audea',
     statusBarStyle: 'black-translucent',

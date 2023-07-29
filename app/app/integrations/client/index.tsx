@@ -68,16 +68,16 @@ export default function Client({
 
   return (
     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <header className='space-y-2'>
+      <header className='space-y-2 select-none'>
         <h1 className='text-4xl font-bold'>Integrations</h1>
         <p>Connect Audea with your existing tools</p>
       </header>
 
-      <section className='my-10 space-y-2'>
+      <section className='my-10 space-y-2 select-none'>
         <Notion token={token} getNotionAccount={getNotionAccount} />
       </section>
 
-      <section className='my-10 space-y-2'>
+      <section className='my-10 space-y-2 select-none'>
         <p className='dark:text-gray-700 text-gray-100 font-medium'>Coming soon</p>
 
         {comingSoon.map((v, i) => {
@@ -94,13 +94,13 @@ export default function Client({
       </section>
 
       <section className='space-y-8 mt-20 pb-20'>
-        <div className='w-full flex flex-col items-center justify-center gap-2'>
+        <div className='w-full flex flex-col items-center justify-center gap-2 select-none'>
           <QuestionMark />
           <p className='font-bold text-xl'>What integration should come next?</p>
         </div>
 
         <div className='flex flex-col gap-20'>
-          <div className='grid md:grid-cols-2 grid-cols-1 gap-4'>
+          <div className='grid md:grid-cols-2 grid-cols-1 gap-4 select-none'>
             {notYet.map((v, i) => {
               return (
                 <IntegrationCard
