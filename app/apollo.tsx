@@ -7,11 +7,16 @@ import { useEffect } from 'react'
 export function ApolloNextClient({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const isAppleDevice = /Mac|iPhone|iPad|iPod|Macintosh|Apple/i.test(navigator.userAgent)
+    const isIPhoneOrIPad = isAppleDevice && navigator.maxTouchPoints > 0
 
     const manifestTag = document.querySelector('link[rel="manifest"]') as HTMLLinkElement
 
-    if (!isAppleDevice) {
-      manifestTag.href = '/manifest.json'
+    if (isAppleDevice) {
+      manifestTag.href = '/manifest-apple.json'
+    }
+
+    if (isIPhoneOrIPad) {
+      manifestTag.href = '/manifest-ios.json'
     }
   }, [])
 
