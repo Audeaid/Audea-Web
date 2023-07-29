@@ -20,9 +20,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ViewportProvider>
           <DarkModeProvider>
             <html lang='en' suppressHydrationWarning={true} suppressContentEditableWarning={true}>
-              <body className={inter.className}>{children}</body>
-
               <GTag />
+              <body className={inter.className}>{children}</body>
             </html>
           </DarkModeProvider>
         </ViewportProvider>
