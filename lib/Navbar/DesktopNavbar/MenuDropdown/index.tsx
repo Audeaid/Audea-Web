@@ -45,6 +45,7 @@ import { loadTidio, onTidioChatApiReady } from '../../script'
 import ErrorToast from '@/components/ErrorToast'
 import { useState } from 'react'
 import ErrorSafariContentBlocker from '@/lib/ErrorSafariContentBlocker'
+import { HELP_URL, SLACK_AUDEANCE_INVITATION_URL } from '@/utils/constant'
 
 interface Props {
   router: AppRouterInstance
@@ -91,7 +92,7 @@ const MenuDropdown = ({ router, token }: Props) => {
           <a
             className='w-full h-full flex items-center'
             target='_blank'
-            href='https://join.slack.com/t/audeance/shared_invite/zt-1vn35z04j-OU8FpGdh45LrxgM3r0jESA'
+            href={SLACK_AUDEANCE_INVITATION_URL}
             rel='noreferrer'
           >
             <Slack className='mr-2 h-4 w-4' />
@@ -122,12 +123,7 @@ const MenuDropdown = ({ router, token }: Props) => {
                 <span>How to use Audea</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <a
-                  className='w-full h-full flex items-center'
-                  target='_blank'
-                  href='https://durrrian.notion.site/FAQ-de94a1a7e3374417881e921f350d4ea4?pvs=4'
-                  rel='noreferrer'
-                >
+                <a className='w-full h-full flex items-center' target='_blank' href={HELP_URL} rel='noreferrer'>
                   <HelpCircle className='mr-2 h-4 w-4' />
                   <span>Help center</span>
                 </a>

@@ -12,6 +12,7 @@ import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { outputLanguageList } from '@/app/data/outputLanguage'
 import { inputLanguage } from '@/app/data/inputLanguage'
+import { NOTE_EXAMPLE_URL } from '@/utils/constant'
 
 export default function Bahasa() {
   const lastUpdateDate = moment('2023-07-03') // ubah di sini setelah memperbarui
@@ -112,10 +113,7 @@ export default function Bahasa() {
             <li>
               <strong>Jenis catatan</strong>. Audea memiliki beragam jenis catatan yang bisa kamu pilih, tergantung
               kebutuhan kamu. Untuk tau semua contoh jenis catatan yang ada, silahkan klik{' '}
-              <a
-                href='https://audeaid.notion.site/d9242908bb9f421b8d7fe86c0f5a424b?v=9df833bfa8da4d11b600295e741893fb&pvs=4'
-                className='underline'
-              >
+              <a href={NOTE_EXAMPLE_URL} className='underline' target='_blank' rel='noreferrer'>
                 di sini
               </a>
               .

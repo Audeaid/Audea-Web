@@ -2,6 +2,7 @@ import { authMiddleware } from '@clerk/nextjs'
 import { gql } from '@apollo/client'
 import { NextResponse } from 'next/server'
 import { middleware } from '@/utils/graphql'
+import { CHECK_SUBSCRIPTION_SECRET } from './utils/constant'
 
 export default authMiddleware({
   async afterAuth(auth, req) {
@@ -20,7 +21,7 @@ export default authMiddleware({
     if (!loginUrl && !signupUrl && !ogUrl && !errorUrl) {
       if (auth.userId) {
         try {
-          const subscription = await checkSubscription(process.env.CHECK_SUBSCRIPTION_SECRET as string, auth.userId)
+          const subscription = await checkSubscription(CHECK_SUBSCRIPTION_SECRET, auth.userId)
 
           if (!subscription) throw new Error('Cannot find subscription')
 

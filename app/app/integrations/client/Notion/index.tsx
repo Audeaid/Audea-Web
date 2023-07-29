@@ -13,6 +13,7 @@ import { ChevronDown, Trash, Pen } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Manage from './lib/Manage'
 import Delete from './lib/Delete'
+import { PUBLIC_NOTION_MAIN_OAUTH_AUTHORIZATION_URL } from '@/utils/constant'
 
 export default function Notion({
   token,
@@ -63,7 +64,7 @@ export default function Notion({
 
             {getNotionAccount === null ? (
               <Button type='button'>
-                <a href={process.env.NEXT_PUBLIC_NOTION_MAIN_OAUTH_AUTHORIZATION_URL!}>Connect</a>
+                <a href={PUBLIC_NOTION_MAIN_OAUTH_AUTHORIZATION_URL}>Connect</a>
               </Button>
             ) : (
               <>

@@ -1,7 +1,8 @@
 import { Configuration, OpenAIApi } from 'openai'
+import { PUBLIC_OPEN_AI_SECRET } from '../constant'
 
 const configuration = new Configuration({
-  apiKey: process.env.NEXT_PUBLIC_OPEN_AI_SECRET as string,
+  apiKey: PUBLIC_OPEN_AI_SECRET as string,
 })
 
 const openai = new OpenAIApi(configuration)

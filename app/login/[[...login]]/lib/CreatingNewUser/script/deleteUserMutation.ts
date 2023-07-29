@@ -1,3 +1,4 @@
+import { PUBLIC_DELETE_USER_SECRET } from '@/utils/constant'
 import client from '@/utils/graphql'
 import { gql } from '@apollo/client'
 
@@ -22,7 +23,7 @@ export function deleteUserMutation(id: string): Promise<IDeleteUserMutation> {
           mutation,
           variables: {
             id,
-            secret: process.env.NEXT_PUBLIC_DELETE_USER_SECRET!,
+            secret: PUBLIC_DELETE_USER_SECRET,
           },
         })
 

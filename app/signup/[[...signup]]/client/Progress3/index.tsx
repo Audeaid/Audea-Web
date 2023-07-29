@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import cn from '@/utils/cn'
+import { PRIVACY_POLICY_URL, TERMS_URL } from '@/utils/constant'
 
 interface IProgress3 {
   setFirstName: Dispatch<SetStateAction<string>>
@@ -108,17 +109,11 @@ export default function Progress3({
           </div>
           <Label htmlFor='agree' className={cn('leading-5 text-left')}>
             I, {firstNameHere} {lastNameHere}, hereby agree to Audea&apos;s{' '}
-            <a
-              href='https://audeaid.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f'
-              className='hover:text-blue-500'
-            >
+            <a href={TERMS_URL} className='hover:text-blue-500' target='_blank' rel='noreferrer'>
               Terms of Service
             </a>{' '}
             and{' '}
-            <a
-              href='https://audeaid.notion.site/Privacy-Policy-f865747ed0e142fa92680408d91fe136'
-              className='hover:text-blue-500'
-            >
+            <a href={PRIVACY_POLICY_URL} className='hover:text-blue-500' target='_blank' rel='noreferrer'>
               Privacy Policy
             </a>
             .

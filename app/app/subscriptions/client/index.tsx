@@ -8,6 +8,7 @@ import { Fireworks } from '@fireworks-js/react'
 import { motion } from 'framer-motion'
 import PricingTable from './PricingTable'
 import SubscribeNowButton from '@/app/notallowed/client/SubscribeNowButton'
+import { PRICING_MANIFESTO_URL } from '@/utils/constant'
 
 interface Props {
   stripeCustomerId: string
@@ -96,10 +97,7 @@ export default function Client({ stripeCustomerId, clerkUserId, currentSubscript
                     If you make a payment, we only charge you a one-time payment only. That means that it is not an
                     auto-renewal payment. We carefully choose our pricing and methodologies so that it benefits you, our
                     user, the most. Read more on our{' '}
-                    <a
-                      className='underline'
-                      href='https://audeaid.notion.site/Pricing-Manifesto-775142d7ebf34bb184915a16dfd8dd5b?pvs=4'
-                    >
+                    <a className='underline' href={PRICING_MANIFESTO_URL} target='_blank' rel='noreferrer'>
                       pricing manifesto
                     </a>
                     .

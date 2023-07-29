@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { ViewportContext } from '@/context/Viewport'
 import cn from '@/utils/cn'
+import { NOTE_EXAMPLE_URL } from '@/utils/constant'
 
 interface Props {
   value: string
@@ -35,12 +36,7 @@ export function TypeOfPrompt({ value, setValue, saved, setSaved }: Props) {
     <section className='flex flex-col gap-8'>
       <p>
         Choose on what type of content do you want. See all examples{' '}
-        <a
-          href='https://durrrian.notion.site/d9242908bb9f421b8d7fe86c0f5a424b?v=9df833bfa8da4d11b600295e741893fb&pvs=4'
-          target='_blank'
-          className='underline'
-          rel='noreferrer'
-        >
+        <a href={NOTE_EXAMPLE_URL} target='_blank' className='underline' rel='noreferrer'>
           here
         </a>
         .

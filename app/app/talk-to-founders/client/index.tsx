@@ -16,6 +16,7 @@ import AldiBody from './images/body/aldi.svg'
 import RizqyBody from './images/body/rizqy.svg'
 import { getCalApi } from '@calcom/embed-react'
 import { useEffect } from 'react'
+import { SLACK_AUDEANCE_INVITATION_URL } from '@/utils/constant'
 
 export default function Client() {
   useEffect(() => {
@@ -76,11 +77,7 @@ export default function Client() {
 
         <section className='flex items-center flex-wrap gap-4'>
           <Button asChild>
-            <a
-              href='https://join.slack.com/t/audeance/shared_invite/zt-1vn35z04j-OU8FpGdh45LrxgM3r0jESA'
-              target='_blank'
-              rel='noreferrer'
-            >
+            <a href={SLACK_AUDEANCE_INVITATION_URL} target='_blank' rel='noreferrer'>
               <FontAwesomeIcon icon={faSlack} className='mr-2' /> Join slack
             </a>
           </Button>

@@ -1,3 +1,4 @@
+import { PUBLIC_OPEN_AI_SECRET } from '@/utils/constant'
 import { IWhisperResponse } from '@/utils/openai'
 
 export function publicGetTranscriptFromWhisper(file: File): Promise<IWhisperResponse> {
@@ -13,7 +14,7 @@ export function publicGetTranscriptFromWhisper(file: File): Promise<IWhisperResp
         const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPEN_AI_SECRET}`,
+            Authorization: `Bearer ${PUBLIC_OPEN_AI_SECRET}`,
           },
           body: formData,
         })

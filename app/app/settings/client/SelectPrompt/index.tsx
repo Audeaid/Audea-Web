@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 import { updateContentSettings } from '../script'
 import ErrorToast from '@/components/ErrorToast'
 import { ViewportContext } from '@/context/Viewport'
+import { NOTE_EXAMPLE_URL } from '@/utils/constant'
 
 interface Props {
   token: string
@@ -37,12 +38,7 @@ export default function SelectPrompt({ token, initialValue }: Props) {
         <p className='md:max-w-full max-w-[365px]'>Change the type of note the AI will generate.</p>
         <p>
           See all the examples{' '}
-          <a
-            href='https://durrrian.notion.site/d9242908bb9f421b8d7fe86c0f5a424b?v=9df833bfa8da4d11b600295e741893fb&pvs=4'
-            target='_blank'
-            className='underline'
-            rel='noreferrer'
-          >
+          <a href={NOTE_EXAMPLE_URL} target='_blank' className='underline' rel='noreferrer'>
             here
           </a>
           .

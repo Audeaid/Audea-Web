@@ -10,6 +10,7 @@ import { User } from '@clerk/nextjs/dist/types/server'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { PRIVACY_POLICY_URL, TERMS_URL } from '@/utils/constant'
 
 interface IProgress1 {
   setEmail: Dispatch<SetStateAction<string>>
@@ -123,21 +124,11 @@ export default function Progress1({ setEmail, setProgress, initialValue, referra
         <p className='text-xs text-justify select-none'>
           By clicking &quot;Continue with Google / Email&quot; above, you acknowledge that you have read and understood,
           and agree to Audea&apos;s{' '}
-          <a
-            href='https://durrrian.notion.site/Terms-of-Service-d0dcba2ccba54a9bb60b6c1dc0255c4f?pvs=4'
-            className='hover:text-blue-500'
-            target='_blank'
-            rel='noreferrer'
-          >
+          <a href={TERMS_URL} className='hover:text-blue-500' target='_blank' rel='noreferrer'>
             Terms of Service
           </a>{' '}
           and{' '}
-          <a
-            href='https://durrrian.notion.site/Privacy-Policy-f865747ed0e142fa92680408d91fe136?pvs=4'
-            className='hover:text-blue-500'
-            target='_blank'
-            rel='noreferrer'
-          >
+          <a href={PRIVACY_POLICY_URL} className='hover:text-blue-500' target='_blank' rel='noreferrer'>
             Privacy Policy
           </a>
           .

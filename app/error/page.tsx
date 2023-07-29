@@ -5,6 +5,7 @@ import Toast from '@/lib/Toast'
 import { Clipboard } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import toast from 'react-hot-toast'
+import { SLACK_AUDEANCE_INVITATION_URL } from '@/utils/constant'
 
 export default function Page({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   if (!searchParams.message || !searchParams.from) {
@@ -59,10 +60,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
           <div className='w-full h-fit max-w-[1000px] select-none'>
             <p>
               Some helpful links:{' '}
-              <a
-                className='text-blue-500 underline'
-                href='https://join.slack.com/t/audeance/shared_invite/zt-1vn35z04j-OU8FpGdh45LrxgM3r0jESA'
-              >
+              <a className='text-blue-500 underline' href={SLACK_AUDEANCE_INVITATION_URL}>
                 Slack
               </a>
             </p>
