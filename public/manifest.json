@@ -1,36 +1,11 @@
 {
   "name": "Audea",
   "short_name": "Audea",
-  "icons": [
-    {
-      "src": "/manifest/icons/128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/manifest/icons/256x256.png",
-      "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/manifest/icons/512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/manifest/icons/1024x1024.png",
-      "sizes": "1024x1024",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ],
-  "start_url": "/app",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#030711",
   "theme_color": "#030711",
+  "description": "Transform your messy thoughts into structured notes.",
   "shortcuts": [
     {
       "name": "Record new audio",
@@ -46,5 +21,17 @@
       "url": "/app/saved",
       "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
     }
-  ]
+  ],
+  "icons": [
+    { "src": "./manifest/icons/16x16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "./manifest/icons/32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "./manifest/icons/60x60.png", "sizes": "60x60", "type": "image/png" },
+    { "src": "./manifest/icons/64x64.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "./manifest/icons/90x90.png", "sizes": "90x90", "type": "image/png" },
+    { "src": "./manifest/icons/128x128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "./manifest/icons/192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./manifest/icons/512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./manifest/icons/512x512.svg", "sizes": "512x512", "type": "image/svg", "purpose": "maskable" }
+  ],
+  "edge_side_panel": { "preferred_width": 748 }
 }
