@@ -12,14 +12,14 @@
       "short_name": "New audio",
       "description": "Record new audio and make a new note",
       "url": "/audio?record=true",
-      "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
+      "icons": [{ "src": "/manifest/icons/128x128.png", "sizes": "128x128" }]
     },
     {
       "name": "See saved notes",
       "short_name": "Saved notes",
       "description": "View saved notes on Audea",
       "url": "/app/saved",
-      "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
+      "icons": [{ "src": "/manifest/icons/128x128.png", "sizes": "128x128" }]
     }
   ],
   "icons": [
