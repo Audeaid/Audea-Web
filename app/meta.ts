@@ -29,7 +29,7 @@ const meta: Metadata = {
     telephone: false,
   },
 
-  manifest: '/manifest.json',
+  manifest: '/manifest-apple.json',
 
   appleWebApp: {
     title: 'Audea',
