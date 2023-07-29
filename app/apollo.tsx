@@ -9,14 +9,15 @@ export function ApolloNextClient({ children }: { children: React.ReactNode }) {
     const isAppleDevice = /Mac|iPhone|iPad|iPod|Macintosh|Apple/i.test(navigator.userAgent)
     const isIPhoneOrIPad = isAppleDevice && navigator.maxTouchPoints > 0
 
-    const manifestTag = document.querySelector('link[rel="manifest"]') as HTMLLinkElement
+    const manifestLink = document.createElement('link')
+    manifestLink.rel = 'manifest'
 
     if (isAppleDevice) {
-      manifestTag.href = '/manifest-apple.json'
-    }
-
-    if (isIPhoneOrIPad) {
-      manifestTag.href = '/manifest-ios.json'
+      manifestLink.href = '/manifest-apple.json'
+    } else if (isIPhoneOrIPad) {
+      manifestLink.href = '/manifest-ios.json'
+    } else {
+      manifestLink.href = '/manifest.json'
     }
   }, [])
 
