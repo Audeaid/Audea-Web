@@ -27,9 +27,10 @@ interface Props {
   hasContent: boolean
   token: string
   contentSettings: IGetContentSettings
+  startRecording: boolean
 }
 
-export default function Client({ hasContent, token, contentSettings }: Props) {
+export default function Client({ hasContent, token, contentSettings, startRecording }: Props) {
   const router = useRouter()
   const [condition, setCondition] = useState('inactive')
   const [isUploading, setIsUploading] = useState(false)
@@ -212,6 +213,7 @@ export default function Client({ hasContent, token, contentSettings }: Props) {
                 }}
                 contentSettings={contentSettings}
                 token={token}
+                userPreferenceToStartRecording={startRecording}
               />
             )
           }

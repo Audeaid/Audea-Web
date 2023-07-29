@@ -11,7 +11,7 @@
       "name": "Record new audio",
       "short_name": "New audio",
       "description": "Record new audio and make a new note",
-      "url": "/audio?record=true",
+      "url": "/app?record=true",
       "icons": [{ "src": "/manifest/icons/128x128.png", "sizes": "128x128" }]
     },
     {

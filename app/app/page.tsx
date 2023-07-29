@@ -7,7 +7,13 @@ import { Suspense } from 'react'
 import LoadingPage from '@/lib/LoadingPage'
 import { generateUrl } from '@/helper'
 
-export default async function Page() {
+interface Prop {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function Page({ searchParams }: Prop) {
+  const startRecording = searchParams.record === 'true' ? true : false
+
   try {
     const { userId: clerkUserId } = auth()
 
@@ -31,7 +37,12 @@ export default async function Page() {
 
     return (
       <Suspense fallback={<LoadingPage />}>
-        <Client token={token} hasContent={hasContent} contentSettings={contentSettings} />
+        <Client
+          token={token}
+          hasContent={hasContent}
+          contentSettings={contentSettings}
+          startRecording={startRecording}
+        />
       </Suspense>
     )
   } catch (error) {

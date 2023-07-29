@@ -16,9 +16,15 @@ interface IUploadAndRecord {
   onFileUpload: (_file: File, _outputLanguage: string, _writingStyle: string, _typeOfPromptId: string) => void
   contentSettings: IGetContentSettings
   token: string
+  userPreferenceToStartRecording: boolean
 }
 
-export default function UploadAndRecord({ onFileUpload, contentSettings, token }: IUploadAndRecord) {
+export default function UploadAndRecord({
+  onFileUpload,
+  contentSettings,
+  token,
+  userPreferenceToStartRecording,
+}: IUploadAndRecord) {
   useLayoutEffect(() => {
     if (typeof window !== 'undefined') {
       import('audio-recorder-polyfill').then((AudioRecorderPolyfill) => {
@@ -72,6 +78,23 @@ export default function UploadAndRecord({ onFileUpload, contentSettings, token }
       }
     }
   }, [userStartRecording])
+
+  useLayoutEffect(() => {
+    if (userPreferenceToStartRecording) {
+      setUserChooseRecording(true)
+
+      if (
+        contentSettings.outputLanguage === 'ASK' ||
+        contentSettings.typeOfPromptId === '647391c118e8a4e1170d3ec9' ||
+        contentSettings.writingStyle === 'ASK'
+      ) {
+        SetIsDialogSettingOpen(true)
+      } else {
+        startRecording(contentSettings.outputLanguage, contentSettings.writingStyle, contentSettings.typeOfPromptId)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const validateFile = (
     file: File | undefined,
