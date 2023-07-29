@@ -43,7 +43,7 @@ export default function DreamWorkflowForm({ token }: Props) {
           })
       }}
     >
-      <Label htmlFor='dream-workflow' className={cn('flex items-center gap-2')}>
+      <Label htmlFor='dream-workflow' className={cn('flex items-center gap-2 select-none')}>
         <MessagesSquare />
         Tell us your dream workflow
       </Label>
@@ -57,8 +57,8 @@ export default function DreamWorkflowForm({ token }: Props) {
           setValue(e.currentTarget.value)
         }}
       />
-      <p className='text-sm text-muted-foreground'>It will be helpful if you give us detailed example</p>
-      <Button type='submit' size='sm'>
+      <p className='text-sm text-muted-foreground select-none'>It will be helpful if you give us detailed example</p>
+      <Button type='submit' size='sm' className={cn('select-none')}>
         Submit
       </Button>
     </form>

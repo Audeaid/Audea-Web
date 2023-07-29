@@ -1,7 +1,7 @@
 'use client'
 
 import '@/styles/animation.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { UseChromeModal, UseIOS, UseIpadOS, UseSafariModal } from './atomic'
 import { Button } from '@/components/ui/button'
 import cn from '@/utils/cn'
@@ -18,27 +18,45 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function InstallButton() {
-  const [ready, setReady] = useState(true)
-  const [modalOpen, setModalOpen] = useState(false)
+  const [ready, setReady] = useState(false)
+  const [installed, setInstalled] = useState(false)
   const [supported, setSupported] = useState(false)
+
+  const [modalOpen, setModalOpen] = useState(false)
+
   const [useSafari, setUseSafari] = useState(false)
   const [useIOS, setUseIOS] = useState(false)
   const [useIpadOS, setUseIpadOS] = useState(false)
   const [useChrome, setUseChrome] = useState(false)
-  const [deferredPrompt, setDeferredPrompt] = useState({} as BeforeInstallPromptEvent | null)
 
-  useEffect(() => {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+
+  useLayoutEffect(() => {
+    // Check if user already install the PWA
+    if ('matchMedia' in window) {
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        setInstalled(true)
+      } else {
+        setInstalled(false)
+      }
+    } else {
+      setInstalled(false)
+    }
+
     if ('BeforeInstallPromptEvent' in window) {
       setSupported(true)
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault()
+        console.log(e)
         setDeferredPrompt(e as BeforeInstallPromptEvent)
       })
     } else if (
+      // Check if use the apple ecosystem
       /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
       (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /Macintosh/.test(navigator.userAgent))
     ) {
       if (
+        // This means user is using other browser than safari
         navigator.userAgent.match('CriOS') ||
         navigator.userAgent.match('FxiOS') ||
         navigator.userAgent.match('OPT') ||
@@ -85,17 +103,23 @@ export default function InstallButton() {
 
   return (
     <>
-      <Button
-        className={cn('w-fit h-fit')}
-        onClick={async () => {
-          supported ? await installApp() : setModalOpen(true)
-        }}
-        disabled={!ready}
-        type='button'
-      >
-        {ready ? <PlusSquare className='mr-2 w-4 h-4' /> : <LoadingSpinner size={4} />}
-        Install as a PWA
-      </Button>
+      {installed ? (
+        <Button variant='ghost' disabled={true} className={cn('w-fit h-fit')}>
+          Already installed PWA
+        </Button>
+      ) : (
+        <Button
+          className={cn('w-fit h-fit')}
+          onClick={async () => {
+            supported ? await installApp() : setModalOpen(true)
+          }}
+          disabled={!ready}
+          type='button'
+        >
+          {ready ? <PlusSquare className='mr-2 w-4 h-4' /> : <LoadingSpinner size={4} />}
+          Install as a PWA
+        </Button>
+      )}
 
       {useChrome && <UseChromeModal isOpen={modalOpen} setIsOpen={setModalOpen} />}
 
