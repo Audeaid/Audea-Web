@@ -19,6 +19,8 @@ export function ApolloNextClient({ children }: { children: React.ReactNode }) {
     } else {
       manifestLink.href = '/manifest.json'
     }
+
+    document.head.appendChild(manifestLink)
   }, [])
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>
