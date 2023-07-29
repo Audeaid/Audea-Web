@@ -18,7 +18,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function InstallButton() {
-  const [ready, setReady] = useState(false)
+  const [ready, setReady] = useState(true)
   const [installed, setInstalled] = useState(false)
   const [supported, setSupported] = useState(false)
 
@@ -93,9 +93,9 @@ export default function InstallButton() {
       const { outcome } = await deferredPrompt.userChoice
       if (outcome === 'accepted') {
         location.reload()
-        console.log('😀 User accepted the install prompt.')
+        // console.log('😀 User accepted the install prompt.')
       } else if (outcome === 'dismissed') {
-        console.log('😟 User dismissed the install prompt')
+        // console.log('😟 User dismissed the install prompt')
       }
       setDeferredPrompt(null)
     }
