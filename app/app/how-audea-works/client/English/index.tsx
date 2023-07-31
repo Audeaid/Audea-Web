@@ -215,21 +215,21 @@ export default function English() {
       </section>
 
       <section className='lg:flex hidden flex-col gap-4 w-fit h-fit justify-self-end sticky print:hidden'>
-        <p>On this page</p>
+        <p className='print:hidden'>On this page</p>
         <section className='flex flex-col gap-1'>
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#step-1'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#step-1'>
             Step 1
           </a>
 
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#step-2'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#step-2'>
             Step 2
           </a>
 
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#step-3'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#step-3'>
             Step 3
           </a>
 
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#watch-tutorial'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#watch-tutorial'>
             Watch tutorial
           </a>
         </section>

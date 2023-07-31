@@ -219,21 +219,21 @@ export default function Bahasa() {
       </section>
 
       <section className='lg:flex hidden flex-col gap-4 w-fit h-fit justify-self-end sticky print:hidden'>
-        <p>Di halaman ini</p>
+        <p className='print:hidden'>Di halaman ini</p>
         <section className='flex flex-col gap-1'>
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#step-1'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#step-1'>
             Langkah 1
           </a>
 
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#step-2'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#step-2'>
             Langkah 2
           </a>
 
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#step-3'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#step-3'>
             Langkah 3
           </a>
 
-          <a className='text-muted-foreground hover:text-foreground cursor-pointer' href='#watch-tutorial'>
+          <a className='text-muted-foreground hover:text-foreground cursor-pointer print:hidden' href='#watch-tutorial'>
             Tonton tutorial
           </a>
         </section>
