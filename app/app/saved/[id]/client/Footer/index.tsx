@@ -12,7 +12,7 @@ interface Props {
 
 export default function Footer({ outputLanguage, writingStyle, typeOfPromptId }: Props) {
   return (
-    <footer className='flex flex-col gap-4 select-none'>
+    <footer className='flex flex-col gap-4 select-none print:hidden'>
       <Separator />
 
       <section className='flex justify-between items-center flex-wrap text-sm text-muted-foreground gap-2'>

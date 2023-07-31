@@ -1,5 +1,5 @@
 import { getGeneratedNotionPage, getNotionAccount, getOneContent, getSharedContentByContentId } from './graphql'
-import Client from './lib'
+import Client from './client'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
 import signJwt from '@/utils/jwt'
