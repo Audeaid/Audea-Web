@@ -69,22 +69,24 @@ export default function Client({
           sharedContent={sharedContent}
         />
 
-        {(() => {
-          if (content.typeOfPromptId === '646a2fc687e737835670b7b3') {
-            return (
-              <BulletPointsWithSummary
-                content={parseContent}
-                dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
-              />
-            )
-          } else if (content.typeOfPromptId === '64a3da8642064a96db90e15e') {
-            return (
-              <SummariseMyThoughts content={parseContent} dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'} />
-            )
-          } else {
-            return <></>
-          }
-        })()}
+        <section className='print:text-black print:bg-white'>
+          {(() => {
+            if (content.typeOfPromptId === '646a2fc687e737835670b7b3') {
+              return (
+                <BulletPointsWithSummary
+                  content={parseContent}
+                  dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'}
+                />
+              )
+            } else if (content.typeOfPromptId === '64a3da8642064a96db90e15e') {
+              return (
+                <SummariseMyThoughts content={parseContent} dir={content.outputLanguage === 'ARABIC' ? 'rtl' : 'ltr'} />
+              )
+            } else {
+              return <></>
+            }
+          })()}
+        </section>
 
         <Footer
           typeOfPromptId={content.typeOfPromptId}

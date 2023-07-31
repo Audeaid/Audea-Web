@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { ChevronDown, Download, Globe, Search } from 'lucide-react'
+import { ChevronDown, Download, Globe, Search, Printer } from 'lucide-react'
 import cn from '@/utils/cn'
 import { Trash2 } from 'lucide-react'
 import ViewTranscript from './ViewTranscript'
@@ -62,7 +62,7 @@ export default function Title({
   const [notionPageUrl, setNotionPageUrl] = useState<string | null>(initialNotionPageUrl)
 
   return (
-    <header className='flex flex-col gap-4'>
+    <header className='flex flex-col gap-4 print:text-black bg-white'>
       <h1 className='sm:text-4xl text-3xl font-bold'>{title}</h1>
 
       <section className='flex items-center justify-between gap-2 flex-wrap'>
@@ -70,7 +70,7 @@ export default function Title({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className={cn('select-none')}>
+            <Button className={cn('select-none print:hidden')}>
               Actions <ChevronDown className='ml-2 w-4 h-4' />
             </Button>
           </DropdownMenuTrigger>
@@ -200,6 +200,15 @@ export default function Title({
             >
               <Globe className='mr-2 w-4 h-4' />
               Share note to public
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => {
+                window.print()
+              }}
+            >
+              <Printer className='mr-2 w-4 h-4' />
+              Print
             </DropdownMenuItem>
 
             <DropdownMenuItem
