@@ -22,7 +22,7 @@ export default function Bahasa() {
 
   return (
     <motion.section
-      className='lg:grid lg:grid-cols-[1fr_0.25fr] print:text-black select-none print:bg-white'
+      className='lg:grid lg:grid-cols-[1fr_0.25fr] print:grid-cols-1 print:text-black select-none print:bg-white'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
