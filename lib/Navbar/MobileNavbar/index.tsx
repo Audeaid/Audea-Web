@@ -93,7 +93,7 @@ export default function MobileNavbar({ router, token }: { router: AppRouterInsta
           <DarkModeSwitch />
         </div>
 
-        <Button onClick={() => router.push('/app')} variant='ghost' className={cn('px-2 py-1')}>
+        <Button onClick={() => router.push('/app')} variant='ghost' className={cn('px-2 py-1 print:hidden')}>
           <Home />
         </Button>
         <MobileSheet router={router} token={token} />

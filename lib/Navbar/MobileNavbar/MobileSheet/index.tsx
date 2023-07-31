@@ -50,7 +50,7 @@ export default function MobileSheet({ router, token }: { router: AppRouterInstan
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant='ghost' className={cn('px-2 py-1')}>
+        <Button variant='ghost' className={cn('px-2 py-1 print:hidden')}>
           <MoreHorizontal className='w-6 h-6' />
         </Button>
       </SheetTrigger>

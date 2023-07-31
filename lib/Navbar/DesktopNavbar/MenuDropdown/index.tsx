@@ -64,7 +64,9 @@ const MenuDropdown = ({ router, token }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='outline'>Menu</Button>
+        <Button variant='outline' className={cn('print:hidden')}>
+          Menu
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel className='select-none'>Workspaces</DropdownMenuLabel>

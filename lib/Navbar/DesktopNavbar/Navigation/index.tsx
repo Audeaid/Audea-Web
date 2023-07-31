@@ -35,7 +35,7 @@ export default function Navigation({ router, token }: Props) {
   }, [pathname])
 
   return (
-    <div className='w-full max-w-[700px] h-fit flex items-center gap-4 select-none'>
+    <div className='w-full max-w-[700px] h-fit flex items-center gap-4 select-none print:hidden'>
       {arrayOfPath.map((v, i) => {
         if (i === 0) {
           return (
