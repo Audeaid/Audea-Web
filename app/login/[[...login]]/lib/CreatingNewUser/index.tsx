@@ -27,10 +27,10 @@ export default function CreatingNewUser({ email, clerkId, firstName, lastName, r
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)
 
-  const [userDbId, setUserDbId] = useState<string | null>(null)
-
   useEffect(() => {
     const createNewUser = async () => {
+      let userDbId: string | null = null
+
       try {
         setLoading(true)
 
@@ -44,7 +44,7 @@ export default function CreatingNewUser({ email, clerkId, firstName, lastName, r
 
         if (!response) return
 
-        setUserDbId(response.id)
+        userDbId = response.id
 
         const token = signJwt(response.clerkUserId)
 
