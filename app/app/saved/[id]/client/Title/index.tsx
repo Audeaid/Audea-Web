@@ -62,7 +62,7 @@ export default function Title({
   const [notionPageUrl, setNotionPageUrl] = useState<string | null>(initialNotionPageUrl)
 
   return (
-    <header className='flex flex-col gap-4 print:text-black bg-white'>
+    <header className='flex flex-col gap-4 print:text-black print:bg-white'>
       <h1 className='sm:text-4xl text-3xl font-bold'>{title}</h1>
 
       <section className='flex items-center justify-between gap-2 flex-wrap'>
