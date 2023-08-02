@@ -4,7 +4,7 @@ import { gql } from '@apollo/client'
 export interface ICheckSubscription {
   __typename: 'UserSubscription'
   endDate: string
-  type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'YEARLY' | 'EARLYADOPTER'
+  type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'LIFETIME60' | 'YEARLY' | 'EARLYADOPTER'
   extended: boolean
 }
 

@@ -5,7 +5,7 @@ export interface ICheckSubscription {
   __typename: 'UserSubscription'
   endDate: string
   startDate: string
-  type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'YEARLY' | 'EARLYADOPTER'
+  type: 'TRIAL' | 'MONTHLY' | 'LIFETIME' | 'LIFETIME60' | 'YEARLY' | 'EARLYADOPTER'
 }
 
 export function checkSubscription(token: string): Promise<ICheckSubscription> {

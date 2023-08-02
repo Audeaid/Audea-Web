@@ -46,7 +46,7 @@ export default function Client({ stripeCustomerId, clerkUserId, currentSubscript
                 <p>Your premium ends at {endDateMoment.format('HH:mm DD MMMM YYYY')}.</p>
               </section>
             )
-          } else if (currentSubscription.type === 'LIFETIME') {
+          } else if (currentSubscription.type === 'LIFETIME' || currentSubscription.type === 'LIFETIME60') {
             return (
               <section className='w-full h-fit z-10 flex flex-col gap-2'>
                 <h3 className='text-3xl font-medium'>🎉 You&apos;re already a LIFETIME premium with Audea</h3>
