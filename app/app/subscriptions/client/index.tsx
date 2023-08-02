@@ -111,12 +111,14 @@ export default function Client({ stripeCustomerId, clerkUserId, currentSubscript
 
       {(currentSubscription.type === 'MONTHLY' ||
         currentSubscription.type === 'YEARLY' ||
-        currentSubscription.type === 'LIFETIME') &&
+        currentSubscription.type === 'LIFETIME' ||
+        currentSubscription.type === 'LIFETIME60') &&
         invoices.length > 0 && <InvoicesTable invoices={invoices} />}
 
       {(currentSubscription.type === 'MONTHLY' ||
         currentSubscription.type === 'YEARLY' ||
-        currentSubscription.type === 'LIFETIME') &&
+        currentSubscription.type === 'LIFETIME' ||
+        currentSubscription.type === 'LIFETIME60') &&
         nowMoment.isBefore(endDateMoment) && (
           <Fireworks
             options={{
