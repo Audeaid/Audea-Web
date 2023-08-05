@@ -47,10 +47,9 @@ export default function Progress1({ setEmail, setProgress, initialValue, referra
 
             try {
               if (emailForm !== null) {
-                const { data: isEmailExistResponse }: { data: User } = await axios.post(
-                  '/api/clerk/clerkUser',
-                  formData,
-                )
+                const { data: isEmailExistResponse }: { data: User } = await axios.post('/api/clerk/clerkUser', {
+                  email: emailForm.toString(),
+                })
 
                 const isAccountDeletedResponse = await getDeletedUser({
                   email: emailForm.toString(),

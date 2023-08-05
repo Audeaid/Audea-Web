@@ -61,10 +61,9 @@ export default function EmailDialog({ token }: Props) {
               try {
                 setLoading(true)
 
-                const { data: isEmailExistResponse }: { data: User } = await axios.post(
-                  '/api/clerk/clerkUser',
-                  formData,
-                )
+                const { data: isEmailExistResponse }: { data: User } = await axios.post('/api/clerk/clerkUser', {
+                  email,
+                })
 
                 const isEmailExist = isEmailExistResponse !== undefined && isEmailExistResponse !== null
                 setLoading(false)
