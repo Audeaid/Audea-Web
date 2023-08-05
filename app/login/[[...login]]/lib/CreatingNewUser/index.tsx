@@ -42,7 +42,10 @@ export default function CreatingNewUser({ email, clerkId, firstName, lastName, r
           referralJwt,
         })
 
-        if (!response) return
+        if (!response) {
+          await axios.post('/api/clerk/deleteClerkUser', { clerkUserId: clerkId })
+          return
+        }
 
         userDbId = response.id
 
