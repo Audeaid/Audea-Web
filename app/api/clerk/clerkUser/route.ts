@@ -18,14 +18,16 @@ export async function POST(request: NextRequest) {
     }
 
     if (email) {
-      response = (
-        await clerkClient.users.getUserList({
-          emailAddress: [email.toString()],
-        })
-      )[0]
-    }
+      const user = await clerkClient.users.getUserList({
+        emailAddress: [email.toString()],
+      })
 
-    if (!response) throw new Error('response is null')
+      if (user.length === 0) {
+        response = null
+      } else {
+        response = user[0]
+      }
+    }
 
     return NextResponse.json(response)
   } catch (error) {
