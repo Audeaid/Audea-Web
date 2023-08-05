@@ -62,9 +62,7 @@ export default function Progress5({
 
         handleClerk()
 
-        setTimeout(() => {
-          router.push('/app')
-        }, 2000)
+        router.push('/app')
       } catch (error) {
         console.error(error)
 
