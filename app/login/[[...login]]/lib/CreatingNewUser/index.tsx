@@ -61,9 +61,7 @@ export default function CreatingNewUser({ email, clerkId, firstName, lastName, r
         setLoading(false)
         setSuccess(true)
 
-        setTimeout(() => {
-          router.push('/app')
-        }, 2000)
+        router.push('/app')
       } catch (error) {
         console.error(error)
 
@@ -136,7 +134,9 @@ export default function CreatingNewUser({ email, clerkId, firstName, lastName, r
                     }}
                   />
                 </div>
-                <h3 className='text-xl text-center font-medium'>Error creating your account! Please try again!</h3>
+                <h3 className='text-xl text-center font-medium'>
+                  Error creating your account! Please try again! Redirecting you...
+                </h3>
               </>
             )
           } else {
