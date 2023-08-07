@@ -6,6 +6,7 @@ import signJwt from '@/utils/jwt'
 import { Suspense } from 'react'
 import LoadingPage from '@/lib/LoadingPage'
 import { generateUrl } from '@/helper'
+import { searchUserByClerkId } from '../login/[[...login]]/graphql'
 
 interface Prop {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -19,32 +20,40 @@ export default async function Page({ searchParams }: Prop) {
 
     if (!clerkUserId) return redirect('/login')
 
-    const token = signJwt(clerkUserId)
+    const userByClerkId = await searchUserByClerkId(clerkUserId)
 
-    const content = await getAllContent(token)
-    let hasContent: boolean = false
-    if (content !== null) hasContent = true
+    const userExist = userByClerkId === null ? false : true
 
-    const response = await getContentSettings(token)
+    if (userExist) {
+      const token = signJwt(clerkUserId)
 
-    let contentSettings: IGetContentSettings
+      const content = await getAllContent(token)
+      let hasContent: boolean = false
+      if (content !== null) hasContent = true
 
-    if (!response) {
-      contentSettings = await createNewContentSettings(token)
+      const response = await getContentSettings(token)
+
+      let contentSettings: IGetContentSettings
+
+      if (!response) {
+        contentSettings = await createNewContentSettings(token)
+      } else {
+        contentSettings = response
+      }
+
+      return (
+        <Suspense fallback={<LoadingPage />}>
+          <Client
+            token={token}
+            hasContent={hasContent}
+            contentSettings={contentSettings}
+            startRecording={startRecording}
+          />
+        </Suspense>
+      )
     } else {
-      contentSettings = response
+      return redirect('/login/check-user')
     }
-
-    return (
-      <Suspense fallback={<LoadingPage />}>
-        <Client
-          token={token}
-          hasContent={hasContent}
-          contentSettings={contentSettings}
-          startRecording={startRecording}
-        />
-      </Suspense>
-    )
   } catch (error) {
     const e = JSON.stringify(error)
     const url = generateUrl(`/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent('/app')}`)
