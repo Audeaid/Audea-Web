@@ -24,36 +24,34 @@ export default async function Page({ searchParams }: Prop) {
 
     const userExist = userByClerkId === null ? false : true
 
-    if (userExist) {
-      const token = signJwt(clerkUserId)
+    if (!userExist) return redirect('/login/check-user')
 
-      const content = await getAllContent(token)
-      let hasContent: boolean = false
-      if (content !== null) hasContent = true
+    const token = signJwt(clerkUserId)
 
-      const response = await getContentSettings(token)
+    const content = await getAllContent(token)
+    let hasContent: boolean = false
+    if (content !== null) hasContent = true
 
-      let contentSettings: IGetContentSettings
+    const response = await getContentSettings(token)
 
-      if (!response) {
-        contentSettings = await createNewContentSettings(token)
-      } else {
-        contentSettings = response
-      }
+    let contentSettings: IGetContentSettings
 
-      return (
-        <Suspense fallback={<LoadingPage />}>
-          <Client
-            token={token}
-            hasContent={hasContent}
-            contentSettings={contentSettings}
-            startRecording={startRecording}
-          />
-        </Suspense>
-      )
+    if (!response) {
+      contentSettings = await createNewContentSettings(token)
     } else {
-      return redirect('/login/check-user')
+      contentSettings = response
     }
+
+    return (
+      <Suspense fallback={<LoadingPage />}>
+        <Client
+          token={token}
+          hasContent={hasContent}
+          contentSettings={contentSettings}
+          startRecording={startRecording}
+        />
+      </Suspense>
+    )
   } catch (error) {
     const e = JSON.stringify(error)
     const url = generateUrl(`/error?message=${encodeURIComponent(e)}&from=${encodeURIComponent('/app')}`)
