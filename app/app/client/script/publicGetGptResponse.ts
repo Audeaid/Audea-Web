@@ -5,8 +5,7 @@ export function publicGetGptResponse(systemPrompt: string, userPrompt: string): 
     const fetchData = async () => {
       try {
         const { data } = await openai.createChatCompletion({
-          model: 'gpt-3.5-turbo-0301',
-          max_tokens: 2048,
+          model: 'gpt-3.5-turbo-16k',
           messages: [
             {
               role: 'system',
